@@ -1,4 +1,4 @@
-import { ConvertedToObjectType, TranslationJsonType } from './types';
+import { ConvertedToObjectType, TranslationJsonType } from "./types";
 
 /**
  * This file is seperate from the './i18n.ts' simply to make the Hot Module Replacement work seamlessly.
@@ -13,21 +13,17 @@ export const translations: ConvertedToObjectType<TranslationJsonType> = {} as an
  * along with type-safety
  */
 export const convertLanguageJsonToObject = (
-  json: any,
-  objToConvertTo = translations,
-  current?: string,
+    json: any,
+    objToConvertTo = translations,
+    current?: string,
 ) => {
-  Object.keys(json).forEach(key => {
-    const currentLookupKey = current ? `${current}.${key}` : key;
-    if (typeof json[key] === 'object') {
-      objToConvertTo[key] = {};
-      convertLanguageJsonToObject(
-        json[key],
-        objToConvertTo[key],
-        currentLookupKey,
-      );
-    } else {
-      objToConvertTo[key] = currentLookupKey;
-    }
-  });
+    Object.keys(json).forEach(key => {
+        const currentLookupKey = current ? `${current}.${key}` : key;
+        if (typeof json[key] === "object") {
+            objToConvertTo[key] = {};
+            convertLanguageJsonToObject(json[key], objToConvertTo[key], currentLookupKey);
+        } else {
+            objToConvertTo[key] = currentLookupKey;
+        }
+    });
 };
