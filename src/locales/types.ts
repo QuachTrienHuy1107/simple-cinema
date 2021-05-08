@@ -3,7 +3,7 @@ export type ConvertedToObjectType<T> = {
 };
 
 /**
- 
+
 If you don't want non-existing keys to throw ts error you can simply do(also keeping the intellisense)
 
 export type ConvertedToObjectType<T> = {
@@ -15,4 +15,4 @@ export type ConvertedToObjectType<T> = {
 */
 
 // Selecting the json file that our intellisense would pick from
-export type TranslationJsonType = typeof import("./en/translation.json");
+export type TranslationJsonType = typeof import("./vi/translation.json");
