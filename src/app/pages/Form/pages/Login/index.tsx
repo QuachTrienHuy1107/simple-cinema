@@ -16,6 +16,7 @@ export const Login = memo((props: Props) => {
 
     return (
         <Div>
+            <p>Login</p>
             {t("")}
             {/*  {t(...messages.someThing())}  */}
         </Div>

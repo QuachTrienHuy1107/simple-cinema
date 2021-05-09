@@ -17,6 +17,7 @@ export function Form(props: Props) {
     return (
         <Div>
             {t("")}
+            <p>Form</p>
             {/*  {t(...messages.someThing())}  */}
         </Div>
     );

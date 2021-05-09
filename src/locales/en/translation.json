@@ -1,5 +1,33 @@
 {
-    "homePage": {
-        "title": "Hello world!"
+    "Banner": {
+        "Title": "Booking",
+        "Description": "Đặt vé"
+    },
+    "Button": {
+        "Login": "Login",
+        "Register": "Register",
+        "Show more": "Xem thêm",
+        "Logout": "Đăng xuất"
+    },
+    "SearchForm": {
+        "Search": "Tìm kiếm",
+        "SelectedDate": "Chọn ngày"
+    },
+
+    "Form": {
+        "UserName": "Tài khoản",
+        "Password": "Mật khẩu",
+        "Name": "Họ tên",
+        "PhoneNumber": "Số điện thoại",
+        "GroupId": "Mã nhóm",
+        "Email": "Email"
+    },
+
+    "Header": {
+        "Navbar": {
+            "Home": "Home",
+            "MovieList": "Movies",
+            "AboutUs": "About us"
+        }
     }
 }

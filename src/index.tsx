@@ -26,17 +26,21 @@ import reportWebVitals from "reportWebVitals";
 
 // Initialize languages
 import "./locales/i18n";
+import { ThemeProvider } from "styled-components";
+import defaultThemes from "styles/themes";
+
+import "antd/dist/antd.css";
 
 const store = configureAppStore();
 const MOUNT_NODE = document.getElementById("root") as HTMLElement;
 
 ReactDOM.render(
     <Provider store={store}>
-        <HelmetProvider>
-            <React.StrictMode>
+        <ThemeProvider theme={defaultThemes}>
+            <HelmetProvider>
                 <App />
-            </React.StrictMode>
-        </HelmetProvider>
+            </HelmetProvider>
+        </ThemeProvider>
     </Provider>,
     MOUNT_NODE,
 );

@@ -1,11 +1,14 @@
 import { PayloadAction } from "@reduxjs/toolkit";
+import { PaginationResponseType } from "app/components/Paginations/types";
+
 import { createSlice } from "utils/@reduxjs/toolkit";
 import { useInjectReducer, useInjectSaga } from "utils/redux-injectors";
 import { homeSaga } from "./saga";
-import { HomeState } from "./types";
+import { HomeState, PaginationRequestType } from "./types";
 
 export const initialState: HomeState = {
-    movies: [],
+    moviePagination: [],
+    cinemaList: [],
     isLoading: true,
     isError: false,
 };
@@ -14,17 +17,35 @@ const slice = createSlice({
     name: "home",
     initialState,
     reducers: {
-        someAction(state, action: PayloadAction<any>) {},
+        getPaginateMoviesAction: (state, action: PayloadAction<PaginationRequestType>) => {
+            state.isLoading = true;
+        },
+        getPaginateMoviesActionSucess(state, action: PayloadAction<PaginationResponseType>) {
+            console.log("1");
+            state.moviePagination = action.payload;
+            state.isLoading = false;
+        },
+        getPaginateMoviesActionFailure() {},
+
+        getAllCinemaListAction() {},
+        getAllCinemaListActionSuccess: (state, action: PayloadAction<any>) => {
+            state.cinemaList = action.payload;
+        },
+        getAllCinemaListActionFailure: state => {
+            state.isError = true;
+        },
     },
 });
 
-export const { actions: homeActions } = slice;
+export const { actions: homeActions, reducer, name } = slice;
 
 export const useHomeSlice = () => {
-    useInjectReducer({ key: slice.name, reducer: slice.reducer });
-    useInjectSaga({ key: slice.name, saga: homeSaga });
+    useInjectReducer({ key: name, reducer });
+    useInjectSaga({ key: name, saga: homeSaga });
     return { actions: slice.actions };
 };
+
+// export const { getAllMovies } = homeActions;
 
 /**
  * Example Usage:

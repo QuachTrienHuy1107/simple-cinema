@@ -17,6 +17,7 @@ export function About(props: Props) {
     return (
         <Div>
             {t("")}
+            <p>About</p>
             {/*  {t(...messages.someThing())}  */}
         </Div>
     );

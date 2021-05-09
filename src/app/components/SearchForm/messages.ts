@@ -7,5 +7,5 @@ import { translations } from "locales/translations";
 import { _t } from "utils/messages";
 
 export const messages = {
-    // someThing: () => _t(translations.someThing,'default value'),
+    CheckEmpty: () => _t(translations.SearchForm.Rules.ValidateEmpty, ""),
 };

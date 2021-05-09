@@ -4,13 +4,10 @@
  * Check the documentation section i18n for details
  */
 
-import { translations } from "locales/translations";
 import { _t } from "utils/messages";
+import { translations } from "locales/translations";
 
-export const homeMessages = {
-    testMessage: () =>
-        _t(
-            translations.homePage.title,
-            "Industry-standard Routing", // you can set the default value when extracting
-        ),
+export const HomeMessages = {
+    Title: () => _t(translations.Banner.Title),
+    Desc: () => _t(translations.Banner.Description),
 };

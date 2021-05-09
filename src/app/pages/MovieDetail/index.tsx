@@ -16,6 +16,7 @@ export function MovieDetail(props: Props) {
 
     return (
         <Div>
+            <p>demoo</p>
             {t("")}
             {/*  {t(...messages.someThing())}  */}
         </Div>
