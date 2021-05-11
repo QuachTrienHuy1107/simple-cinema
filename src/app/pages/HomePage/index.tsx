@@ -1,15 +1,21 @@
 import { Col, Row } from "antd";
+import { Buttons } from "app/components/Common/Buttons";
+import { Footer } from "app/components/Common/Footer";
+import { Header } from "app/components/Common/Header";
 import { MovieList } from "app/components/MovieList";
-import { Schedule } from "app/components/Schedule";
+import { SearchForm } from "app/components/SearchForm";
+import { ROUTES } from "config";
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Route, Switch } from "react-router";
 import styled from "styled-components";
-import img from "./assets/img/banner01.jpg";
 import { HomeMessages } from "./messages";
 import { useHomeSlice } from "./slice";
 import { selectHome } from "./slice/selectors";
+import video from "./assets/img/Halloween.mp4";
+import { Schedule } from "./components/Schedule";
 
 export function HomePage() {
     const { t } = useTranslation();
@@ -27,15 +33,18 @@ export function HomePage() {
                 <title>Home Page</title>
                 <meta name="description" content="A Boilerplate application homepage" />
             </Helmet>
+            <Header />
             <Wrapper>
                 <CarouselStyled>
+                    <video src={video} loop autoPlay muted height="100vh"></video>
                     <Content>
                         <h1>{t(HomeMessages.Title())}</h1>
                         <p>{t(HomeMessages.Desc())}</p>
                     </Content>
                 </CarouselStyled>
-                <Row justify="center">
+                <Row justify="center" gutter={[0, 40]}>
                     <Col span={20}>
+                        <SearchForm />
                         <MovieList />
                     </Col>
                     <Col span={20}>
@@ -43,14 +52,46 @@ export function HomePage() {
                     </Col>
                 </Row>
             </Wrapper>
+            <Footer />
+
+            <Switch>
+                <Route exact path={`${ROUTES.MOVIELIST}`} component={MovieList} />
+            </Switch>
         </>
     );
 }
 
 const Wrapper = styled.div``;
 
-const Content = styled.div`
+const CarouselStyled = styled.div`
     position: relative;
+    video {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+        background-attachment: scroll;
+    }
+    background-color: ${p => p.theme.primaryBg};
+    width: auto;
+    height: 100vh;
+
+    &::before {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: linear-gradient(transparent, #000);
+    }
+`;
+
+const Content = styled.div`
+    position: absolute;
+    z-index: 2;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -68,29 +109,5 @@ const Content = styled.div`
 
     p {
         font-size: 2rem;
-    }
-`;
-
-const CarouselStyled = styled.div`
-    background-image: url(${img});
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-color: ${p => p.theme.primaryBg};
-    width: auto;
-    height: 500px;
-    position: relative;
-    background-position: center center;
-    &::before {
-        content: "";
-        position: absolute;
-        z-index: 0;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: linear-gradient(180deg, rgba(19, 23, 32, 0.5) 0%, #131720 100%);
-        &:hover {
-            box-shadow: 5px 10px linear-gradient(169deg, #5560ff 17%, #aa52a1 63%, #ff4343 100%);
-        }
     }
 `;
