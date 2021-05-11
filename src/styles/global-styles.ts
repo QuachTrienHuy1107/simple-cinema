@@ -89,6 +89,8 @@ const GlobalStyle = createGlobalStyle`
       -webkit-font-smoothing: antialiased;
       text-size-adjust: none;
 
+
+
       /* @media screen and (max-width: 576px) {
           font-size: 10px;
       } */
@@ -105,7 +107,8 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: Regular !important;
     color: #fff;
-    background: #131720;
+    background: #000;
+    transition: all 0.3s;
   }
 
   ol,
@@ -134,6 +137,13 @@ const GlobalStyle = createGlobalStyle`
   input {
       -webkit-appearance: none;
       border-radius: 0;
+  }
+
+  h1,h2,h3,h4,h5,h6, span{
+    color: #fff;
+  }
+  a{
+    color: #fff;
   }
 `;
 
