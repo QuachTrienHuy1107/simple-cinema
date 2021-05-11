@@ -10,12 +10,21 @@ import { messages } from "./messages";
 import logo from "./assets/logo.png";
 import { NavList } from "../NavList";
 import { Buttons } from "../Buttons";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth } from "app/pages/Form/slice/selectors";
+import { Dropdown, Menu } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+import { useAuthSlice } from "app/pages/Form/slice";
+import { ROUTES } from "config";
 
 interface Props {}
 
 export function Header(props: Props) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t } = useTranslation();
+    const { credentials, isLoading, isError } = useSelector(selectAuth);
+    const dispatch = useDispatch();
+    const { actions } = useAuthSlice();
     const [navBackground, setNavBackground] = React.useState<boolean>(false);
     const navRef = React.useRef<undefined | boolean>();
     navRef.current = navBackground;
@@ -32,6 +41,43 @@ export function Header(props: Props) {
         };
     }, []);
 
+    const menu = (
+        <Menu mode="horizontal">
+            {(credentials.maLoaiNguoiDung === "QuanTri" && (
+                <>
+                    <Menu.Item key="0">
+                        <Link to={ROUTES.DASHBOARD}>Admin page</Link>
+                    </Menu.Item>
+
+                    <Menu.Item
+                        key="2"
+                        onClick={() => {
+                            dispatch(actions.checkLogoutAction());
+                            localStorage.clear();
+                        }}
+                    >
+                        Logout
+                    </Menu.Item>
+                </>
+            )) || (
+                <>
+                    <Menu.Item key="0">
+                        <Link to={`profile/${credentials.taiKhoan}`}>Thông tin</Link>
+                    </Menu.Item>
+                    <Menu.Item
+                        key="1"
+                        onClick={() => {
+                            dispatch(actions.checkLogoutAction());
+                            localStorage.clear();
+                        }}
+                    >
+                        Logout
+                    </Menu.Item>
+                </>
+            )}
+        </Menu>
+    );
+
     return (
         <Wrapper
             style={{
@@ -42,7 +88,18 @@ export function Header(props: Props) {
                 <img src={logo} alt="" width={60} />
             </Logo>
             <NavList />
-            <Buttons>{t(messages.btnLogin())}</Buttons>
+            {Object.keys(credentials).length === 0 ? (
+                <Buttons>
+                    <Link to={ROUTES.LOGIN}>{t(messages.btnLogin())}</Link>
+                </Buttons>
+            ) : (
+                <Dropdown overlay={menu} trigger={["click"]}>
+                    <Buttons>
+                        {credentials.hoTen}
+                        <DownOutlined style={{ transform: "translateY(-3px)" }} />
+                    </Buttons>
+                </Dropdown>
+            )}
         </Wrapper>
     );
 }
