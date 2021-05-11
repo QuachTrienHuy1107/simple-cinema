@@ -6,16 +6,16 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
+import { ROUTES } from "config";
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
-
-import GlobalStyle from "styles/global-styles";
-
 import { useTranslation } from "react-i18next";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { renderRoutes, routes } from "router";
+import GlobalStyle from "styles/global-styles";
+import About from "./pages/About/Loadable";
 import HomePage from "./pages/HomePage/Loadable";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
-import { renderRoutes, routes } from "router";
 
 export function App() {
     const { i18n } = useTranslation();
@@ -30,9 +30,12 @@ export function App() {
             </Helmet>
 
             <Switch>
+                <Route exact path={ROUTES.HOME} component={HomePage} />
+                <Route exact path={ROUTES.ABOUT} component={About} />
+
                 {renderRoutes(routes)}
-                <Route exact path="/" component={HomePage} />
-                <Route component={NotFoundPage} />
+                <Route exact path={ROUTES.NOTFOUND} component={NotFoundPage} />
+                <Redirect from="*" to={ROUTES.NOTFOUND} />
             </Switch>
             <GlobalStyle />
         </BrowserRouter>

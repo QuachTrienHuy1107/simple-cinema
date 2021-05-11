@@ -11,6 +11,7 @@ export enum ROUTES {
     MOVIEDETAIL = "/movie/:id",
     CHECKOUT = "/checkout",
     PROFILE = "/profile/:taiKhoan",
+    MOVIELIST = "/movielist",
     /**
      * Form
      */
@@ -19,13 +20,13 @@ export enum ROUTES {
     /**
      * Admin
      */
-
-    DASHBOARD = "/dashboard",
-    USERLIST = "/usermanagement",
-    USERDETAIL = "/user/:taiKhoan",
-    NOTFOUND = "/notfound",
-    PROFILEADMIN = "/profileadmin",
-    MOVIEMANAGEMENT = "/moviemanagement",
+    ADMIN = "/admin",
+    DASHBOARD = "/admin/dashboard",
+    USERMANAGEMENT = "/admin/usermanagement",
+    USERDETAIL = "/admin/user/:taiKhoan",
+    NOTFOUND = "/admin/notfound",
+    PROFILEADMIN = "/admin/profileadmin",
+    MOVIEMANAGEMENT = "/admin/moviemanagement",
 }
 
 export default {};

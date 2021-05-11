@@ -1,16 +1,15 @@
-import React from "react";
-import { lazy } from "react";
-import { Link, Redirect, Route, RouteProps } from "react-router-dom";
-
-import { ROUTES } from "config";
-import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
-import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
-
-import FormTemplate from "app/templates/FormTemplate";
-import ClientTemplate from "app/templates/ClientTemplate";
-import AdminTemplate from "app/templates/AdminTemplate";
+import { AdminPage } from "app/pages/AdminPage";
+import { FormTemplate } from "app/pages/Form";
 import { Login } from "app/pages/Form/pages/Login";
-import HomePage from "app/pages/HomePage/Loadable";
+import { Register } from "app/pages/Form/pages/Register";
+import ClientTemplate from "app/templates/ClientTemplate";
+import { ROUTES } from "config";
+import React from "react";
+import { Redirect, Route, RouteProps } from "react-router-dom";
+import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
+import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
+import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
+import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
 
 type PrivateRouteProps = {
     component: React.ComponentType;
@@ -49,6 +48,13 @@ const routes: RouterType[] = [
         layout: "Form",
         restricted: false,
     },
+    {
+        path: ROUTES.REGISTER,
+        exact: true,
+        component: Register,
+        layout: "Form",
+        restricted: false,
+    },
 
     /**
      * Admin
@@ -60,16 +66,23 @@ const routes: RouterType[] = [
         layout: "Admin",
         restricted: true,
     },
+    {
+        path: ROUTES.USERMANAGEMENT,
+        exact: true,
+        component: UserManagement,
+        layout: "Admin",
+        restricted: true,
+    },
+    {
+        path: ROUTES.MOVIEMANAGEMENT,
+        exact: true,
+        component: MovieManagement,
+        layout: "Admin",
+        restricted: true,
+    },
     /**
      * Home
      */
-    {
-        path: ROUTES.HOME,
-        exact: true,
-        component: HomePage,
-        layout: "Client",
-        restricted: true,
-    },
 ];
 
 const isAuthenticated = true;
@@ -96,10 +109,10 @@ const AppLayout = ({
                         <Component {...props} />
                     </ClientTemplate>
                 )) ||
-                (restricted && (
-                    <AdminTemplate {...rest}>
+                (restricted && layout === "Admin" && (
+                    <AdminPage {...rest}>
                         <Component {...props} />
-                    </AdminTemplate>
+                    </AdminPage>
                 )) || <Redirect to="/" />
             }
         />
