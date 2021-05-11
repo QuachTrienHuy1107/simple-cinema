@@ -25,7 +25,12 @@
         "Name": "Họ tên",
         "PhoneNumber": "Số điện thoại",
         "GroupId": "Mã nhóm",
-        "Email": "Email"
+        "Email": "Email",
+        "Rules": {
+            "ValidateEmpty": "Không được bỏ trống",
+            "ValidateEmail": "Không đúng định dạng email",
+            "ValidatePassword": "Mật khẩu không hợp lệ"
+        }
     },
 
     "Header": {
