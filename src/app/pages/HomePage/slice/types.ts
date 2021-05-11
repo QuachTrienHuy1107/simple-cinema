@@ -1,5 +1,5 @@
 import { PaginationResponseType } from "app/components/Paginations/types";
-import { CinemaListResponse } from "app/components/Schedule/types";
+import { CinemaListResponse } from "../components/Schedule/types";
 
 export interface MovieResponse {
     readonly maPhim: number;

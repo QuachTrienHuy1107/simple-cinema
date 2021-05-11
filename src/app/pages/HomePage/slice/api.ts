@@ -22,13 +22,6 @@ const api = {
             .catch(error => ({ error }));
     },
 
-    getMovieDetail: () => {
-        const url = "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayThongTinPhim?MaPhim=1314";
-        return axiosClient
-            .get(url)
-            .then(response => ({ response }))
-            .catch(error => ({ error }));
-    },
     getInfoCinema: () => {
         const url = `/QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01`;
 
