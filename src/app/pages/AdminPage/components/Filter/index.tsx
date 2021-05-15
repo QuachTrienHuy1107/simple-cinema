@@ -14,12 +14,9 @@ export const Filter = memo((props: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
 
-    return (
-        <Div>
-            {t("")}
-            {/*  {t(...messages.someThing())}  */}
-        </Div>
-    );
+    return <Wrapper></Wrapper>;
 });
 
-const Div = styled.div``;
+const Wrapper = styled.div`
+    background-color: #000;
+`;

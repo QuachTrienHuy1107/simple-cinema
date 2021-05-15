@@ -4,22 +4,27 @@
  *
  */
 import * as React from "react";
+import { Helmet } from "react-helmet-async";
+import { RouteProps } from "react-router";
 import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
+import { AppLayout } from "./components/AppLayout";
 
 interface Props {}
 
-export function AdminPage(props: Props) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { t, i18n } = useTranslation();
+type AdminRouteProps = {
+    component?: React.ComponentType;
+} & RouteProps;
 
+export function AdminPage({ children }: AdminRouteProps) {
     return (
-        <Div>
-            {t("")}
-            {/*  {t(...messages.someThing())}  */}
-        </Div>
+        <Wrapper>
+            <Helmet>
+                <title>Admin page</title>
+                <meta name="description" content="Adminpage" />
+            </Helmet>
+            <AppLayout>{children}</AppLayout>
+        </Wrapper>
     );
 }
 
-const Div = styled.div``;
+const Wrapper = styled.div``;

@@ -1,8 +1,8 @@
 // import { take, call, put, select, takeLatest } from 'redux-saga/effects';
-// import { adminActions as actions } from '.';
+// import { userActions as actions } from '.';
 
 // function* doSomething() {}
 
-export function* adminSaga() {
+export function* userSaga() {
     // yield takeLatest(actions.someAction.type, doSomething);
 }
