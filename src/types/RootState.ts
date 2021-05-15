@@ -13,7 +13,7 @@ export interface RootState {
     // [INSERT NEW REDUCER KEY ABOVE] < Needed for generating containers seamlessly
     home?: HomeState;
     checkout?: CheckoutState;
-    movieDetail?: MovieDetailState;
+    moviedetail?: MovieDetailState;
     auth?: AuthState;
     admin?: AdminState;
 }
