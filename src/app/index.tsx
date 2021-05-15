@@ -6,13 +6,13 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
-import { ROUTES } from "config";
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { renderRoutes, routes } from "router";
 import GlobalStyle from "styles/global-styles";
+import { ROUTES } from "utils/constants/settings";
 import About from "./pages/About/Loadable";
 import HomePage from "./pages/HomePage/Loadable";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
