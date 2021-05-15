@@ -11,6 +11,7 @@ import "react-app-polyfill/stable";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 // Use consistent styling
 import "sanitize.css/sanitize.css";
@@ -26,27 +27,33 @@ import reportWebVitals from "reportWebVitals";
 
 // Initialize languages
 import "./locales/i18n";
+import { ThemeProvider } from "styled-components";
+import defaultThemes from "styles/themes";
 
-const store = configureAppStore();
+import "antd/dist/antd.css";
+import "swiper/swiper.scss";
+import "./App.less";
+
+const { store, persistor } = configureAppStore();
 const MOUNT_NODE = document.getElementById("root") as HTMLElement;
 
 ReactDOM.render(
     <Provider store={store}>
-        <HelmetProvider>
-            <React.StrictMode>
+        <ThemeProvider theme={defaultThemes}>
+            <HelmetProvider>
                 <App />
-            </React.StrictMode>
-        </HelmetProvider>
+            </HelmetProvider>
+        </ThemeProvider>
     </Provider>,
     MOUNT_NODE,
 );
 
 // Hot reloadable translation json files
-if (module.hot) {
+/* if (module.hot) {
     module.hot.accept(["./locales/i18n"], () => {
         // No need to render the App again because i18next works with the hooks
     });
-}
+} */
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

@@ -1,0 +1,43 @@
+{
+    "Banner": {
+        "Title": "Đặt vé",
+        "Description": "Đặt vé"
+    },
+    "Button": {
+        "Login": "Đăng nhập",
+        "Register": "Đăng kí",
+        "Show more": "Xem thêm",
+        "Logout": "Đăng xuất"
+    },
+    "SearchForm": {
+        "Search": "Tìm kiếm",
+        "SelectedDate": "Chọn ngày",
+        "Rules": {
+            "ValidateEmpty": "Không được bỏ trống",
+            "ValidateEmail": "Không đúng định dạng email",
+            "ValidatePassword": "Mật khẩu không hợp lệ"
+        }
+    },
+
+    "Form": {
+        "UserName": "Tài khoản",
+        "Password": "Mật khẩu",
+        "Name": "Họ tên",
+        "PhoneNumber": "Số điện thoại",
+        "GroupId": "Mã nhóm",
+        "Email": "Email",
+        "Rules": {
+            "ValidateEmpty": "Không được bỏ trống",
+            "ValidateEmail": "Không đúng định dạng email",
+            "ValidatePassword": "Mật khẩu không hợp lệ"
+        }
+    },
+
+    "Header": {
+        "Navbar": {
+            "Home": "Trang chủ",
+            "MovieList": "Danh sách phim",
+            "AboutUs": "Về chúng tôi"
+        }
+    }
+}

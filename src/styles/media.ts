@@ -18,16 +18,16 @@ import {
 
 // Update your breakpoints if you want
 export const sizes = {
-    small: 600,
-    medium: 1024,
-    large: 1440,
-    xlarge: 1920,
+    xsmall: 575,
+    small: 767,
+    medium: 992,
+    large: 1300,
 };
 
 // Iterate through the sizes and create a media template
 export const media = (Object.keys(sizes) as Array<keyof typeof sizes>).reduce((acc, label) => {
     acc[label] = (first: any, ...interpolations: any[]) => css`
-        @media (min-width: ${sizes[label]}px) {
+        @media screen and (max-width: ${sizes[label]}px) {
             ${css(first, ...interpolations)}
         }
     `;

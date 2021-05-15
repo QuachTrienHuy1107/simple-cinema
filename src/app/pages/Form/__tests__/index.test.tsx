@@ -1,0 +1,20 @@
+import * as React from "react";
+import { render } from "@testing-library/react";
+
+import { Form } from "..";
+
+jest.mock("react-i18next", () => ({
+    useTranslation: () => ({
+        t: str => str,
+        i18n: {
+            changeLanguage: () => new Promise(() => {}),
+        },
+    }),
+}));
+
+describe("<Form  />", () => {
+    it("should match snapshot", () => {
+        const loadingIndicator = render(<Form />);
+        expect(loadingIndicator.container.firstChild).toMatchSnapshot();
+    });
+});

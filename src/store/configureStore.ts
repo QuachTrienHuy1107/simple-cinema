@@ -4,9 +4,10 @@
 
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { createInjectorsEnhancer } from "redux-injectors";
+import persistStore from "redux-persist/es/persistStore";
 import createSagaMiddleware from "redux-saga";
-
-import { createReducer } from "./reducers";
+import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
+import createReducer from "./reducers";
 
 export function configureAppStore() {
     const reduxSagaMonitorOptions = {};
@@ -25,10 +26,20 @@ export function configureAppStore() {
 
     const store = configureStore({
         reducer: createReducer(),
-        middleware: [...getDefaultMiddleware(), ...middlewares],
+        middleware: [
+            ...getDefaultMiddleware({
+                thunk: false,
+                serializableCheck: {
+                    ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+                },
+            }),
+            ...middlewares,
+        ],
         devTools: process.env.NODE_ENV !== "production",
         enhancers,
     });
 
-    return store;
+    const persistor = persistStore(store);
+
+    return { store, persistor };
 }
