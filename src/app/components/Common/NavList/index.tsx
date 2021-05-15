@@ -23,7 +23,7 @@ export function NavList(props: Props) {
     );
 }
 
-const Wrapper = styled.nav`
+const Wrapper = styled.div`
     align-self: center;
     display: flex;
 `;

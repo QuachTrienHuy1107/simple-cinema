@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { ROUTES } from "utils/constants/settings";
 import { navListMessages } from "./navListMessages";
 
 export function Nav() {
@@ -9,13 +10,16 @@ export function Nav() {
     return (
         <Wrapper>
             <Item>
-                <Link to="/">{t(navListMessages.HomePage())}</Link>
+                <Link to={ROUTES.HOME}>{t(navListMessages.HomePage())}</Link>
             </Item>
             <Item>
-                <Link to="/movie/:id">{t(navListMessages.MovieList())}</Link>
+                <Link to={ROUTES.MOVIELIST}>{t(navListMessages.MovieList())}</Link>
             </Item>
             <Item>
-                <Link to="/about">{t(navListMessages.AboutUs())}</Link>
+                <Link to={ROUTES.ABOUT}>{t(navListMessages.AboutUs())}</Link>
+            </Item>
+            <Item>
+                <Link to={ROUTES.DASHBOARD}>Admin</Link>
             </Item>
         </Wrapper>
     );
@@ -23,10 +27,10 @@ export function Nav() {
 
 const Wrapper = styled.ul`
     display: flex;
-    cursor: pointer;
 `;
 
 const Item = styled.li`
+    cursor: pointer;
     font-weight: 700;
     margin: 0 20px;
     text-transform: uppercase;

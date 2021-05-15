@@ -115,7 +115,7 @@ const SocialUrl = styled.div`
                 text-align: center;
                 border-radius: 50%;
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                color: #ffffff;
+
                 font-size: 14px;
                 &:hover {
                     background-color: #69d7aa;
@@ -146,9 +146,6 @@ const Right = styled.div`
         flex-wrap: wrap;
         li {
             margin: 20px;
-            a {
-                color: white;
-            }
         }
     }
 `;
