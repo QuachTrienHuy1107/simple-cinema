@@ -6,11 +6,16 @@ export interface MovieResponse {
     tenPhim: string;
     biDanh: string;
     trailer: string;
-    hinhAnh: string;
+    hinhAnh?: string;
     moTa: string;
     maNhom: string;
     ngayKhoiChieu: string;
     danhGia: number;
+    lichChieu?: Array<any>;
+}
+
+export interface MovieDetailPayload {
+    maPhim?: number;
 }
 
 export interface PaginationRequestType {
@@ -22,8 +27,9 @@ export interface PaginationRequestType {
 
 /* --- STATE --- */
 export interface HomeState {
+    movie?: MovieResponse | Object;
     moviePagination?: Array<PaginationResponseType> | any;
     cinemaList?: CinemaListResponse[] | null;
     isLoading: boolean;
-    isError: boolean;
+    error?: Error | null;
 }

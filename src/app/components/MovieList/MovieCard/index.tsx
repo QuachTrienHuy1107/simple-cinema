@@ -11,6 +11,7 @@ import { Card, Progress } from "antd";
 import { Link } from "react-router-dom";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { MovieResponse } from "app/pages/HomePage/slice/types";
+import { Image } from "app/components/Common/Image";
 
 interface IMovieCardProps {
     movie: MovieResponse;
@@ -23,8 +24,13 @@ export const MovieCard = memo(({ movie }: IMovieCardProps) => {
     return (
         <CardStyle
             cover={
-                <CardLink to="/about" className="movieCard__img">
-                    <img alt="example" src={movie.hinhAnh} />
+                <CardLink to="/about">
+                    <Image
+                        style={{
+                            backgroundImage: `url('${movie.hinhAnh}'), url('https://tix.vn/app/assets/img/default-film.webp')`,
+                        }}
+                    />
+
                     <Progress
                         type="circle"
                         percent={movie.danhGia * 10}
@@ -48,7 +54,7 @@ export const MovieCard = memo(({ movie }: IMovieCardProps) => {
 const CardStyle = styled(Card)`
     border: none;
     transition: all 0.5s;
-    background-color: transparent;
+
     border-radius: 10px;
 
     .ant-card-body {
@@ -103,7 +109,9 @@ const CardLink = styled(Link)`
     position: relative;
     transition: all 0.5s;
     overflow: hidden;
-    background-color: #0a1e5e;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 
     &::before {
         content: "";
@@ -125,17 +133,6 @@ const CardLink = styled(Link)`
         transition: 0.5s;
         width: 100%;
         height: 100%;
-    }
-
-    img {
-        width: 100%;
-        display: block;
-        height: 270px;
-        object-fit: cover;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        position: relative;
-        transition: all 0.5s;
     }
 
     .movieCard__img--rating {

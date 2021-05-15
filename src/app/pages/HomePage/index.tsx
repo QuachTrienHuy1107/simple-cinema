@@ -1,10 +1,9 @@
-import { Col, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import { Buttons } from "app/components/Common/Buttons";
 import { Footer } from "app/components/Common/Footer";
 import { Header } from "app/components/Common/Header";
 import { MovieList } from "app/components/MovieList";
 import { SearchForm } from "app/components/SearchForm";
-import { ROUTES } from "config";
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
@@ -16,16 +15,20 @@ import { useHomeSlice } from "./slice";
 import { selectHome } from "./slice/selectors";
 import video from "./assets/img/Halloween.mp4";
 import { Schedule } from "./components/Schedule";
+import { Loading } from "app/components/Common/Loading";
+import { ROUTES } from "utils/constants/settings";
 
 export function HomePage() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { cinemaList } = useSelector(selectHome);
+    const { cinemaList, isLoading } = useSelector(selectHome);
     const { actions } = useHomeSlice();
 
     React.useEffect(() => {
         dispatch(actions.getAllCinemaListAction());
-    }, [dispatch]);
+    }, [actions, dispatch]);
+
+    console.log("zzz", isLoading);
 
     return (
         <>
@@ -33,26 +36,33 @@ export function HomePage() {
                 <title>Home Page</title>
                 <meta name="description" content="A Boilerplate application homepage" />
             </Helmet>
-            <Header />
-            <Wrapper>
-                <CarouselStyled>
-                    <video src={video} loop autoPlay muted height="100vh"></video>
-                    <Content>
-                        <h1>{t(HomeMessages.Title())}</h1>
-                        <p>{t(HomeMessages.Desc())}</p>
-                    </Content>
-                </CarouselStyled>
-                <Row justify="center" gutter={[0, 40]}>
-                    <Col span={20}>
-                        <SearchForm />
-                        <MovieList />
-                    </Col>
-                    <Col span={20}>
-                        <Schedule cinemaList={cinemaList} />
-                    </Col>
-                </Row>
-            </Wrapper>
-            <Footer />
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <>
+                    <Header />
+                    <Wrapper>
+                        <CarouselStyled>
+                            <video src={video} loop autoPlay muted height="100vh"></video>
+                            <Content>
+                                <h1>{t(HomeMessages.Title())}</h1>
+                                <p>{t(HomeMessages.Desc())}</p>
+                            </Content>
+                        </CarouselStyled>
+                        <Row justify="center" gutter={[0, 40]}>
+                            <Col span={20}>
+                                <SearchForm />
+                                <Button>Xem thêm</Button>
+                                <MovieList />
+                            </Col>
+                            <Col span={20}>
+                                <Schedule cinemaList={cinemaList} />
+                            </Col>
+                        </Row>
+                    </Wrapper>
+                    <Footer />
+                </>
+            )}
 
             <Switch>
                 <Route exact path={`${ROUTES.MOVIELIST}`} component={MovieList} />
