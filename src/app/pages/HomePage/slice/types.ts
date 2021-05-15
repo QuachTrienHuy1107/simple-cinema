@@ -1,16 +1,21 @@
 import { PaginationResponseType } from "app/components/Paginations/types";
-import { CinemaListResponse } from "app/components/Schedule/types";
+import { CinemaListResponse } from "../components/Schedule/types";
 
 export interface MovieResponse {
     readonly maPhim: number;
     tenPhim: string;
     biDanh: string;
     trailer: string;
-    hinhAnh: string;
+    hinhAnh?: string;
     moTa: string;
     maNhom: string;
     ngayKhoiChieu: string;
     danhGia: number;
+    lichChieu?: Array<any>;
+}
+
+export interface MovieDetailPayload {
+    maPhim?: number;
 }
 
 export interface PaginationRequestType {
@@ -22,8 +27,9 @@ export interface PaginationRequestType {
 
 /* --- STATE --- */
 export interface HomeState {
+    movie?: MovieResponse | Object;
     moviePagination?: Array<PaginationResponseType> | any;
     cinemaList?: CinemaListResponse[] | null;
     isLoading: boolean;
-    isError: boolean;
+    error?: Error | null;
 }

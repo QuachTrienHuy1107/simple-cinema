@@ -7,5 +7,6 @@ import { translations } from "locales/translations";
 import { _t } from "utils/messages";
 
 export const messages = {
-    // someThing: () => _t(translations.someThing,'default value'),
+    Login: () => _t(translations.Button.Login, "Đăng nhập"),
+    Register: () => _t(translations.Button.Register, "Đăng kí"),
 };

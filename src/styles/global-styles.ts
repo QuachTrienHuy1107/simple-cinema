@@ -89,6 +89,8 @@ const GlobalStyle = createGlobalStyle`
       -webkit-font-smoothing: antialiased;
       text-size-adjust: none;
 
+
+
       /* @media screen and (max-width: 576px) {
           font-size: 10px;
       } */
@@ -104,8 +106,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: Regular !important;
-    color: #fff;
-    background: #131720;
+    transition: all 0.3s;
   }
 
   ol,

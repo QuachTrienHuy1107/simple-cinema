@@ -11,13 +11,15 @@ import { Button } from "antd";
 
 interface Props {}
 
-export function Buttons({ children }: any) {
+export function Buttons({ children, ...rest }: any) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
 
     return (
         <Wrapper>
-            <ButtonLogin shape="round">{children}</ButtonLogin>
+            <ButtonLogin shape="round" {...rest}>
+                {children}
+            </ButtonLogin>
         </Wrapper>
     );
 }
@@ -25,9 +27,7 @@ export function Buttons({ children }: any) {
 const Wrapper = styled.div``;
 
 const ButtonLogin = styled(Button)`
-    background-color: {
-        ${props => props.theme.primaryBg} !important
-    }
+    background: ${p => p.theme.primaryBg};
     line-height: 0;
     font-weight: 600;
     border-radius: 300px;
@@ -37,9 +37,18 @@ const ButtonLogin = styled(Button)`
     font-size: 1rem;
     transition: all 0.5s;
 
+    a {
+        color: ${p => p.theme.primaryColor} !important;
+
+        &:hover {
+            color: ${p => p.theme.secondaryColor} !important;
+        }
+    }
+
     &:hover {
         box-shadow: 0px 10px 15px 0px rgba(59, 55, 188, 0.5);
-
-        // color: ${props => props.theme.primaryColor};
+        span {
+            color: ${p => p.theme.secondaryColor} !important;
+        }
     }
 `;

@@ -6,6 +6,7 @@
 import React, { memo } from "react";
 import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { messages } from "./messages";
 import { SearchForm } from "../SearchForm";
 import { Col, Pagination, Row, Spin } from "antd";
@@ -23,7 +24,6 @@ export const MovieList = memo((props: Props) => {
     const dispatch = useDispatch();
     const { resPagination, handlePageChange } = usePagination(1, 12);
     const { actions } = useHomeSlice();
-
     const { moviePagination, isLoading } = useSelector(selectHome);
 
     React.useEffect(() => {
@@ -33,8 +33,7 @@ export const MovieList = memo((props: Props) => {
     console.log("moviePagination", moviePagination);
 
     return (
-        <Div>
-            <SearchForm />
+        <Wrapper>
             <Row justify="center" gutter={[24, 24]}>
                 {isLoading ? (
                     <Spin />
@@ -54,10 +53,10 @@ export const MovieList = memo((props: Props) => {
                     />
                 </Col>
             </Row>
-        </Div>
+        </Wrapper>
     );
 });
 
-const Div = styled.div`
+const Wrapper = styled.div`
     margin: 50px 0;
 `;

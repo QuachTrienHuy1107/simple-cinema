@@ -1,7 +1,8 @@
 /**
  * Combine all reducers in this file and export the combined reducers.
  */
-
+import persistReducer from "redux-persist/es/persistReducer";
+import storage from "redux-persist/lib/storage";
 import { combineReducers } from "@reduxjs/toolkit";
 
 import { InjectedReducersType } from "utils/types/injector-typings";
@@ -14,9 +15,27 @@ function createReducer(injectedReducers: InjectedReducersType = {}) {
     if (Object.keys(injectedReducers).length === 0) {
         return state => state;
     }
-    return combineReducers({
+    const rootReducer = combineReducers({
         ...injectedReducers,
     });
+
+    const rootPersistConfig = {
+        key: "root",
+        storage,
+        whitelist: ["auth"],
+    };
+
+    const authPersistConfig = {
+        key: "auth",
+        storage,
+        whitelist: ["credentials"],
+    };
+
+    const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
+
+    return rootReducer;
 }
+
+// export const persistedReducer = persistReducer(rootPersistConfig, createReducer());
 
 export default createReducer;
