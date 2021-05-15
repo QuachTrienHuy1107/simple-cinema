@@ -4,12 +4,14 @@ import { render } from "@testing-library/react";
 import { UserDetail } from "..";
 
 jest.mock("react-i18next", () => ({
-    useTranslation: () => ({
-        t: str => str,
-        i18n: {
-            changeLanguage: () => new Promise(() => {}),
-        },
-    }),
+    useTranslation: () => {
+        return {
+            t: str => str,
+            i18n: {
+                changeLanguage: () => new Promise(() => {}),
+            },
+        };
+    },
 }));
 
 describe("<UserDetail  />", () => {

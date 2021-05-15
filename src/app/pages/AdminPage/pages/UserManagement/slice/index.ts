@@ -1,24 +1,24 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "utils/@reduxjs/toolkit";
 import { useInjectReducer, useInjectSaga } from "utils/redux-injectors";
-import { adminSaga } from "./saga";
-import { AdminState } from "./types";
+import { userSaga } from "./saga";
+import { UserState } from "./types";
 
-export const initialState: AdminState = {};
+export const initialState: UserState = {};
 
 const slice = createSlice({
-    name: "admin",
+    name: "user",
     initialState,
     reducers: {
         someAction(state, action: PayloadAction<any>) {},
     },
 });
 
-export const { actions: adminActions } = slice;
+export const { actions: userActions } = slice;
 
-export const useAdminSlice = () => {
+export const useUserSlice = () => {
     useInjectReducer({ key: slice.name, reducer: slice.reducer });
-    useInjectSaga({ key: slice.name, saga: adminSaga });
+    useInjectSaga({ key: slice.name, saga: userSaga });
     return { actions: slice.actions };
 };
 
@@ -26,7 +26,7 @@ export const useAdminSlice = () => {
  * Example Usage:
  *
  * export function MyComponentNeedingThisSlice() {
- *  const { actions } = useAdminSlice();
+ *  const { actions } = useUserSlice();
  *
  *  const onButtonClick = (evt) => {
  *    dispatch(actions.someAction());
