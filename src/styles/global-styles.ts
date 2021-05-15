@@ -106,8 +106,6 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     font-family: Regular !important;
-    color: #fff;
-    background: #000;
     transition: all 0.3s;
   }
 
@@ -137,13 +135,6 @@ const GlobalStyle = createGlobalStyle`
   input {
       -webkit-appearance: none;
       border-radius: 0;
-  }
-
-  h1,h2,h3,h4,h5,h6, span{
-    color: #fff;
-  }
-  a{
-    color: #fff;
   }
 `;
 

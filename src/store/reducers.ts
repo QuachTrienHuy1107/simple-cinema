@@ -33,7 +33,7 @@ function createReducer(injectedReducers: InjectedReducersType = {}) {
 
     const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
 
-    return persistedReducer;
+    return rootReducer;
 }
 
 // export const persistedReducer = persistReducer(rootPersistConfig, createReducer());

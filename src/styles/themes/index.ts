@@ -1,10 +1,10 @@
 const defaultThemes = {
-    primaryColor: "#fff",
-    secondaryColor: "#151f30",
+    primaryColor: "#000",
+    secondaryColor: "#fff",
     titleColor: "#8bc541",
 
-    primaryBg: "#131720",
-    secondaryBg: "#151f30",
+    primaryBg: "#fff",
+    secondaryBg: "#fff",
 };
 
 export default defaultThemes;

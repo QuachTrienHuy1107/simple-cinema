@@ -3,13 +3,14 @@ import { FormTemplate } from "app/pages/Form";
 import { Login } from "app/pages/Form/pages/Login";
 import { Register } from "app/pages/Form/pages/Register";
 import ClientTemplate from "app/templates/ClientTemplate";
-import { ROUTES } from "config";
 import React from "react";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
-import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
 import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
+import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
 import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
+import { MovieForm } from "../app/pages/AdminPage/pages/MovieManagement/MovieForm";
+import { ROUTES } from "utils/constants/settings";
 
 type PrivateRouteProps = {
     component: React.ComponentType;
@@ -80,6 +81,13 @@ const routes: RouterType[] = [
         layout: "Admin",
         restricted: true,
     },
+    {
+        path: `${ROUTES.FORMADMIN}/:maPhim`,
+        exact: true,
+        component: MovieForm,
+        layout: "Admin",
+        restricted: true,
+    },
     /**
      * Home
      */
@@ -94,6 +102,7 @@ const AppLayout = ({
     restricted,
     ...rest
 }: PrivateRouteProps): any => {
+    // const { isAuthenticated } = useSelector(selectAuth);
     return (
         <Route
             {...rest}
