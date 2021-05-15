@@ -2,24 +2,43 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "utils/@reduxjs/toolkit";
 import { useInjectReducer, useInjectSaga } from "utils/redux-injectors";
 import { movieDetailSaga } from "./saga";
-import { MovieDetailState } from "./types";
+import { MovieDetailProps, MovieDetailState } from "./types";
 
-export const initialState: MovieDetailState = {};
+export const initialState: MovieDetailState = {
+    movies: [],
+    movieDetail: [],
+    isError: false,
+    isLoading: true,
+};
 
-const slice = createSlice({
-    name: "movieDetail",
+const movieSlice = createSlice({
+    name: "moviedetail",
     initialState,
     reducers: {
-        someAction(state, action: PayloadAction<any>) {},
+        getData() {},
+
+        getDataSuccess: (state, action: PayloadAction<any>) => {
+            state.movies = action.payload;
+            state.isLoading = false;
+        },
+        getDataFailure: state => {
+            state.isLoading = false;
+            state.isError = true;
+        },
+        getMovieDetailData() {},
+        getMovieDetailDataSuccess: (state, action: PayloadAction<MovieDetailProps>) => {
+            state.movieDetail = action.payload;
+            console.log(action.payload);
+        },
     },
 });
 
-export const { actions: movieDetailActions } = slice;
+export const { actions: movieDetailActions } = movieSlice;
 
 export const useMovieDetailSlice = () => {
-    useInjectReducer({ key: slice.name, reducer: slice.reducer });
-    useInjectSaga({ key: slice.name, saga: movieDetailSaga });
-    return { actions: slice.actions };
+    useInjectReducer({ key: movieSlice.name, reducer: movieSlice.reducer });
+    useInjectSaga({ key: movieSlice.name, saga: movieDetailSaga });
+    return { actions: movieSlice.actions };
 };
 
 /**
