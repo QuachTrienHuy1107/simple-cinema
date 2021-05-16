@@ -16,7 +16,7 @@ import { ROUTES } from "utils/constants/settings";
 import About from "./pages/About/Loadable";
 import HomePage from "./pages/HomePage/Loadable";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
-
+import "./app.scss";
 export function App() {
     const { i18n } = useTranslation();
     return (

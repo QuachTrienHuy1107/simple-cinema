@@ -6,13 +6,10 @@ const prettierOptions = JSON.parse(fs.readFileSync(path.resolve(__dirname, ".pre
 module.exports = {
     extends: ["react-app", "prettier", "prettier/react"],
     plugins: ["prettier"],
-    rules: {
-        "prettier/prettier": ["error", prettierOptions],
-    },
+    rules: {},
     overrides: [
         {
             files: ["**/*.ts?(x)"],
-            rules: { "prettier/prettier": ["warn", prettierOptions] },
         },
     ],
 };
