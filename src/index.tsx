@@ -21,7 +21,7 @@ import { App } from "app";
 
 import { HelmetProvider } from "react-helmet-async";
 
-import { configureAppStore } from "store/configureStore";
+import store, { persistor } from "store/configureStore";
 
 import reportWebVitals from "reportWebVitals";
 
@@ -30,11 +30,9 @@ import "./locales/i18n";
 import { ThemeProvider } from "styled-components";
 import defaultThemes from "styles/themes";
 
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css";
 import "swiper/swiper.scss";
-import "./App.less";
 
-const { store, persistor } = configureAppStore();
 const MOUNT_NODE = document.getElementById("root") as HTMLElement;
 
 ReactDOM.render(
