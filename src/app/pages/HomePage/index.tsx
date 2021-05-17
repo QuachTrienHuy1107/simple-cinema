@@ -1,4 +1,4 @@
-import { Button, Col, Row } from "antd";
+import { Button, Col, Row, Skeleton, Spin } from "antd";
 import { Buttons } from "app/components/Common/Buttons";
 import { Footer } from "app/components/Common/Footer";
 import { Header } from "app/components/Common/Header";
@@ -17,18 +17,29 @@ import video from "./assets/img/Halloween.mp4";
 import { Schedule } from "./components/Schedule";
 import { Loading } from "app/components/Common/Loading";
 import { ROUTES } from "utils/constants/settings";
+import { useGetDate } from "hooks/useGetDate";
+import usePagination from "hooks/usePagination";
+import { HomeState } from "./slice/types";
+import { Contact } from "./components/Contact";
 
 export function HomePage() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { cinemaList, isLoading } = useSelector(selectHome);
+    const { cinemaList, isLoading, movie, moviePagination } = useSelector(selectHome) as HomeState;
     const { actions } = useHomeSlice();
+    const { today, dateBefore } = useGetDate();
+    const { resPagination } = usePagination(1, 10);
+
+    React.useEffect(() => {
+        const data = {
+            ...resPagination,
+        };
+        dispatch(actions.getPaginateMoviesAction(data));
+    }, []);
 
     React.useEffect(() => {
         dispatch(actions.getAllCinemaListAction());
     }, [actions, dispatch]);
-
-    console.log("zzz", isLoading);
 
     return (
         <>
@@ -36,33 +47,30 @@ export function HomePage() {
                 <title>Home Page</title>
                 <meta name="description" content="A Boilerplate application homepage" />
             </Helmet>
-            {isLoading ? (
-                <Loading />
-            ) : (
-                <>
-                    <Header />
-                    <Wrapper>
-                        <CarouselStyled>
-                            <video src={video} loop autoPlay muted height="100vh"></video>
-                            <Content>
-                                <h1>{t(HomeMessages.Title())}</h1>
-                                <p>{t(HomeMessages.Desc())}</p>
-                            </Content>
-                        </CarouselStyled>
-                        <Row justify="center" gutter={[0, 40]}>
-                            <Col span={20}>
-                                <SearchForm />
-                                <Button>Xem thêm</Button>
-                                <MovieList />
-                            </Col>
-                            <Col span={20}>
-                                <Schedule cinemaList={cinemaList} />
-                            </Col>
-                        </Row>
-                    </Wrapper>
-                    <Footer />
-                </>
-            )}
+            <>
+                <Header />
+                <Wrapper>
+                    <CarouselStyled>
+                        <video src={video} loop autoPlay muted height="100vh"></video>
+                        <Content>
+                            <h1>{t(HomeMessages.Title())}</h1>
+                            <p>{t(HomeMessages.Desc())}</p>
+                        </Content>
+                    </CarouselStyled>
+                    <Row justify="center" gutter={[0, 40]}>
+                        <Col span={20}>
+                            <SearchForm movieList={moviePagination.items} />
+
+                            <MovieList />
+                        </Col>
+                        <Col span={20}>
+                            {isLoading ? <Skeleton /> : <Schedule cinemaList={cinemaList} />}
+                        </Col>
+                    </Row>
+                </Wrapper>
+                <Contact />
+                <Footer />
+            </>
 
             <Switch>
                 <Route exact path={`${ROUTES.MOVIELIST}`} component={MovieList} />
@@ -71,7 +79,9 @@ export function HomePage() {
     );
 }
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    margin: 0px 0 50px;
+`;
 
 const CarouselStyled = styled.div`
     position: relative;
@@ -95,7 +105,8 @@ const CarouselStyled = styled.div`
         height: 100%;
         top: 0;
         left: 0;
-        background: linear-gradient(transparent, #000);
+        background: linear-gradient(180deg, rgba(19, 23, 32, 0) 0%, #131720 100%);
+        pointer-events: none;
     }
 `;
 

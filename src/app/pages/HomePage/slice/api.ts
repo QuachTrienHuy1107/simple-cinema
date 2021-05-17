@@ -1,7 +1,7 @@
 import axiosClient from "api/axiosClient";
 import axios from "axios";
 import { API } from "utils/constants/settings";
-import { MovieDetailPayload } from "./types";
+import { GetMovieWithDate, MovieDetailPayload, SearchMoviePayload } from "./types";
 
 const api = {
     getAllMovie: () => {
@@ -12,6 +12,13 @@ const api = {
         })
             .then(res => console.log("res", res))
             .catch(err => console.log("err", err));
+    },
+    getMovieWithDate: (params: GetMovieWithDate) => {
+        const url = `${API.GET_MOVIE_WITH_DATE}`;
+        return axiosClient
+            .get(url, { params })
+            .then(response => ({ response }))
+            .catch(error => ({ error }));
     },
     getMovieDetail: (params: MovieDetailPayload) => {
         const url = `${API.GETMOVIEDETAIL}`;
@@ -32,6 +39,14 @@ const api = {
         const url = `/QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01`;
         return axiosClient
             .get(url)
+            .then(response => ({ response }))
+            .catch(error => ({ error }));
+    },
+
+    searchMovie: (params: SearchMoviePayload) => {
+        const url = `${API.SEARCH_MOVIE}`;
+        return axiosClient
+            .get(url, { params })
             .then(response => ({ response }))
             .catch(error => ({ error }));
     },
