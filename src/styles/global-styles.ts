@@ -27,6 +27,18 @@ const GlobalStyle = createGlobalStyle`
   src: url(${Light});
 }
 
+body{
+  background-color: #131720;
+}
+
+li{
+  list-style-type: none;
+}
+
+a{
+  color: #fff;
+}
+
 `;
 
 export default GlobalStyle;
