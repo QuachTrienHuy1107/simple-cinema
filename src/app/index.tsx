@@ -16,9 +16,25 @@ import { ROUTES } from "utils/constants/settings";
 import About from "./pages/About/Loadable";
 import HomePage from "./pages/HomePage/Loadable";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
+import { useDispatch } from "react-redux";
+import { useAuthSlice } from "./pages/Form/slice";
+import { useIdentity } from "hooks/useIdentity";
 import "./app.scss";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 export function App() {
     const { i18n } = useTranslation();
+    const disptach = useDispatch();
+    const { actions } = useAuthSlice();
+    React.useEffect(() => {
+        const userLogin = localStorage.getItem("user");
+        if (userLogin) {
+            const credential = JSON.parse(userLogin);
+            console.log("cccc", credential);
+            disptach(actions.checkLoginActionSuccess(credential));
+        }
+    }, []);
     return (
         <BrowserRouter>
             <Helmet
