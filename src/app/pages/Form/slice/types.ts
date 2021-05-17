@@ -27,5 +27,5 @@ export interface AuthState {
     credentials: UserLoginResponse | any;
     isLoading: boolean;
     error?: Error | null;
-    isAuthenticated: boolean;
+    isAuthenticated?: boolean;
 }

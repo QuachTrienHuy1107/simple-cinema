@@ -25,9 +25,6 @@ export const Login = memo((props: Props) => {
 
     const { isLoading } = useSelector(selectAuth);
 
-    const history = useHistory();
-    const [form] = Form.useForm();
-
     return (
         <Row justify="center">
             <Col span={24}>
