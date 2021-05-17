@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { MovieResponse } from "app/pages/HomePage/slice/types";
 import { Image } from "app/components/Common/Image";
+import { ROUTES } from "utils/constants/settings";
 
 interface IMovieCardProps {
     movie: MovieResponse;
@@ -24,7 +25,7 @@ export const MovieCard = memo(({ movie }: IMovieCardProps) => {
     return (
         <CardStyle
             cover={
-                <CardLink to="/about">
+                <CardLink to={`${ROUTES.MOVIEDETAIL}/${movie.maPhim}`}>
                     <Image
                         style={{
                             backgroundImage: `url('${movie.hinhAnh}'), url('https://tix.vn/app/assets/img/default-film.webp')`,
@@ -54,8 +55,9 @@ export const MovieCard = memo(({ movie }: IMovieCardProps) => {
 const CardStyle = styled(Card)`
     border: none;
     transition: all 0.5s;
-
     border-radius: 10px;
+
+    padding: 10px;
 
     .ant-card-body {
         padding: 9px 0px;
