@@ -1,4 +1,5 @@
 import { AdminPage } from "app/pages/AdminPage/Loadable";
+import { Checkout } from "app/pages/Checkout/Loadable";
 import { FormTemplate } from "app/pages/Form/Loadable";
 import { Login } from "app/pages/Form/pages/Login";
 import { Register } from "app/pages/Form/pages/Register";
@@ -13,6 +14,7 @@ import { ROUTES } from "utils/constants/settings";
 import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
 import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
 import { MovieForm } from "../app/pages/AdminPage/pages/MovieManagement/MovieForm";
+import { ShowTime } from "../app/pages/AdminPage/pages/MovieManagement/ShowTime";
 import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
 import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
 
@@ -38,6 +40,13 @@ const routes: RouterType[] = [
         path: `${ROUTES.MOVIEDETAIL}/:maPhim`,
         exact: true,
         component: MovieDetail,
+        layout: "Client",
+        restricted: true,
+    },
+    {
+        path: `${ROUTES.CHECKOUT}/:maLichChieu`,
+        exact: true,
+        component: Checkout,
         layout: "Client",
         restricted: true,
     },
@@ -89,6 +98,13 @@ const routes: RouterType[] = [
         path: `${ROUTES.FORMADMIN}/:maPhim`,
         exact: true,
         component: MovieForm,
+        layout: "Admin",
+        restricted: true,
+    },
+    {
+        path: `${ROUTES.SHOWTIME}`,
+        exact: true,
+        component: ShowTime,
         layout: "Admin",
         restricted: true,
     },

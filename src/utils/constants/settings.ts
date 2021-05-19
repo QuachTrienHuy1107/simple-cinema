@@ -10,7 +10,9 @@ export enum API {
     GETALLPAGINATION = `QuanLyPhim/LayDanhSachPhimPhanTrang`,
     EDIT_MOVIE = `/QuanLyPhim/CapNhatPhimUpload`,
     DELETE_MOVIE = `/QuanLyPhim/XoaPhim`,
-    SEARCH_MOVIE = `/QuanLyPhim/LayDanhSachPhim`
+    SEARCH_MOVIE = `/QuanLyPhim/LayDanhSachPhim`,
+    GET_ALL_SEAT = `/QuanLyDatVe/LayDanhSachPhongVe`,
+    BOOKING_TICKET = `/QuanLyDatVe/DatVe`
 }
 
 export enum ROUTES {
@@ -23,6 +25,7 @@ export enum ROUTES {
     CHECKOUT = "/checkout",
     PROFILE = "/profile/:taiKhoan",
     MOVIELIST = "/movielist",
+
     /**
      * Form
      */
@@ -37,6 +40,7 @@ export enum ROUTES {
     PROFILEADMIN = "/admin/profileadmin",
     MOVIEMANAGEMENT = "/admin/moviemanagement",
     FORMADMIN = "/admin/formadmin",
+    SHOWTIME = '/admin/showtime',
 
     NOTFOUND = "/notfound",
 }
