@@ -1,10 +1,10 @@
 import axiosClient from "api/axiosClient";
 
 const movieApi = {
-    getMovieDetail: () => {
-        const url = "https://movie0706.cybersoft.edu.vn/api/QuanLyPhim/LayThongTinPhim?MaPhim=1314";
+    getMovieDetail: params => {
+        const url = `/QuanLyRap/LayThongTinLichChieuPhim`;
         return axiosClient
-            .get(url)
+            .get(url, { params })
             .then(response => ({ response }))
             .catch(error => ({ error }));
     },
