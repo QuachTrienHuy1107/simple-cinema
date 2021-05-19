@@ -42,7 +42,7 @@ const renderCinema = (cinemaList: CinemaListResponse[], Mobile: any, Desktop: an
                                 </TabLeft>
                             }
                         >
-                            {cinema.danhSachPhim?.map((movie: MovieProps) => (
+                            {cinema.danhSachPhim?.slice(0, 6).map((movie: MovieProps) => (
                                 <TabRight className="schedule__right" key={movie.maPhim}>
                                     <div style={{ width: "100%" }}>
                                         <Collapse ghost expandIconPosition="right">

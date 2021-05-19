@@ -25,15 +25,15 @@ const slice = createSlice({
     name: "home",
     initialState,
     reducers: {
-        searchMovie(state, action: PayloadAction<SearchMoviePayload>){
-          state .isLoading = true
+        searchMovie(state, action: PayloadAction<SearchMoviePayload>) {
+            state.isLoading = true;
         },
-        searchMovieSuccess(state,action: PayloadAction<any>){
-          state.moviePagination = action.payload
-          state.isLoading = false
+        searchMovieSuccess(state, action: PayloadAction<any>) {
+            state.moviePagination = action.payload;
+            state.isLoading = false;
         },
-        searchMovieFailure(state,action: PayloadAction<Error>){
-          console.log('error',action.payload)
+        searchMovieFailure(state, action: PayloadAction<Error>) {
+            console.log("error", action.payload);
         },
 
         getMovieWithDate(state, action: PayloadAction<GetMovieWithDate>) {
@@ -44,7 +44,10 @@ const slice = createSlice({
             state.isLoading = false;
         },
         getMovieWithDateFailure(state, action: PayloadAction<Error>) {},
-        getPaginateMoviesAction: (state, action: PayloadAction<PaginationRequestType>) => {},
+
+        getPaginateMoviesAction: (state, action: PayloadAction<PaginationRequestType>) => {
+            state.isLoading = true;
+        },
         getPaginateMoviesActionSucess(state, action: PayloadAction<PaginationResponseType>) {
             state.moviePagination = action.payload;
             state.isLoading = false;
