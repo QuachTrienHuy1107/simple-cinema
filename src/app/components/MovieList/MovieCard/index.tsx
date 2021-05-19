@@ -22,7 +22,7 @@ interface IMovieCardProps {
 export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
-
+    console.log("aa", movie);
     return (
         <CardStyle
             cover={
