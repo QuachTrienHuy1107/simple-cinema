@@ -14,4 +14,10 @@ export interface MovieCreationPayload {
 export interface MovieManagementState {
     movieCreation: MovieCreationPayload | any;
     isLoading: boolean;
+    successMessage?: string;
+    error?: Error | null;
+}
+
+export interface DeleteMoviePayload {
+    maPhim?: number;
 }
