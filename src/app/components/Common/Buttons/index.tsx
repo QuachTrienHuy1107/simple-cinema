@@ -27,7 +27,7 @@ export function Buttons({ children, ...rest }: any) {
 const Wrapper = styled.div``;
 
 const ButtonLogin = styled(Button)`
-    background: ${p => p.theme.primaryBg};
+    background-color: #010819;
     line-height: 0;
     font-weight: 600;
     border-radius: 300px;
@@ -36,19 +36,8 @@ const ButtonLogin = styled(Button)`
     border: none;
     font-size: 1rem;
     transition: all 0.5s;
-
-    a {
-        color: ${p => p.theme.primaryColor} !important;
-
-        &:hover {
-            color: ${p => p.theme.secondaryColor} !important;
-        }
-    }
-
     &:hover {
         box-shadow: 0px 10px 15px 0px rgba(59, 55, 188, 0.5);
-        span {
-            color: ${p => p.theme.secondaryColor} !important;
-        }
+        // color: #fff;
     }
 `;
