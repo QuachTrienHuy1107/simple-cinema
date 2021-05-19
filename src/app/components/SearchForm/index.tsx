@@ -13,8 +13,10 @@ import { useGetDate } from "hooks/useGetDate";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
+import { ROUTES } from "utils/constants/settings";
 import { Buttons } from "../Common/Buttons";
 
 interface Props {
@@ -25,10 +27,12 @@ const { Option } = Select;
 export const SearchForm = memo(({ movieList }: Props) => {
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
+    const history = useHistory();
     const { actions } = useMovieDetailSlice();
     const { movieDetail, isLoading } = useSelector(selectMovieDetail);
     const [arrMovie, setArrMovie] = React.useState([]) as any;
     const [cinemaKey, setCinemaKey] = React.useState("") as any;
+    const [getTime, setTime] = React.useState(null);
 
     React.useEffect(() => {
         setArrMovie(movieDetail);
@@ -57,7 +61,6 @@ export const SearchForm = memo(({ movieList }: Props) => {
                 <Row gutter={[24, 8]} justify="center" align="middle">
                     <ColStyle lg={6} md={24} sm={24}>
                         <FormSelect
-                            // showSearch
                             loading={isLoading}
                             placeholder="Chọn phim"
                             optionFilterProp="children"
@@ -76,7 +79,6 @@ export const SearchForm = memo(({ movieList }: Props) => {
                         </FormSelect>
                     </ColStyle>
 
-                    {console.log("cinemaKey", cinemaKey)}
                     <ColStyle lg={10} md={24} sm={24}>
                         <FormItem name="date-picker" className="search__form--datetime">
                             <Cascader
@@ -92,7 +94,13 @@ export const SearchForm = memo(({ movieList }: Props) => {
                     </ColStyle>
 
                     <ColStyle lg={6} md={24} sm={24}>
-                        <FormSelect placeholder="Chọn ngày" optionFilterProp="children">
+                        <FormSelect
+                            placeholder="Chọn ngày"
+                            optionFilterProp="children"
+                            onChange={(value: any) => {
+                                setTime(value);
+                            }}
+                        >
                             {arrMovie?.heThongRapChieu?.map((item: any) => {
                                 console.log("item", item);
                                 const showTime = item.cumRapChieu?.find(
@@ -113,7 +121,12 @@ export const SearchForm = memo(({ movieList }: Props) => {
                     </ColStyle>
 
                     <Col lg={1} md={24}>
-                        <Buttons shape="circle">
+                        <Buttons
+                            shape="circle"
+                            onClick={() => {
+                                history.push(`${ROUTES.CHECKOUT}/${getTime}`);
+                            }}
+                        >
                             <SearchOutlined />
                         </Buttons>
                     </Col>
