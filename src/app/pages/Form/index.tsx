@@ -27,7 +27,6 @@ export function FormTemplate({ children }) {
 
     const onFinish = (values: any) => {
         if (Object.keys(values).length < 3) {
-            console.log("values", values);
             onLogin({ ...values });
         } else {
             const actions = {
@@ -35,7 +34,6 @@ export function FormTemplate({ children }) {
                 maNhom: "GP01",
             };
             onRegister(actions);
-            console.log("actions", actions);
         }
     };
 
@@ -47,7 +45,6 @@ export function FormTemplate({ children }) {
                         <Title
                             style={{
                                 textAlign: "center",
-                                color: "#fff",
                                 cursor: "pointer",
                             }}
                             onClick={() => {
@@ -82,7 +79,8 @@ const Wrapper = styled.div`
 
     span,
     label {
-        color: ${p => p.theme.primaryColor};
+        color: #fff;
+        font-weight: 600;
     }
 `;
 
@@ -104,7 +102,6 @@ const ColStyled = styled(Col)`
     background-color: rgba(68, 90, 153, 0.051);
     -webkit-box-shadow: 0px 0px 29.4px 0.6px rgba(0, 0, 0, 0.5);
     box-shadow: 0px 0px 29.4px 0.6px rgba(0, 0, 0, 0.5);
-    color: ${p => p.theme.primaryColor};
 
     @media screen and (max-width: 576px) {
         padding: 60px 10px;

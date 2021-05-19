@@ -8,15 +8,13 @@ export const initialState: MovieDetailState = {
     movies: [],
     movieDetail: [],
     isError: false,
-    isLoading: true,
+    isLoading: false,
 };
 
 const movieSlice = createSlice({
     name: "moviedetail",
     initialState,
     reducers: {
-        getData() {},
-
         getDataSuccess: (state, action: PayloadAction<any>) => {
             state.movies = action.payload;
             state.isLoading = false;
@@ -24,9 +22,10 @@ const movieSlice = createSlice({
         getDataFailure: state => {
             state.isLoading = false;
             state.isError = true;
+            state.isLoading = false;
         },
         getMovieDetailData(state, action: PayloadAction<any>) {
-            console.log("alo", action.payload);
+            console.log("maaa", action.payload);
         },
         getMovieDetailDataSuccess: (state, action: PayloadAction<MovieDetailProps>) => {
             state.movieDetail = action.payload;

@@ -42,7 +42,7 @@ const renderCinema = (cinemaList: CinemaListResponse[], Mobile: any, Desktop: an
                                 </TabLeft>
                             }
                         >
-                            {cinema.danhSachPhim?.map((movie: MovieProps) => (
+                            {cinema.danhSachPhim?.slice(0, 6).map((movie: MovieProps) => (
                                 <TabRight className="schedule__right" key={movie.maPhim}>
                                     <div style={{ width: "100%" }}>
                                         <Collapse ghost expandIconPosition="right">
@@ -59,7 +59,7 @@ const renderCinema = (cinemaList: CinemaListResponse[], Mobile: any, Desktop: an
                                                         <h5>{movie.tenPhim}</h5>
                                                     </div>
                                                 }
-                                                key="1"
+                                                key={movie.maPhim}
                                                 style={{ fontSize: "1rem" }}
                                             >
                                                 {movie.lstLichChieuTheoPhim
@@ -204,6 +204,7 @@ const TabLeft = styled.div`
 
     .schedule__left--address {
         font-size: 0.8rem;
+        color: ${props => props.theme.titleColor};
     }
 
     a {

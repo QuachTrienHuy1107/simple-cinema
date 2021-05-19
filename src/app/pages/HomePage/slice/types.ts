@@ -14,8 +14,18 @@ export interface MovieResponse {
     lichChieu?: Array<any>;
 }
 
+export interface SearchMoviePayload{
+  tenPhim: string
+  maNhom: string
+}
+
 export interface MovieDetailPayload {
     maPhim?: number;
+}
+
+export interface GetMovieWithDate extends PaginationRequestType {
+    tuNgay: string;
+    denNgay: string;
 }
 
 export interface PaginationRequestType {
@@ -27,7 +37,7 @@ export interface PaginationRequestType {
 
 /* --- STATE --- */
 export interface HomeState {
-    movie?: MovieResponse | Object;
+    movie?: MovieResponse | Object | PaginationResponseType | any;
     moviePagination?: Array<PaginationResponseType> | any;
     cinemaList?: CinemaListResponse[] | null;
     isLoading: boolean;

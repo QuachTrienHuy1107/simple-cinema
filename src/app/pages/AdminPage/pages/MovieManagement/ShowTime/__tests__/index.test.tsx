@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render } from "@testing-library/react";
 
-import { BannerDetail } from "..";
+import { ShowTime } from "..";
 
 jest.mock("react-i18next", () => ({
     useTranslation: () => {
@@ -14,9 +14,9 @@ jest.mock("react-i18next", () => ({
     },
 }));
 
-describe("<BannerDetail  />", () => {
+describe("<ShowTime  />", () => {
     it("should match snapshot", () => {
-        const loadingIndicator = render(<BannerDetail />);
+        const loadingIndicator = render(<ShowTime />);
         expect(loadingIndicator.container.firstChild).toMatchSnapshot();
     });
 });

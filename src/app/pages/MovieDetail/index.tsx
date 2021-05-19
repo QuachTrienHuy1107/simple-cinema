@@ -3,21 +3,18 @@
  * MovieDetail
  *
  */
-import * as React from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { BannerDetail } from "./components/BannerDetail";
 import { Tabs } from "antd";
-
+import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { selectMovieDetail } from "./slice/selectors";
+import styled from "styled-components/macro";
 import { useMovieDetailSlice } from "./slice";
 import { MovieDetailState, TheaterInfo, MovieInfo, MovieShowtime } from "./slice/types";
 import moment from "moment";
 import { useParams } from "react-router";
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from "@ant-design/icons";
 import { Comment, Tooltip, Avatar } from "antd";
+import { selectMovieDetail } from "./slice/selectors";
 
 interface MovieDetailProps {}
 
@@ -89,6 +86,10 @@ export function MovieDetail(props: MovieDetailProps) {
     const dispatch = useDispatch();
     const { movieDetail } = useSelector(selectMovieDetail);
     const { actions } = useMovieDetailSlice();
+    const params = useParams();
+
+    console.log("aaa", params);
+
     React.useEffect(() => {
         dispatch(actions.getMovieDetailData(param));
     }, [dispatch]);
@@ -124,93 +125,9 @@ export function MovieDetail(props: MovieDetailProps) {
         </Tooltip>,
         <span key="comment-basic-reply-to">Reply to</span>,
     ];
-    // Styled Components
-    const Wrapper = styled.div`
-        .ant-tabs-nav {
-            ::before {
-                border: none;
-            }
-            .ant-tabs-tab {
-                color: white;
-                font-size: 1.25rem;
-                .ant-tabs-tab-btn {
-                    color: #e73e2c;
-                }
-            }
-            .ant-tabs-ink-bar {
-                background: #e73e2c;
-            }
-        }
-        .ant-tabs-content-holder {
-            .ant-tabs-tabpane {
-                color: white;
-                font-size: 1.5rem;
-                margin-left: 50px;
-            }
-        }
-    `;
-    const TheaterWrapper = styled.div``;
-    const TheaterTitle = styled.div`
-        margin-left: 15px;
-    `;
-    const CinemaWrapper = styled.div``;
-    const CinemaDetail = styled.div`
-        margin-bottom: 20px;
-        margin-left: 20px;
 
-        font-size: 1.2rem;
-        .cinema__description {
-            color: #e73e2c;
-        }
-    `;
-    const BackgroundWrapper = styled.div`
-        line-height: 1em;
-        background-color: white;
-        margin: 0 250px;
-        color: black;
-        font-size: 1.2rem;
-        padding: 0 20px;
-        height: auto;
-        .wrapper {
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            .left {
-                display: flex;
-                img {
-                    border-radius: 50%;
-                }
-                .name_user {
-                    font-weight: 700;
-                    margin-left: 10px;
-                    .online__left {
-                        font-weight: normal;
-                        font-size: 0.785rem;
-                    }
-                }
-            }
-            .right {
-                text-align: center;
-                .review__rate {
-                    margin-top: 5px;
-                    span {
-                        color: #5ec51c;
-                    }
-                    i {
-                        color: #e73e2c;
-                    }
-                }
-            }
-        }
-        .comment {
-            padding: 15px 25px;
-        }
-    `;
     return (
         <Div>
-            <BannerDetail />
-            {t("")}
-            {/*  {t(...messages.someThing())}  */}
             <Wrapper id="schedule">
                 <Tabs centered defaultActiveKey="1" style={{ marginBottom: 32 }}>
                     <TabPane tab="Lịch Chiếu" key="1">
@@ -328,3 +245,87 @@ export function MovieDetail(props: MovieDetailProps) {
 }
 
 const Div = styled.div``;
+
+const Wrapper = styled.div`
+    /* .ant-tabs-nav {
+            ::before {
+                border: none;
+            }
+            .ant-tabs-tab {
+                color: white;
+                font-size: 1.25rem;
+                .ant-tabs-tab-btn {
+                    color: #e73e2c;
+                }
+            }
+            .ant-tabs-ink-bar {
+                background: #e73e2c;
+            }
+        }
+        .ant-tabs-content-holder {
+            .ant-tabs-tabpane {
+                color: white;
+                font-size: 1.5rem;
+                margin-left: 50px;
+            }
+        } */
+`;
+const TheaterWrapper = styled.div`
+    display: flex;
+`;
+const TheaterTitle = styled.div`
+    margin-left: 15px;
+`;
+const CinemaWrapper = styled.div`
+    display: flex;
+`;
+const CinemaDetail = styled.div`
+    margin-bottom: 20px;
+    margin-left: 20px;
+    font-size: 1.2rem;
+    .cinema__description {
+        color: #e73e2c;
+    }
+`;
+const BackgroundWrapper = styled.div`
+    line-height: 1em;
+    background-color: white;
+    margin: 0 250px;
+    color: black;
+    font-size: 1.2rem;
+    height: auto;
+    .wrapper {
+        padding: 15px 25px;
+        display: flex;
+        justify-content: space-between;
+        .left {
+            display: flex;
+            img {
+                border-radius: 50%;
+            }
+            .name_user {
+                font-weight: 700;
+                margin-left: 10px;
+                .online__left {
+                    font-weight: normal;
+                    font-size: 0.785rem;
+                }
+            }
+        }
+        .right {
+            text-align: center;
+            .review__rate {
+                margin-top: 5px;
+                span {
+                    color: #5ec51c;
+                }
+                i {
+                    color: #e73e2c;
+                }
+            }
+        }
+    }
+    .comment {
+        padding: 15px 25px;
+    }
+`;

@@ -18,7 +18,7 @@ export function InputStyled({ ...rest }) {
 
     return (
         <Wrapper>
-            <InputStyle {...rest} size="large" />
+            <InputStyle {...rest} size="large"  />
         </Wrapper>
     );
 }
@@ -26,6 +26,7 @@ export function InputStyled({ ...rest }) {
 const Wrapper = styled.div``;
 
 const InputStyle = styled(Input)`
+    border: 1px solid transparent;
     background-color: #151f30;
     border: 1px solid transparent;
     border-radius: 16px;

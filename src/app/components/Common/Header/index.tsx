@@ -26,6 +26,9 @@ import { InputStyled } from "../InputStyled";
 import { useScreenType } from "hooks/useScreenType";
 import { selectAuth } from "app/pages/Form/slice/selectors";
 import { ROUTES } from "utils/constants/settings";
+import useLocalStorage from "hooks/useLocalStorage";
+import { useIdentity } from "hooks/useIdentity";
+import { useAuthSlice } from "app/pages/Form/slice";
 
 interface Props {}
 
@@ -33,10 +36,15 @@ const { SubMenu } = Menu;
 
 export function Header(props: Props) {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
     const { Desktop, Mobile } = useScreenType();
+
     const [navBackground, setNavBackground] = React.useState<boolean>(false);
     const [visible, setVisible] = React.useState<boolean>(false);
     const { credentials } = useSelector(selectAuth);
+    // const { user, isAuth } = useIdentity();
+    const { actions } = useAuthSlice();
+
     const navRef = React.useRef<undefined | boolean>();
     navRef.current = navBackground;
     React.useEffect(() => {
@@ -54,22 +62,38 @@ export function Header(props: Props) {
 
     const menu = (
         <Menu>
-            <Menu.Item>
-                <a target="_blank" rel="noopener noreferrer" href="https://www.antgroup.com">
-                    1st menu item
-                </a>
-            </Menu.Item>
-            <Menu.Item icon={<DownOutlined />} disabled>
-                <a target="_blank" rel="noopener noreferrer" href="https://www.aliyun.com">
-                    2nd menu item
-                </a>
-            </Menu.Item>
-            <Menu.Item disabled>
-                <a target="_blank" rel="noopener noreferrer" href="https://www.luohanacademy.com">
-                    3rd menu item
-                </a>
-            </Menu.Item>
-            <Menu.Item danger>a danger item</Menu.Item>
+            {(credentials.maLoaiNguoiDung === "QuanTri" && (
+                <>
+                    <Menu.Item key="0">
+                        <Link to={ROUTES.DASHBOARD}>Admin</Link>
+                    </Menu.Item>
+
+                    <Menu.Item
+                        key="2"
+                        onClick={() => {
+                            dispatch(actions.checkLogoutAction());
+                            localStorage.clear();
+                        }}
+                    >
+                        Logout
+                    </Menu.Item>
+                </>
+            )) || (
+                <>
+                    <Menu.Item key="0">
+                        <Link to={`profile/${credentials.taiKhoan}`}>Thông tin</Link>
+                    </Menu.Item>
+                    <Menu.Item
+                        key="1"
+                        onClick={() => {
+                            localStorage.clear();
+                            dispatch(actions.checkLogoutAction());
+                        }}
+                    >
+                        Logout
+                    </Menu.Item>
+                </>
+            )}
         </Menu>
     );
 
@@ -77,11 +101,12 @@ export function Header(props: Props) {
         <Wrapper
             style={{
                 backgroundColor: navBackground ? "#131720" : "transparent",
+                padding: "20px 0",
             }}
         >
             <Desktop>
-                <Row justify="center" align="middle">
-                    <Col lg={4}>
+                <Row align="middle" justify="center">
+                    <Col span={4} style={{ textAlign: "right" }}>
                         <img
                             src="https://dmitryvolkov.me/demo/flixtv/main/img/logo.svg"
                             alt=""
@@ -89,30 +114,23 @@ export function Header(props: Props) {
                         />
                     </Col>
 
-                    <ColStyled lg={12}>
+                    <ColStyled span={10} offset={2}>
                         <NavList />
                     </ColStyled>
 
-                    <Col lg={6}>
-                        <Space size={20}>
-                            <InputStyled placeholder="Tìm phim" />
-                            <Space>
-                                {Object.keys(credentials).length === 0 ? (
-                                    <Link to={ROUTES.LOGIN}>{t(messages.btnLogin())}</Link>
-                                ) : (
-                                    <Dropdown overlay={menu} trigger={["click"]}>
-                                        <div>
-                                            {credentials.hoTen}
-                                            <DownOutlined
-                                                style={{ transform: "translateY(-3px)" }}
-                                            />
-                                        </div>
-                                    </Dropdown>
-                                )}
-                                {/* <Link to={ROUTES.LOGIN}>{t(messages.btnLogin())}</Link> */}
-                                <LoginOutlined style={{ color: "#2f80ed" }} />
-                            </Space>
-                        </Space>
+                    <Col span={6} offset={1}>
+                        {Object.keys(credentials).length === 0 ? (
+                            <Buttons className="header__button--joinus">
+                                <Link to="/login">Đăng nhập</Link>
+                            </Buttons>
+                        ) : (
+                            <Dropdown overlay={menu} trigger={["click"]}>
+                                <Buttons className="header__button--joinus">
+                                    {credentials.hoTen}
+                                    <DownOutlined style={{ transform: "translateY(-3px)" }} />
+                                </Buttons>
+                            </Dropdown>
+                        )}
                     </Col>
                 </Row>
             </Desktop>

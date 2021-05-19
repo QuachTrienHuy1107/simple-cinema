@@ -1,6 +1,6 @@
+import { PayloadAction } from "@reduxjs/toolkit";
 // import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 // import { movieDetailActions as actions } from '.';
-import { PayloadAction } from "@reduxjs/toolkit";
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
 import { movieDetailActions as actions } from ".";
 

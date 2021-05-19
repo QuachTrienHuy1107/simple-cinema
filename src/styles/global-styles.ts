@@ -39,4 +39,6 @@ a{
   color: #fff;
 }
 
+`;
+
 export default GlobalStyle;

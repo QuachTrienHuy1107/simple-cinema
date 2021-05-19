@@ -10,7 +10,7 @@ export const initialState: AuthState = {
     credentials: {},
     isLoading: false,
     error: null,
-    isAuthenticated: false,
+
 };
 
 const authPersistConfig = {
@@ -27,19 +27,24 @@ const slice = createSlice({
             state.isLoading = true;
         },
         checkLoginActionSuccess: (state, action: PayloadAction<UserLoginResponse>) => {
+          console.log('checkLoginActionSuccess')
             state.credentials = action.payload;
             state.isLoading = false;
             state.isAuthenticated = true;
             state.error = null;
+
         },
         checkLoginActionFailure: (state, action: PayloadAction<Error>) => {
             state.error = action.payload;
             state.isLoading = false;
         },
-        checkLogoutAction() {},
+        checkLogoutAction(state) {
+            state.credentials = {}
+            state.isAuthenticated = false
+        },
         checkLogoutActionSuccess: state => {
             state.credentials = {};
-            // state.isError = false;
+            state.isLoading = false
             state.isAuthenticated = false;
         },
         checkLogoutActionFailure: state => {

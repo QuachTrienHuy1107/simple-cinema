@@ -3,7 +3,7 @@ import { take, call, put, select, takeLatest } from "redux-saga/effects";
 import { StatusCode } from "utils/constants/settings";
 import { movieManagementActions as actions } from ".";
 import { api } from "./api";
-import { MovieCreationPayload } from "./types";
+import { DeleteMoviePayload, MovieCreationPayload } from "./types";
 
 function* onAddMovie({ payload }: PayloadAction<any>) {
     try {
@@ -31,7 +31,23 @@ function* onEditMovie({ payload }: PayloadAction<any>) {
     }
 }
 
+function* onDeleteMovie({ payload }: PayloadAction<DeleteMoviePayload>) {
+    try {
+        const { response, error } = yield call(api.deleteMovie, payload);
+        console.log("aaa", response);
+        if (response?.status >= 200 || response?.status < 300) {
+            yield put(actions.deleteMovieActionSuccess(response.data));
+        } else {
+            throw new Error(error);
+        }
+    } catch (error) {
+        yield put(actions.deleteMovieActionFailure(error.message));
+        console.log("error", error);
+    }
+}
+
 export function* movieManagementSaga() {
     yield takeLatest(actions.addMovieAction.type, onAddMovie);
     yield takeLatest(actions.editMovieAction.type, onEditMovie);
+    yield takeLatest(actions.deleteMovieAction.type, onDeleteMovie);
 }

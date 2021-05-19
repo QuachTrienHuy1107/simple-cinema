@@ -1,23 +1,20 @@
-import { message } from "antd";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { take, call, put, select, takeLatest, delay } from "redux-saga/effects";
+import { call, delay, put, takeLatest } from "redux-saga/effects";
+import {persistor} from "store/configureStore";
 import { StatusCode } from "utils/constants/settings";
 import { authActions as actions } from ".";
 import api from "./api";
 import { LoginPayload, RegisterPayload } from "./types";
 
-import { configureAppStore } from "store/configureStore";
-
-const { persistor } = configureAppStore();
-
 function* onLogin({ payload }: PayloadAction<LoginPayload>) {
     try {
         const { response, error } = yield call(api.login, payload);
-        yield delay(100);
+        yield delay(500);
         if (response?.status === StatusCode.Success) {
             yield put(actions.checkLoginActionSuccess(response.data));
             localStorage.setItem("access_token", response.data.accessToken);
             localStorage.setItem("user", JSON.stringify(response.data));
+
         } else {
             throw new Error(error);
         }

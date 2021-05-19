@@ -18,12 +18,11 @@ export function NavList(props: Props) {
     return (
         <Wrapper>
             <Nav />
-            <Switcher />
+            {/* <Switcher /> */}
         </Wrapper>
     );
 }
 
 const Wrapper = styled.div`
-    align-self: center;
     display: flex;
 `;
