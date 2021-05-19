@@ -24,7 +24,7 @@ const Wrapper = styled.img`
     background-position: center center;
     width: 100%;
     display: block;
-    height: 270px;
+    height: 350px;
     object-fit: cover;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;

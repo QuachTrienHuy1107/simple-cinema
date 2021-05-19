@@ -1,16 +1,22 @@
-import { AdminPage } from "app/pages/AdminPage";
-import { FormTemplate } from "app/pages/Form";
+import { AdminPage } from "app/pages/AdminPage/Loadable";
+import { Checkout } from "app/pages/Checkout/Loadable";
+import { FormTemplate } from "app/pages/Form/Loadable";
 import { Login } from "app/pages/Form/pages/Login";
 import { Register } from "app/pages/Form/pages/Register";
+import { selectAuth } from "app/pages/Form/slice/selectors";
+import { NotFoundPage } from "app/pages/NotFoundPage/Loadable";
 import ClientTemplate from "app/templates/ClientTemplate";
+import { useIdentity } from "hooks/useIdentity";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router-dom";
+import { ROUTES } from "utils/constants/settings";
 import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
 import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
+import { MovieForm } from "../app/pages/AdminPage/pages/MovieManagement/MovieForm";
+import { ShowTime } from "../app/pages/AdminPage/pages/MovieManagement/ShowTime";
 import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
 import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
-import { MovieForm } from "../app/pages/AdminPage/pages/MovieManagement/MovieForm";
-import { ROUTES } from "utils/constants/settings";
 
 type PrivateRouteProps = {
     component: React.ComponentType;
@@ -31,9 +37,16 @@ const routes: RouterType[] = [
      * Client
      */
     {
-        path: ROUTES.MOVIEDETAIL,
+        path: `${ROUTES.MOVIEDETAIL}/:maPhim`,
         exact: true,
         component: MovieDetail,
+        layout: "Client",
+        restricted: true,
+    },
+    {
+        path: `${ROUTES.CHECKOUT}/:maLichChieu`,
+        exact: true,
+        component: Checkout,
         layout: "Client",
         restricted: true,
     },
@@ -88,12 +101,25 @@ const routes: RouterType[] = [
         layout: "Admin",
         restricted: true,
     },
+    {
+        path: `${ROUTES.SHOWTIME}`,
+        exact: true,
+        component: ShowTime,
+        layout: "Admin",
+        restricted: true,
+    },
     /**
      * Home
      */
+    /*  {
+        path: `${ROUTES.NOTFOUND}`,
+        exact: true,
+        component: NotFoundPage,
+        layout: "",
+    }, */
 ];
 
-const isAuthenticated = true;
+// const isAuthenticated = true;
 const isAdmin = true;
 
 const AppLayout = ({
@@ -102,29 +128,34 @@ const AppLayout = ({
     restricted,
     ...rest
 }: PrivateRouteProps): any => {
-    // const { isAuthenticated } = useSelector(selectAuth);
+    const { isAuthenticated, credentials } = useSelector(selectAuth);
+    console.log("credentials", credentials);
+    console.log("isAuthenticated", isAuthenticated);
+
     return (
-        <Route
-            {...rest}
-            render={props =>
-                (layout === "Form" && (
-                    <FormTemplate>
-                        <Component {...props} />
-                    </FormTemplate>
-                )) ||
-                (!isAuthenticated && <Redirect to="/login" />) ||
-                (layout === "Client" && (
-                    <ClientTemplate {...rest}>
-                        <Component {...props} />
-                    </ClientTemplate>
-                )) ||
-                (restricted && layout === "Admin" && (
-                    <AdminPage {...rest}>
-                        <Component {...props} />
-                    </AdminPage>
-                )) || <Redirect to="/" />
-            }
-        />
+        <>
+            <Route
+                {...rest}
+                render={props =>
+                    (layout === "Form" && (
+                        <FormTemplate>
+                            <Component {...props} />
+                        </FormTemplate>
+                    )) ||
+                    (!localStorage.getItem("user") && <Redirect to={ROUTES.LOGIN} />) ||
+                    (layout === "Client" && (
+                        <ClientTemplate {...rest}>
+                            <Component {...props} />
+                        </ClientTemplate>
+                    )) ||
+                    (restricted && layout === "Admin" && (
+                        <AdminPage {...rest}>
+                            <Component {...props} />
+                        </AdminPage>
+                    )) || <Redirect to="/" />
+                }
+            />
+        </>
     );
 };
 

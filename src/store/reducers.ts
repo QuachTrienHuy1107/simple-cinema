@@ -1,3 +1,4 @@
+import { immutableTransform } from "redux-persist-transform-immutable";
 /**
  * Combine all reducers in this file and export the combined reducers.
  */
@@ -19,22 +20,18 @@ function createReducer(injectedReducers: InjectedReducersType = {}) {
         ...injectedReducers,
     });
 
-    const rootPersistConfig = {
-        key: "root",
-        storage,
-        whitelist: ["auth"],
-    };
-
-    const authPersistConfig = {
-        key: "auth",
-        storage,
-        whitelist: ["credentials"],
-    };
-
-    const persistedReducer = persistReducer(rootPersistConfig, rootReducer);
-
     return rootReducer;
 }
+
+const rootPersistConfig = {
+    key: "root",
+    storage,
+    whitelist: ["auth"],
+};
+
+
+
+export const persistedReducer = persistReducer(rootPersistConfig, createReducer());
 
 // export const persistedReducer = persistReducer(rootPersistConfig, createReducer());
 

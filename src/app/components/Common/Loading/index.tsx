@@ -12,7 +12,6 @@ import { Space, Spin } from "antd";
 interface Props {}
 
 export function Loading(props: Props) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
 
     return (
@@ -40,12 +39,6 @@ export function Loading(props: Props) {
                 <span className="display-4 text-white">
                     <Space size="middle">
                         <Spin style={{ width: 200 }} size="large" />
-                        {/* <img
-                        src={loadingGif}
-                        alt=""
-                        width={200}
-                        style={{ background: "transparent" }}
-                    /> */}
                     </Space>
                 </span>
             </div>

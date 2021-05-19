@@ -42,11 +42,10 @@
         "i18next": "19.7.0",
         "i18next-browser-languagedetector": "6.0.1",
         "i18next-scanner": "2.11.0",
+        "immutable": "4.0.0-rc.12",
         "inquirer": "7.3.3",
         "inquirer-directory": "2.2.0",
         "jest-styled-components": "7.0.3",
-        "less": "4.1.1",
-        "less-loader": "8.1.1",
         "lint-staged": "10.3.0",
         "lodash": "4.17.21",
         "moment": "2.29.1",
@@ -72,30 +71,34 @@
         "react-responsive": "8.2.0",
         "react-router-dom": "5.2.0",
         "react-scripts": "4.0.3",
+        "react-slick": "0.28.1",
         "react-test-renderer": "16.13.1",
         "redux-injectors": "1.3.0",
         "redux-persist": "6.0.0",
+        "redux-persist-transform-immutable": "5.0.0",
         "redux-saga": "1.1.3",
         "replace-in-file": "6.1.0",
         "rimraf": "3.0.2",
         "sanitize.css": "12.0.1",
         "serve": "11.3.2",
         "shelljs": "0.8.4",
+        "slick-carousel": "1.8.1",
         "style-loader": "2.0.0",
         "styled-components": "5.1.0",
         "stylelint": "13.7.0",
         "stylelint-config-recommended": "3.0.0",
         "stylelint-config-styled-components": "0.1.1",
         "stylelint-processor-styled-components": "1.10.0",
+        "surge": "0.23.0",
         "swiper": "6.5.9",
         "ts-node": "9.0.0",
         "typescript": "4.1.3",
         "web-vitals": "0.2.4"
     },
     "scripts": {
-        "start": "craco start",
-        "build": "craco build",
-        "test": "craco test",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
         "eject": "react-scripts eject",
         "test:generators": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/testing/generators/test-generators.ts",
         "start:prod": "yarn run build && serve -s build",
@@ -158,5 +161,9 @@
                 "statements": 90
             }
         }
+    },
+    "devDependencies": {
+        "less": "4.1.1",
+        "less-loader": "9.0.0"
     }
 }

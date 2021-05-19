@@ -7,7 +7,7 @@ import * as React from "react";
 import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { messages } from "./messages";
-import { Button, Popconfirm, Space, Table, Tooltip } from "antd";
+import { Button, message, Popconfirm, Space, Table, Tooltip } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useHomeSlice } from "app/pages/HomePage/slice";
 import usePagination from "hooks/usePagination";
@@ -16,6 +16,10 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { selectHome } from "app/pages/HomePage/slice/selectors";
 import { useHistory } from "react-router";
 import { ROUTES } from "utils/constants/settings";
+import { useMovieManagementSlice } from "./slice";
+import { selectMovieManagement } from "./slice/selectors";
+import { Filter } from "../../components/Filter";
+import { useDebounce } from "../../hooks/useDebounce";
 
 interface Props {}
 
@@ -23,15 +27,32 @@ export function MovieManagement(props: Props) {
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const { actions } = useHomeSlice();
+    const { movieManagementActions } = useMovieManagementSlice();
+    const { successMessage, error } = useSelector(selectMovieManagement);
     const { moviePagination, isLoading } = useSelector(selectHome);
     const { resPagination, handlePageChange } = usePagination(1, 10);
     const history = useHistory();
 
+    const { handleChange, input } = useDebounce();
+
+    console.log("input", input);
+
     React.useEffect(() => {
-        dispatch(actions.getPaginateMoviesAction(resPagination));
-    }, [resPagination]);
+        if (input === "") {
+            dispatch(actions.getPaginateMoviesAction(resPagination));
+        }
+    }, [resPagination, successMessage, input, dispatch, actions]);
 
     // console.log("moviesPagination", moviesPagination);
+
+    React.useEffect(() => {
+        if (error) {
+            message.error(error);
+        }
+        if (successMessage !== "") {
+            message.success("Xóa phim thành công!");
+        }
+    }, [error, successMessage]);
 
     const columns = [
         {
@@ -61,7 +82,7 @@ export function MovieManagement(props: Props) {
             dataIndex: "biDanh",
             width: "20%",
         },
-        { key: "ngayKhoiChieu", title: "Ngày chiếu", dataIndex: "ngayKhoiChieu" },
+        { key: "ngayKhoiChieu", title: "Ngày chiếu", dataIndex: "ngayKhoiChieu", width: "20%" },
         { key: "danhGia", title: "Đánh giá", dataIndex: "danhGia" },
 
         {
@@ -85,6 +106,13 @@ export function MovieManagement(props: Props) {
                     </Tooltip>
                     <Tooltip title="delete">
                         <Popconfirm
+                            onConfirm={async () => {
+                                const maPhim = record.maPhim;
+                                await dispatch(
+                                    movieManagementActions.deleteMovieAction({ maPhim }),
+                                );
+                                dispatch(actions.getPaginateMoviesAction(resPagination));
+                            }}
                             title="Bạn có muốn xóa phim này không?"
                             okText="Có"
                             cancelText="Không"
@@ -105,18 +133,10 @@ export function MovieManagement(props: Props) {
 
     return (
         <Wrapper>
-            <Buttons
-                onClick={() => {
-                    history.push({
-                        pathname: `${ROUTES.FORMADMIN}/:maPhim`,
-                    });
-                }}
-            >
-                Create
-            </Buttons>
+            <Filter />
             <Table
                 columns={columns}
-                dataSource={moviePagination.items}
+                dataSource={moviePagination.items || moviePagination}
                 sticky
                 loading={isLoading}
                 pagination={{

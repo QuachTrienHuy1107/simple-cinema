@@ -12,19 +12,21 @@ import { Link } from "react-router-dom";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { MovieResponse } from "app/pages/HomePage/slice/types";
 import { Image } from "app/components/Common/Image";
+import { ROUTES } from "utils/constants/settings";
 
 interface IMovieCardProps {
     movie: MovieResponse;
+    isComming?: boolean;
 }
 
-export const MovieCard = memo(({ movie }: IMovieCardProps) => {
+export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
-
+    console.log("aa", movie);
     return (
         <CardStyle
             cover={
-                <CardLink to="/about">
+                <CardLink to={`${ROUTES.MOVIEDETAIL}/${movie.maPhim}`}>
                     <Image
                         style={{
                             backgroundImage: `url('${movie.hinhAnh}'), url('https://tix.vn/app/assets/img/default-film.webp')`,
@@ -46,7 +48,9 @@ export const MovieCard = memo(({ movie }: IMovieCardProps) => {
                 {/* <Meta title={movie.tenPhim} description={movie.moTa} /> */}
                 <p className="ant-card-body__title">{movie.tenPhim}</p>
             </Link>
-            <span className="ant-card-body__datetime">{movie.ngayKhoiChieu.substr(0, 10)}</span>
+            <span className="ant-card-body__datetime">
+                {isComming ? "" : movie.ngayKhoiChieu.substr(0, 10)}
+            </span>
         </CardStyle>
     );
 });
@@ -54,8 +58,9 @@ export const MovieCard = memo(({ movie }: IMovieCardProps) => {
 const CardStyle = styled(Card)`
     border: none;
     transition: all 0.5s;
-
     border-radius: 10px;
+
+    padding: 10px;
 
     .ant-card-body {
         padding: 9px 0px;

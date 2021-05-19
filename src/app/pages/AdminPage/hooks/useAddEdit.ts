@@ -8,7 +8,7 @@ import { useUpload } from "./useUpload";
 export const useAddEdit = () => {
     const formData = new FormData();
     const dispatch = useDispatch();
-    const { actions } = useMovieManagementSlice();
+    const { movieManagementActions } = useMovieManagementSlice();
     const [edit, setEdit] = React.useState(true);
 
     console.log("sss", edit);
@@ -24,12 +24,12 @@ export const useAddEdit = () => {
             }
 
             if (edit) {
-                dispatch(actions.editMovieAction(formData));
+                dispatch(movieManagementActions.editMovieAction(formData));
             } else {
-                dispatch(actions.addMovieAction(formData));
+                dispatch(movieManagementActions.addMovieAction(formData));
             }
         },
-        [actions, dispatch, edit, formData],
+        [movieManagementActions, dispatch, edit, formData],
     );
 
     return { onAddEdit, setEdit };

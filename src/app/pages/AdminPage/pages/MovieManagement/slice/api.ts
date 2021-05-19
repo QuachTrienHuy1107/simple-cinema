@@ -1,7 +1,7 @@
 import axiosClient from "api/axiosClient";
 import axios from "axios";
 import { API } from "utils/constants/settings";
-import { MovieCreationPayload } from "./types";
+import { DeleteMoviePayload, MovieCreationPayload } from "./types";
 
 export const api = {
     addMovie: (params: any) => {
@@ -33,6 +33,14 @@ export const api = {
         const url = `/QuanLyPhim/CapNhatPhimUpload`;
         return axiosClient
             .post(url, params)
+            .then(response => ({ response }))
+            .catch(error => ({ error }));
+    },
+
+    deleteMovie: (params: DeleteMoviePayload) => {
+        const url = `${API.DELETE_MOVIE}`;
+        return axiosClient
+            .delete(url, { params })
             .then(response => ({ response }))
             .catch(error => ({ error }));
     },

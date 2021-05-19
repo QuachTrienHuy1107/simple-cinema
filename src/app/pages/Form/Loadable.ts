@@ -6,7 +6,7 @@
 
 import { lazyLoad } from "utils/loadable";
 
-export const Form = lazyLoad(
+export const FormTemplate = lazyLoad(
     () => import("./index"),
     module => module.FormTemplate,
 );
