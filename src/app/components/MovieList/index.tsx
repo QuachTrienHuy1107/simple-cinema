@@ -3,22 +3,17 @@
  * MovieList
  *
  */
-import React, { memo } from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-
-import { messages } from "./messages";
-import { SearchForm } from "../SearchForm";
-import { Col, Pagination, Row, Spin, Tabs } from "antd";
-import Slider from "react-slick";
-import { MovieCard } from "./MovieCard";
-import usePagination from "hooks/usePagination";
-import { useDispatch, useSelector } from "react-redux";
+import { Tabs } from "antd";
 import { useHomeSlice } from "app/pages/HomePage/slice";
 import { selectHome } from "app/pages/HomePage/slice/selectors";
-import { Paginations } from "../Paginations";
 import { useGetDate } from "hooks/useGetDate";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import usePagination from "hooks/usePagination";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import Slider from "react-slick";
+import styled from "styled-components/macro";
+import { MovieCard } from "./MovieCard";
 
 interface Props {}
 
@@ -83,23 +78,11 @@ export const MovieList = memo((props: Props) => {
         dispatch(actions.getMovieWithDate(data));
     }, [dateBefore, today]);
 
-    /* React.useEffect(() => {
-        if (key) {
-            const data = {
-                ...resPagination,
-                tuNgay: dateBefore,
-                denNgay: today,
-            };
-            dispatch(actions.getMovieWithDate(data));
-        } else {
-            const data = {
-                ...resPagination,
-                tuNgay: "05/06/2020",
-                denNgay: "06/07/2020",
-            };
-            dispatch(actions.getMovieWithDate(data));
-        }
-    }, []); */
+    React.useEffect(() => {
+        dispatch(actions.getPaginateMoviesAction(resPagination));
+    }, []);
+
+    console.log("moviePagination", moviePagination);
 
     return (
         <Wrapper>
@@ -113,7 +96,15 @@ export const MovieList = memo((props: Props) => {
                         ))}
                     </Slider>
                 </TabPane>
-                <TabPane tab="Sắp chiếu" key="2"></TabPane>
+                <TabPane tab="Sắp chiếu" key="2">
+                    <Slider {...settings}>
+                        {moviePagination?.items?.map((movie: any) => (
+                            <div key={movie.maPhim}>
+                                <MovieCard movie={movie} isComming={true} />
+                            </div>
+                        ))}
+                    </Slider>
+                </TabPane>
             </Tabs>
             {/*  <Paginations
                 totalPage={moviePagination.totalCount}
