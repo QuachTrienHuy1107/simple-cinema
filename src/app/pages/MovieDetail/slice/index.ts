@@ -25,7 +25,9 @@ const movieSlice = createSlice({
             state.isLoading = false;
             state.isError = true;
         },
-        getMovieDetailData() {},
+        getMovieDetailData(state, action: PayloadAction<any>) {
+            console.log("alo", action.payload);
+        },
         getMovieDetailDataSuccess: (state, action: PayloadAction<MovieDetailProps>) => {
             state.movieDetail = action.payload;
             console.log(action.payload);

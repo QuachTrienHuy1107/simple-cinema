@@ -11,7 +11,6 @@ import "react-app-polyfill/stable";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
 
 // Use consistent styling
 import "sanitize.css/sanitize.css";
@@ -30,8 +29,6 @@ import "./locales/i18n";
 import { ThemeProvider } from "styled-components";
 import defaultThemes from "styles/themes";
 
-// import "antd/dist/antd.css";
-import "swiper/swiper.scss";
 
 const MOUNT_NODE = document.getElementById("root") as HTMLElement;
 

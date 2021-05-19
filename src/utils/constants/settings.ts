@@ -16,7 +16,7 @@ export enum ROUTES {
      */
     HOME = "/",
     ABOUT = "/about",
-    MOVIEDETAIL = "/movie/:id",
+    MOVIEDETAIL = "/movie",
     CHECKOUT = "/checkout",
     PROFILE = "/profile/:taiKhoan",
     MOVIELIST = "/movielist",
