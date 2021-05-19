@@ -9,7 +9,7 @@ import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
 import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
 import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
 import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
-import { MovieForm } from "../app/pages/AdminPage/pages/MovieManagement/MovieForm";
+// import { MovieForm } from "../app/pages/AdminPage/pages/MovieManagement/MovieForm";
 import { ROUTES } from "utils/constants/settings";
 
 type PrivateRouteProps = {
@@ -31,7 +31,7 @@ const routes: RouterType[] = [
      * Client
      */
     {
-        path: ROUTES.MOVIEDETAIL,
+        path: `${ROUTES.MOVIEDETAIL}/:maPhim`,
         exact: true,
         component: MovieDetail,
         layout: "Client",
@@ -81,13 +81,13 @@ const routes: RouterType[] = [
         layout: "Admin",
         restricted: true,
     },
-    {
-        path: `${ROUTES.FORMADMIN}/:maPhim`,
-        exact: true,
-        component: MovieForm,
-        layout: "Admin",
-        restricted: true,
-    },
+    // {
+    //     path: `${ROUTES.FORMADMIN}/:maPhim`,
+    //     exact: true,
+    //     component: MovieForm,
+    //     layout: "Admin",
+    //     restricted: true,
+    // },
     /**
      * Home
      */

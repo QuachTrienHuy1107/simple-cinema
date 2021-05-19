@@ -14,6 +14,7 @@ export interface Movie {
     maNhom: string;
     ngayKhoiChieu: string;
     danhGia: number;
+    heThongRapChieu: Array<TheaterInfo>;
 }
 
 /**
@@ -21,24 +22,25 @@ export interface Movie {
  */
 
 export interface TheaterInfo {
-    readonly maCumRap: string;
-    readonly maHeThongRap: string;
-    readonly maRap: number;
-    tenCumRap: string;
+    logo: string;
+    maHeThongRap: string;
     tenHeThongRap: string;
-    tenRap: string;
+    cumRapChieu: Array<MovieInfo>;
 }
 
 export interface MovieInfo {
-    giaVe: number;
-    readonly maLichChieu: number;
-    readonly maPhim: number;
-    readonly maRap: number;
-    ngayChieuGioChieu: string;
-    tenPhim: string;
-    thongTinRap: Array<TheaterInfo>;
+    lichChieuPhim: Array<any>;
+    maCumRap: string;
+    tenCumRap: string;
 }
-
+export interface MovieShowtime {
+    giaVe: number;
+    maLichChieu: string;
+    maRap: string;
+    ngayChieuGioChieu: string;
+    tenRap: string;
+    thoiLuong: string;
+}
 export interface MovieDetailProps {
     biDanh: string;
     danhGia: string;

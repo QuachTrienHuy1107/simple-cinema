@@ -107,6 +107,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: Regular !important;
     transition: all 0.3s;
+    background-color:#151F30;
   }
 
   ol,

@@ -9,16 +9,17 @@ import styled from "styled-components/macro";
 import { selectMovieDetail } from "../../slice/selectors";
 import { useMovieDetailSlice } from "../../slice";
 import { Col, Progress, Row, Timeline } from "antd";
-import { Container } from "react-bootstrap";
 import moment from "moment";
+import { useParams } from "react-router";
 interface MovieDetailProps {}
 
 export const BannerDetail = memo((props: MovieDetailProps) => {
+    const param = useParams();
     const dispatch = useDispatch();
     const { movieDetail } = useSelector(selectMovieDetail);
     const { actions } = useMovieDetailSlice();
     useEffect(() => {
-        dispatch(actions.getMovieDetailData());
+        dispatch(actions.getMovieDetailData(param));
     }, [dispatch]);
 
     // Style Components
@@ -68,6 +69,9 @@ export const BannerDetail = memo((props: MovieDetailProps) => {
     const Rate = styled.div`
         font-size: 1.2rem;
         margin-bottom: 12px;
+        .ant-progress-text {
+            color: green;
+        }
         i {
             color: yellow;
         }
@@ -75,6 +79,7 @@ export const BannerDetail = memo((props: MovieDetailProps) => {
     const Date = styled.div`
         display: flex;
         margin-bottom: 26px;
+        color: white;
         p {
             align-self: center;
             display: inline;
