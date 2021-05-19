@@ -12,6 +12,7 @@ import { Sidebar } from "../common/Sidebar";
 import HeaderAdmin from "../common/HeaderAdmin";
 import { Link, useHistory } from "react-router-dom";
 import { ROUTES } from "utils/constants/settings";
+import { Filter } from "../Filter";
 
 interface Props {}
 

@@ -48,15 +48,15 @@ export const Sidebar = memo(({ collapsed, onCollapse }: ISideBarProps) => {
                     <Menu.Item key={ROUTES.USERMANAGEMENT} icon={<TeamOutlined />}>
                         <Link to={ROUTES.USERMANAGEMENT}>UserManagement</Link>
                     </Menu.Item>
-                    <Menu.Item key={ROUTES.MOVIEMANAGEMENT} icon={<ContainerOutlined />}>
-                        <Link to={ROUTES.MOVIEMANAGEMENT}>Movie Management</Link>
-                    </Menu.Item>
-                    <SubMenu key="sub1" icon={<MailOutlined />} title="Navigation One">
-                        <Menu.Item key="5">Option 5</Menu.Item>
-                        <Menu.Item key="6">Option 6</Menu.Item>
-                        <Menu.Item key="7">Option 7</Menu.Item>
-                        <Menu.Item key="8">Option 8</Menu.Item>
+                    <SubMenu key="sub1" icon={<ContainerOutlined />} title="Movie Management">
+                        <Menu.Item key={ROUTES.MOVIEMANAGEMENT} icon={<ContainerOutlined />}>
+                            <Link to={ROUTES.MOVIEMANAGEMENT}>Movie Management</Link>
+                        </Menu.Item>
+                        <Menu.Item key={ROUTES.SHOWTIME} icon={<ContainerOutlined />}>
+                            <Link to={ROUTES.SHOWTIME}>Add Showtime</Link>
+                        </Menu.Item>
                     </SubMenu>
+
                     <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
                         <Menu.Item key="9">Option 9</Menu.Item>
                         <Menu.Item key="10">Option 10</Menu.Item>
