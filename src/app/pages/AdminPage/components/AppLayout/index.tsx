@@ -3,16 +3,13 @@
  * AppLayout
  *
  */
+import { Layout } from "antd";
 import * as React from "react";
-import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { Button, Layout } from "antd";
-import { Sidebar } from "../common/Sidebar";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components/macro";
 import HeaderAdmin from "../common/HeaderAdmin";
-import { Link, useHistory } from "react-router-dom";
-import { ROUTES } from "utils/constants/settings";
-import { Filter } from "../Filter";
+import { Sidebar } from "../common/Sidebar";
 
 interface Props {}
 
