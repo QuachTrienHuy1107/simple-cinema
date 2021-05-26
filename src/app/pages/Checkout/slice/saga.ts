@@ -20,7 +20,6 @@ function* onFetchSeats({ payload }: PayloadAction<SeatIdPayload>) {
 function* onBookingTicket({ payload }: PayloadAction<BookingPayload>) {
     try {
         const { response, error } = yield call(api.bookingTicket, payload);
-        console.log('response',response)
         if (response?.status === StatusCode.Success) {
             yield put(actions.bookingTicketSuccess(response.data));
         } else {

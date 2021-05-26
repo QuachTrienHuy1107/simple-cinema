@@ -8,10 +8,10 @@ type ArraySeat = { maGhe: number; giaVe: number; tenGhe?: string };
 export const useBooking = () => {
     const { arraySeat, setArraySeat } = useCheckoutContext();
 
-    const handlePickSeat = ({ id, price }) => {
+    const handlePickSeat = ({ id, price,seatName }) => {
         const index = arraySeat.findIndex(item => item.maGhe === id);
         if (index === -1) {
-            setArraySeat([...arraySeat, { maGhe: id, giaVe: price }]);
+            setArraySeat([...arraySeat, { maGhe: id, giaVe: price, tenGhe: seatName }]);
         } else {
             let newArr = [...arraySeat];
             newArr = newArr.filter(item => item.maGhe !== newArr[index].maGhe);

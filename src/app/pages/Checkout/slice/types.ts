@@ -52,6 +52,6 @@ export interface BookingPayload {
 export interface CheckoutState {
     tickets: SeatType[] | any;
     isLoading: boolean;
-    error?: Error;
+    error?: Error | null;
     message: string | null
 }
