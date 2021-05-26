@@ -24,7 +24,6 @@ export function Nav() {
 
 const Wrapper = styled.ul`
     display: flex;
-    margin-left: 10px;
     margin-bottom: 0;
 `;
 

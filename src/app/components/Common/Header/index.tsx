@@ -7,14 +7,15 @@ import * as React from "react";
 import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { messages } from "./messages";
-import logo from "./assets/logo.png";
+
 import { NavList } from "../NavList";
 import { Buttons } from "../Buttons";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Button, Col, Drawer, Dropdown, Menu, Row, Space } from "antd";
+import { Button, Col, Drawer, Dropdown, Menu, Row, Space, Steps } from "antd";
 import {
+    AlignRightOutlined,
     DownOutlined,
     LaptopOutlined,
     LoginOutlined,
@@ -29,21 +30,26 @@ import { ROUTES } from "utils/constants/settings";
 import useLocalStorage from "hooks/useLocalStorage";
 import { useIdentity } from "hooks/useIdentity";
 import { useAuthSlice } from "app/pages/Form/slice";
+import { navListMessages } from "../NavList/navListMessages";
+import { Logo } from "../Logo";
 
-interface Props {}
+interface IHeaderProps {}
 
 const { SubMenu } = Menu;
 
-export function Header(props: Props) {
+const { Step } = Steps;
+
+export const Header: React.FC = (props: IHeaderProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const { Desktop, Mobile } = useScreenType();
-
     const [navBackground, setNavBackground] = React.useState<boolean>(false);
     const [visible, setVisible] = React.useState<boolean>(false);
     const { credentials } = useSelector(selectAuth);
-    // const { user, isAuth } = useIdentity();
+    const location = useLocation();
     const { actions } = useAuthSlice();
+
+    const isCheckout = location.pathname.includes("checkout");
 
     const navRef = React.useRef<undefined | boolean>();
     navRef.current = navBackground;
@@ -80,9 +86,6 @@ export function Header(props: Props) {
                 </>
             )) || (
                 <>
-                    <Menu.Item key="0">
-                        <Link to={`profile/${credentials.taiKhoan}`}>Thông tin</Link>
-                    </Menu.Item>
                     <Menu.Item
                         key="1"
                         onClick={() => {
@@ -100,25 +103,21 @@ export function Header(props: Props) {
     return (
         <Wrapper
             style={{
-                backgroundColor: navBackground ? "#131720" : "transparent",
-                padding: "20px 0",
+                backgroundColor: navBackground ? "rgba(255,255,255,0.95)" : "transparent",
+                position: isCheckout ? "relative" : "sticky",
             }}
         >
             <Desktop>
-                <Row align="middle" justify="center">
-                    <Col span={4} style={{ textAlign: "right" }}>
-                        <img
-                            src="https://dmitryvolkov.me/demo/flixtv/main/img/logo.svg"
-                            alt=""
-                            width={60}
-                        />
+                <Row align="middle" justify="space-between">
+                    <Col span={4}>
+                        <Logo />
                     </Col>
 
-                    <ColStyled span={10} offset={2}>
+                    <ColStyled span={14}>
                         <NavList />
                     </ColStyled>
 
-                    <Col span={6} offset={1}>
+                    <Col span={6} style={{ paddingRight: 20, textAlign: "right" }}>
                         {Object.keys(credentials).length === 0 ? (
                             <Buttons className="header__button--joinus">
                                 <Link to="/login">Đăng nhập</Link>
@@ -135,26 +134,47 @@ export function Header(props: Props) {
                 </Row>
             </Desktop>
             <Mobile>
-                <Row justify="space-around" align="middle">
-                    <Col span={6}>
-                        <img
-                            src="https://dmitryvolkov.me/demo/flixtv/main/img/logo.svg"
-                            alt=""
-                            width={60}
-                        />
+                <Row justify="space-between" align="middle" style={{ padding: "0 15px" }}>
+                    <Col span={8}>
+                        {/* <img src={logo} alt="logo" width={50} /> */}
+                        <Logo />
                     </Col>
-                    <Col span={6} offset={8}>
-                        <Button
+                    {/* {isCheckout && (
+                        <Col span={8}>
+                            <Steps size="small" current={1}>
+                                <Step title="Finished" />
+                                <Step title="In Progress" />
+                                <Step title="Waiting" />
+                            </Steps>
+                        </Col>
+                    )} */}
+                    <Col span={8} style={{ textAlign: "right" }}>
+                        <ButtonStyle
                             onClick={() => {
                                 setVisible(!visible);
                             }}
                         >
-                            123
-                        </Button>
+                            <AlignRightOutlined />
+                        </ButtonStyle>
                     </Col>
                 </Row>
-                <Drawer
-                    title="Basic Drawer"
+                <DrawerStyle
+                    title={
+                        Object.keys(credentials).length === 0 ? (
+                            <Buttons className="header__button--joinus">
+                                <Link to="/login">Đăng nhập</Link>
+                            </Buttons>
+                        ) : (
+                            <Dropdown overlay={menu} trigger={["click"]}>
+                                <Buttons
+                                    className="header__button--joinus"
+                                    style={{ paddingLeft: 0 }}
+                                >
+                                    {credentials.hoTen}
+                                </Buttons>
+                            </Dropdown>
+                        )
+                    }
                     placement="right"
                     closable={false}
                     onClose={() => {
@@ -169,57 +189,64 @@ export function Header(props: Props) {
                         defaultOpenKeys={["sub1"]}
                         style={{ height: "100%", borderRight: 0 }}
                     >
-                        <SubMenu key="sub1" icon={<UserOutlined />} title="subnav 1">
-                            <Menu.Item key="1">option1</Menu.Item>
-                            <Menu.Item key="2">option2</Menu.Item>
-                            <Menu.Item key="3">option3</Menu.Item>
-                            <Menu.Item key="4">option4</Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub2" icon={<LaptopOutlined />} title="subnav 2">
-                            <Menu.Item key="5">option5</Menu.Item>
-                            <Menu.Item key="6">option6</Menu.Item>
-                            <Menu.Item key="7">option7</Menu.Item>
-                            <Menu.Item key="8">option8</Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
-                            <Menu.Item key="9">option9</Menu.Item>
-                            <Menu.Item key="10">option10</Menu.Item>
-                            <Menu.Item key="11">option11</Menu.Item>
-                            <Menu.Item key="12">option12</Menu.Item>
-                        </SubMenu>
+                        <Menu.Item>
+                            <Link to={ROUTES.HOME}>{t(navListMessages.HomePage())}</Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <Link to={ROUTES.MOVIELIST}>{t(navListMessages.MovieList())}</Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                            <Link to={ROUTES.ABOUT}>{t(navListMessages.AboutUs())}</Link>
+                        </Menu.Item>
+                        <Menu.Item
+                            key="1"
+                            onClick={() => {
+                                localStorage.clear();
+                                dispatch(actions.checkLogoutAction());
+                            }}
+                        >
+                            Logout
+                        </Menu.Item>
                     </Menu>
-                </Drawer>
+                </DrawerStyle>
             </Mobile>
-
-            {/*  {Object.keys(credentials).length === 0 ? (
-                <Buttons>
-                    <Link to={ROUTES.LOGIN}>{t(messages.btnLogin())}</Link>
-                </Buttons>
-            ) : (
-                <Dropdown overlay={menu} trigger={["click"]}>
-                    <Buttons>
-                        {credentials.hoTen}
-                        <DownOutlined style={{ transform: "translateY(-3px)" }} />
-                    </Buttons>
-                </Dropdown>
-            )} */}
         </Wrapper>
     );
-}
+};
 
 const Wrapper = styled.header`
     width: 100%;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     z-index: 10;
-    padding: 10px 0px;
+    padding: 0 20px;
 
     box-shadow: 1px 1px 1px 0 rgba(239, 239, 239, 0.14);
     transition: 0.6s ease;
+
+    a {
+        color: ${props => props.theme.primaryColor};
+        font-weight: 500;
+    }
 `;
 
 const ColStyled = styled(Col)`
     display: flex;
     justify-content: center;
+`;
+
+const DrawerStyle = styled(Drawer)`
+    .ant-drawer-body {
+        padding-top: 0;
+        padding-left: 0;
+    }
+`;
+
+const ButtonStyle = styled(Button)`
+    border: none;
+    background: transparent;
+    span {
+        font-size: 1.8rem;
+    }
 `;

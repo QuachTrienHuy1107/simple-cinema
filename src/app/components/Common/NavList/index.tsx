@@ -18,7 +18,6 @@ export function NavList(props: Props) {
     return (
         <Wrapper>
             <Nav />
-            {/* <Switcher /> */}
         </Wrapper>
     );
 }
