@@ -17,7 +17,8 @@ export const initialState: HomeState = {
     movie: [],
     moviePagination: [],
     cinemaList: [],
-    isLoading: true,
+    cinemaInfo: [],
+    isLoading: false,
     error: null,
 };
 
@@ -25,6 +26,55 @@ const slice = createSlice({
     name: "home",
     initialState,
     reducers: {
+        //Get all movies
+        getAllMovieAction(state) {
+            state.isLoading = true;
+        },
+        getAllMovieActionSuccess(state, action: PayloadAction<MovieResponse[]>) {
+            state.movie = action.payload;
+            state.isLoading = false;
+        },
+        getAllMovieActionFailure() {},
+
+        //Get movies with date
+        getMovieWithDate(state, action: PayloadAction<GetMovieWithDate>) {
+            state.isLoading = true;
+        },
+        getMovieWithDateSuccess(state, action: PayloadAction<PaginationResponseType>) {
+            state.movie = action.payload;
+            state.isLoading = false;
+        },
+        getMovieWithDateFailure(state, action: PayloadAction<Error>) {},
+
+        //Get movies with pagination
+        getPaginateMoviesAction: (state, action: PayloadAction<PaginationRequestType>) => {
+            state.isLoading = true;
+        },
+        getPaginateMoviesActionSucess(state, action: PayloadAction<PaginationResponseType>) {
+            state.moviePagination = action.payload;
+            state.isLoading = false;
+        },
+        getPaginateMoviesActionFailure() {},
+
+        //Get info one cinema
+        getAllCinemaInfoAction(state, action: PayloadAction<any>) {
+
+        },
+        getAllCinemaInfoActionSuccess: (state, action: PayloadAction<any>) => {
+            state.cinemaInfo = action.payload;
+            state.isLoading = false;
+        },
+        getAllCinemaInfotActionFailure: state => {},
+
+        //Get cinema list
+        getAllCinemaListAction() {},
+        getAllCinemaListActionSuccess: (state, action: PayloadAction<any>) => {
+            state.cinemaList = action.payload;
+            state.isLoading = false;
+        },
+        getAllCinemaListActionFailure: state => {},
+
+        //Search movie
         searchMovie(state, action: PayloadAction<SearchMoviePayload>) {
             state.isLoading = true;
         },
@@ -35,44 +85,6 @@ const slice = createSlice({
         searchMovieFailure(state, action: PayloadAction<Error>) {
             console.log("error", action.payload);
         },
-
-        getMovieWithDate(state, action: PayloadAction<GetMovieWithDate>) {
-            state.isLoading = true;
-        },
-        getMovieWithDateSuccess(state, action: PayloadAction<PaginationResponseType>) {
-            state.movie = action.payload;
-            state.isLoading = false;
-        },
-        getMovieWithDateFailure(state, action: PayloadAction<Error>) {},
-
-        getPaginateMoviesAction: (state, action: PayloadAction<PaginationRequestType>) => {
-            state.isLoading = true;
-        },
-        getPaginateMoviesActionSucess(state, action: PayloadAction<PaginationResponseType>) {
-            state.moviePagination = action.payload;
-            state.isLoading = false;
-        },
-        getPaginateMoviesActionFailure() {},
-        getMovieDetail(state, action: PayloadAction<MovieDetailPayload>) {
-            state.isLoading = true;
-            state.error = null;
-        },
-        getMovieDetailSuccess: (state, action: PayloadAction<MovieResponse>) => {
-            state.movie = action.payload;
-            state.isLoading = false;
-            state.error = null;
-        },
-        getMovieDetailFailure(state, action: PayloadAction<Error>) {
-            state.error = action.payload;
-            state.isLoading = false;
-        },
-
-        getAllCinemaListAction() {},
-        getAllCinemaListActionSuccess: (state, action: PayloadAction<any>) => {
-            state.cinemaList = action.payload;
-            state.isLoading = false;
-        },
-        getAllCinemaListActionFailure: state => {},
     },
 });
 

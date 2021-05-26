@@ -1,12 +1,6 @@
-import { immutableTransform } from "redux-persist-transform-immutable";
-/**
- * Combine all reducers in this file and export the combined reducers.
- */
-import persistReducer from "redux-persist/es/persistReducer";
-import storage from "redux-persist/lib/storage";
-import { combineReducers } from "@reduxjs/toolkit";
+import {combineReducers} from "@reduxjs/toolkit";
+import {InjectedReducersType} from "utils/types/injector-typings";
 
-import { InjectedReducersType } from "utils/types/injector-typings";
 
 /**
  * Merges the main reducer with the router state and dynamically injected reducers
@@ -23,15 +17,11 @@ function createReducer(injectedReducers: InjectedReducersType = {}) {
     return rootReducer;
 }
 
-const rootPersistConfig = {
-    key: "root",
-    storage,
-    whitelist: ["auth"],
-};
 
 
 
-export const persistedReducer = persistReducer(rootPersistConfig, createReducer());
+
+// export const persistedReducer = persistReducer(rootPersistConfig, createReducer());
 
 // export const persistedReducer = persistReducer(rootPersistConfig, createReducer());
 

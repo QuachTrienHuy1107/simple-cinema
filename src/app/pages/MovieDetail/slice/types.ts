@@ -56,8 +56,7 @@ export interface MovieDetailProps {
 }
 
 export interface MovieDetailState {
-    movies: Movie[] | any;
     movieDetail?: MovieDetailProps[] | any;
     isLoading: boolean;
-    isError: Error | null | boolean;
+    error?: Error
 }

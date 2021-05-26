@@ -1,15 +1,11 @@
-import storage from "redux-persist/lib/storage";
 /**
  * Create the store with dynamic reducers
  */
-
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import { createInjectorsEnhancer } from "redux-injectors";
-import persistStore from "redux-persist/es/persistStore";
+import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
+import {createInjectorsEnhancer} from "redux-injectors";
+import {FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "redux-persist";
 import createSagaMiddleware from "redux-saga";
-import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
-import createReducer, { persistedReducer } from "./reducers";
-import immutableTransform from "redux-persist-transform-immutable";
+import createReducer from "./reducers";
 
 const reduxSagaMonitorOptions = {};
 const sagaMiddleware = createSagaMiddleware(reduxSagaMonitorOptions);
@@ -26,7 +22,7 @@ const enhancers = [
 ];
 
 const store = configureStore({
-    reducer: persistedReducer,
+    reducer: createReducer(),
     middleware: [
         ...getDefaultMiddleware({
             thunk: false,
@@ -39,7 +35,5 @@ const store = configureStore({
     devTools: process.env.NODE_ENV !== "production",
     enhancers,
 });
-
-export const persistor = persistStore(store);
 
 export default store;

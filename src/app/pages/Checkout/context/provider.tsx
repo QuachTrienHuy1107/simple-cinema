@@ -19,18 +19,17 @@ export const useProvider = (): CheckoutContextType => {
             const credential = JSON.parse(userLogin);
             setUsername(credential.taiKhoan);
         }
-    }, []);
+    }, [username]);
 
-    console.log("username", typeof username);
-
-    const bookingTicket = React.useCallback((maLichChieu, danhSachVe, taiKhoanNguoiDung) => {
+    const bookingTicket = React.useCallback(async (maLichChieu, danhSachVe, taiKhoanNguoiDung) => {
         const data = {
             maLichChieu,
             danhSachVe,
             taiKhoanNguoiDung,
         };
         console.log("data", data);
-        dispatch(actions.bookingTicket(data));
+        await dispatch(actions.bookingTicket(data));
+        setArraySeat([]);
     }, []);
 
     return { ticketId, arraySeat, username, bookingTicket, setArraySeat };

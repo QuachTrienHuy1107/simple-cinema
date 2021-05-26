@@ -26,7 +26,6 @@ axiosClient.interceptors.response.use(
         // Edit response config
         response,
     error => {
-        console.log(error);
         if (error.response) {
             return Promise.reject(error.response.data);
         }

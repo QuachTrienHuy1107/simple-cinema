@@ -7,7 +7,7 @@ import { BookingPayload, CheckoutDetail, CheckoutState, SeatIdPayload, SeatType 
 export const initialState: CheckoutState = {
     tickets: [],
     isLoading: false,
-    message: null
+    message: null,
 };
 
 const slice = createSlice({
@@ -26,15 +26,20 @@ const slice = createSlice({
         },
         bookingTicket: (state, action: PayloadAction<BookingPayload>): void => {
             state.isLoading = true;
+            state.message = null;
+            state.error = null;
+            state.tickets = [];
         },
         bookingTicketSuccess(state, action: PayloadAction<any>) {
             state.isLoading = false;
-            state.message = action.payload
+            state.message = action.payload;
+            state.tickets = [];
+
         },
         bookingTicketFailure(state, action: PayloadAction<Error>) {
             state.error = action.payload;
             state.isLoading = false;
-            state.error = action.payload
+            state.error = action.payload;
         },
     },
 });

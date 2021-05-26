@@ -34,6 +34,7 @@ export const Sidebar = memo(({ collapsed, onCollapse }: ISideBarProps) => {
     return (
         <Wrapper style={{ width: collapsed ? 80 : 200 }}>
             <Sider
+                theme="light"
                 collapsible
                 collapsed={collapsed}
                 onCollapse={() => onCollapse(collapsed)}
@@ -41,7 +42,7 @@ export const Sidebar = memo(({ collapsed, onCollapse }: ISideBarProps) => {
                 breakpoint="lg"
             >
                 <Logo />
-                <Menu theme="dark" defaultSelectedKeys={[window.location.pathname]} mode="inline">
+                <Menu defaultSelectedKeys={[window.location.pathname]} mode="inline">
                     <Menu.Item key={ROUTES.DASHBOARD} icon={<PieChartOutlined />}>
                         <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
                     </Menu.Item>

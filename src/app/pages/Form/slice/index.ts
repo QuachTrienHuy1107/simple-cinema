@@ -10,14 +10,9 @@ export const initialState: AuthState = {
     credentials: {},
     isLoading: false,
     error: null,
-
 };
 
-const authPersistConfig = {
-    key: "auth",
-    storage,
-    whitelist: ["credentials"],
-};
+
 
 const slice = createSlice({
     name: "auth",
@@ -25,18 +20,19 @@ const slice = createSlice({
     reducers: {
         checkLoginAction(state, action: PayloadAction<LoginPayload>) {
             state.isLoading = true;
+            state.error = null
+            state.isAuthenticated = false;
         },
         checkLoginActionSuccess: (state, action: PayloadAction<UserLoginResponse>) => {
-          console.log('checkLoginActionSuccess')
             state.credentials = action.payload;
             state.isLoading = false;
             state.isAuthenticated = true;
             state.error = null;
-
         },
         checkLoginActionFailure: (state, action: PayloadAction<Error>) => {
             state.error = action.payload;
             state.isLoading = false;
+            state.isAuthenticated = false;
         },
         checkLogoutAction(state) {
             state.credentials = {}
@@ -48,7 +44,6 @@ const slice = createSlice({
             state.isAuthenticated = false;
         },
         checkLogoutActionFailure: state => {
-            // state.isError = true;
             state.isLoading = false;
         },
 

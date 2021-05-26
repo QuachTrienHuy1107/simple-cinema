@@ -1,7 +1,6 @@
 import * as React from "react";
 import { render } from "@testing-library/react";
-
-import { Filter } from "..";
+import { Filter } from "app/components/Filter";
 
 jest.mock("react-i18next", () => ({
     useTranslation: () => ({

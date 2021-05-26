@@ -28,16 +28,18 @@ const GlobalStyle = createGlobalStyle`
 }
 
 body{
-  background-color: #131720;
+  transition: all 0.2s;
+}
+
+p{
+  margin-bottom: 0;
 }
 
 li{
   list-style-type: none;
+
 }
 
-a{
-  color: #fff;
-}
 
 `;
 

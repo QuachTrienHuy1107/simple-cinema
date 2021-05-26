@@ -16,8 +16,8 @@ export const useHandleSubmit = () => {
         await dispatch(actions.checkLoginAction(values));
     };
 
-    const onRegister = (values: RegisterPayload) => {
-        dispatch(actions.registerAction(values));
+    const onRegister = async (values: RegisterPayload): Promise<void> => {
+        await dispatch(actions.registerAction(values));
     };
 
     React.useEffect(() => {
@@ -25,11 +25,9 @@ export const useHandleSubmit = () => {
             message.error(error);
         }
         if (isAuthenticated) {
-            message.success("Đăng nhập thành công!").then(() => {
-                history.push("/");
-            });
+            history.push("/");
         }
     }, [error, history, isAuthenticated]);
 
-    return { credentials, isLoading, error, onLogin, onRegister };
+    return { credentials, isLoading, error, onLogin, onRegister, isAuthenticated };
 };

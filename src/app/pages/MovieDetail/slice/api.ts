@@ -1,8 +1,10 @@
 import axiosClient from "api/axiosClient";
+import {MovieDetailPayload} from "app/pages/HomePage/slice/types";
+import {API} from "utils/constants/settings";
 
-const movieApi = {
-    getMovieDetail: params => {
-        const url = `/QuanLyRap/LayThongTinLichChieuPhim`;
+const api = {
+    getMovieDetail: (params: MovieDetailPayload) => {
+        const url = `${API.GET_MOVIE_DETAIL}`;
         return axiosClient
             .get(url, { params })
             .then(response => ({ response }))
@@ -10,4 +12,4 @@ const movieApi = {
     },
 };
 
-export default movieApi;
+export default api;

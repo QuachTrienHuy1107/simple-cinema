@@ -18,7 +18,6 @@ export function Image({ ...rest }) {
 }
 
 const Wrapper = styled.img`
-    background-image: url("https://tix.vn/app/assets/img/default-film.webp");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
