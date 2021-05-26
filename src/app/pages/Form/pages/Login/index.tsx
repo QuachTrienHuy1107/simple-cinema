@@ -68,9 +68,9 @@ export const Login = memo((props: Props) => {
 
             <Col span={24}>
                 <Form.Item {...formItemLayout} style={{ textAlign: "center" }}>
-                    <Buttons type="primary" htmlType="submit" loading={isLoading}>
+                    <ButtonStyle type="primary" htmlType="submit" loading={isLoading}>
                         {t(messages.Login())}
-                    </Buttons>
+                    </ButtonStyle>
                 </Form.Item>
             </Col>
 
@@ -93,4 +93,10 @@ const RememberMe = styled.div`
     @media screen and(max-width:280px) {
         display: block;
     }
+`;
+
+const ButtonStyle = styled(Buttons)`
+    width: 50%;
+    padding: 25px;
+    margin: 30px 0;
 `;

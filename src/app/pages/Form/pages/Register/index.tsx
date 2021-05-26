@@ -3,15 +3,13 @@
  * Register
  *
  */
-import React, { memo } from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { Col, Form, Input, Row, Select } from "antd";
-import { formItemLayout } from "utils/helpers";
+import { Col, Form, Input, Row } from "antd";
 import { Buttons } from "app/components/Common/Buttons";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { Option } from "antd/lib/mentions";
+import styled from "styled-components/macro";
+import { formItemLayout } from "utils/helpers";
 
 interface Props {}
 
@@ -27,7 +25,7 @@ export const Register = memo((props: Props) => {
                     rules={[
                         {
                             required: true,
-                            message: "Tài khoản là bắt buộc!",
+                            message: "Vui lòng nhập tài khoản!",
                         },
                     ]}
                 >
@@ -109,7 +107,7 @@ export const Register = memo((props: Props) => {
                 </Form.Item>
             </Col>
 
-            <Col span={24}>
+            {/*  <Col span={24}>
                 <Select
                     placeholder="Select a person"
                     optionFilterProp="children"
@@ -120,7 +118,7 @@ export const Register = memo((props: Props) => {
                         <Option value={`GP0${index}`}>GP0{index}</Option>
                     ))}
                 </Select>
-            </Col>
+            </Col> */}
             <Col span={24}>
                 <Form.Item {...formItemLayout} style={{ textAlign: "center" }}>
                     <Buttons type="primary" htmlType="submit" className="login__btn">
