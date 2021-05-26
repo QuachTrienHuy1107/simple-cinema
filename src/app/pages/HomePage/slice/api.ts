@@ -5,13 +5,11 @@ import { GetMovieWithDate, MovieDetailPayload, SearchMoviePayload } from "./type
 
 const api = {
     getAllMovie: () => {
-        const url = `/QuanLyPhim/LayDanhSachPhim?maNhom=GP02`;
-        return axios({
-            method: "GET",
-            url,
-        })
-            .then(res => console.log("res", res))
-            .catch(err => console.log("err", err));
+        const url = `${API.GET_ALL_MOVIE}`;
+        return axiosClient
+            .get(url)
+            .then(response => ({ response }))
+            .catch(error => ({ error }));
     },
     getMovieWithDate: (params: GetMovieWithDate) => {
         const url = `${API.GET_MOVIE_WITH_DATE}`;
@@ -20,25 +18,27 @@ const api = {
             .then(response => ({ response }))
             .catch(error => ({ error }));
     },
-    getMovieDetail: (params: MovieDetailPayload) => {
-        const url = `${API.GETMOVIEDETAIL}`;
-        return axiosClient
-            .get(url, { params })
-            .then(response => ({ response }))
-            .catch(error => ({ error }));
-    },
+
     getMoviePagination: (params: any) => {
-        const url = `${API.GETALLPAGINATION}`;
+        const url = `${API.GET_ALL_PAGINATION}`;
         return axiosClient
             .get(url, { params })
             .then(response => ({ response }))
             .catch(error => ({ error }));
     },
 
-    getInfoCinema: () => {
-        const url = `/QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01`;
+    getCinemaList: () => {
+        const url = `${API.GET_CINEMA_LIST}`;
         return axiosClient
             .get(url)
+            .then(response => ({ response }))
+            .catch(error => ({ error }));
+    },
+
+    getInfoCinema: params => {
+        const url = `${API.GET_CINEMA_INFO}`;
+        return axiosClient
+            .get(url, { params })
             .then(response => ({ response }))
             .catch(error => ({ error }));
     },

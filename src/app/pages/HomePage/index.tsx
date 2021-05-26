@@ -1,33 +1,29 @@
-import { Button, Col, Row, Skeleton, Spin } from "antd";
-import { Buttons } from "app/components/Common/Buttons";
+import { Col, Row, Skeleton } from "antd";
+import { Carousel } from "app/components/Common/Carousel";
 import { Footer } from "app/components/Common/Footer";
 import { Header } from "app/components/Common/Header";
+import { Filter } from "app/components/Filter";
 import { MovieList } from "app/components/MovieList";
-import { SearchForm } from "app/components/SearchForm";
+import usePagination from "hooks/usePagination";
+import { useScreenType } from "hooks/useScreenType";
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch } from "react-router";
 import styled from "styled-components";
-import { HomeMessages } from "./messages";
+import { Contact } from "./components/Contact";
+import { Schedule } from "./components/Schedule";
 import { useHomeSlice } from "./slice";
 import { selectHome } from "./slice/selectors";
-import video from "./assets/img/Halloween.mp4";
-import { Schedule } from "./components/Schedule";
-import { Loading } from "app/components/Common/Loading";
-import { ROUTES } from "utils/constants/settings";
-import { useGetDate } from "hooks/useGetDate";
-import usePagination from "hooks/usePagination";
 import { HomeState } from "./slice/types";
-import { Contact } from "./components/Contact";
 
-export function HomePage() {
+export const HomePage: React.FC<Record<never, never>> = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { cinemaList, isLoading, movie, moviePagination } = useSelector(selectHome) as HomeState;
+    const { cinemaList, isLoading, moviePagination } = useSelector(selectHome) as HomeState;
     const { actions } = useHomeSlice();
-    const { today, dateBefore } = useGetDate();
+    const { Desktop, Tablet } = useScreenType();
+
     const { resPagination } = usePagination(1, 10);
 
     React.useEffect(() => {
@@ -45,39 +41,31 @@ export function HomePage() {
         <>
             <Helmet>
                 <title>Home Page</title>
-                <meta name="description" content="A Boilerplate application homepage" />
+                <meta name="description" content="Simple movie" />
             </Helmet>
             <>
-                <Header />
                 <Wrapper>
-                    <CarouselStyled>
-                        <video src={video} loop autoPlay muted height="100vh"></video>
-                        <Content>
-                            <h1>{t(HomeMessages.Title())}</h1>
-                            <p>{t(HomeMessages.Desc())}</p>
-                        </Content>
-                    </CarouselStyled>
+                    <Header />
+                    <Carousel />
                     <Row justify="center" gutter={[0, 40]}>
-                        <Col span={20}>
-                            <SearchForm movieList={moviePagination.items} />
+                        <Col span={24}>
+                            <Desktop>
+                                <Filter movieList={moviePagination.items} />
+                            </Desktop>
 
                             <MovieList />
                         </Col>
-                        <Col span={20}>
+                        <Col span={24}>
                             {isLoading ? <Skeleton /> : <Schedule cinemaList={cinemaList} />}
                         </Col>
                     </Row>
+                    <Contact />
+                    <Footer />
                 </Wrapper>
-                <Contact />
-                <Footer />
             </>
-
-            <Switch>
-                <Route exact path={`${ROUTES.MOVIELIST}`} component={MovieList} />
-            </Switch>
         </>
     );
-}
+};
 
 const Wrapper = styled.div`
     margin: 0px 0 50px;

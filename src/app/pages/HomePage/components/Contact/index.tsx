@@ -80,6 +80,7 @@ const Wrapper = styled.div`
     height: 500px;
     padding: 120px 0 80px 0;
     background-size: contain;
+    margin-top: 50px;
 `;
 const Content = styled.div`
     width: 70%;

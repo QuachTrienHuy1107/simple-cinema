@@ -40,6 +40,7 @@ export interface HomeState {
     movie?: MovieResponse | Object | PaginationResponseType | any;
     moviePagination?: Array<PaginationResponseType> | any;
     cinemaList?: CinemaListResponse[] | null;
+    cinemaInfo: any
     isLoading: boolean;
     error?: Error | null;
 }
