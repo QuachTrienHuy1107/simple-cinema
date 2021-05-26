@@ -5,14 +5,18 @@ export enum StatusCode {
 }
 
 export enum API {
-    GETMOVIEDETAIL = `/QuanLyPhim/LayThongTinPhim`,
-    GET_MOVIE_WITH_DATE = `/QuanLyPhim/LayDanhSachPhimTheoNgay`,
-    GETALLPAGINATION = `QuanLyPhim/LayDanhSachPhimPhanTrang`,
-    EDIT_MOVIE = `/QuanLyPhim/CapNhatPhimUpload`,
-    DELETE_MOVIE = `/QuanLyPhim/XoaPhim`,
-    SEARCH_MOVIE = `/QuanLyPhim/LayDanhSachPhim`,
-    GET_ALL_SEAT = `/QuanLyDatVe/LayDanhSachPhongVe`,
-    BOOKING_TICKET = `/QuanLyDatVe/DatVe`
+    GET_ALL_MOVIE = '/QuanLyPhim/LayDanhSachPhim',
+    GET_MOVIE_DETAIL = "/QuanLyRap/LayThongTinLichChieuPhim",
+    GET_MOVIE_WITH_DATE = "/QuanLyPhim/LayDanhSachPhimTheoNgay",
+    GET_ALL_PAGINATION = "QuanLyPhim/LayDanhSachPhimPhanTrang",
+    GET_CINEMA_LIST = "/QuanLyRap/LayThongTinLichChieuHeThongRap?maNhom=GP01",
+    GET_CINEMA_INFO = "/QuanLyRap/LayThongTinCumRapTheoHeThong",
+    EDIT_MOVIE = "/QuanLyPhim/CapNhatPhimUpload",
+    DELETE_MOVIE = "/QuanLyPhim/XoaPhim",
+    SEARCH_MOVIE = "/QuanLyPhim/LayDanhSachPhim",
+    GET_ALL_SEAT = "/QuanLyDatVe/LayDanhSachPhongVe",
+    BOOKING_TICKET = "/QuanLyDatVe/DatVe",
+    CREATE_SHOWTIME = "/QuanLyDatVe/TaoLichChieu",
 }
 
 export enum ROUTES {
@@ -40,7 +44,7 @@ export enum ROUTES {
     PROFILEADMIN = "/admin/profileadmin",
     MOVIEMANAGEMENT = "/admin/moviemanagement",
     FORMADMIN = "/admin/formadmin",
-    SHOWTIME = '/admin/showtime',
+    SHOWTIME = "/admin/showtime",
 
     NOTFOUND = "/notfound",
 }
@@ -51,3 +55,5 @@ export enum ActionType {
     delete,
     view,
 }
+
+export const fakeApi = 'http://localhost:8000'
