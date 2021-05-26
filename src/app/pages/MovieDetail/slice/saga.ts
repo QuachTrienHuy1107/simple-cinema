@@ -1,22 +1,29 @@
 import { PayloadAction } from "@reduxjs/toolkit";
+import {MovieDetailPayload} from "app/pages/HomePage/slice/types";
 // import { take, call, put, select, takeLatest } from 'redux-saga/effects';
 // import { movieDetailActions as actions } from '.';
 import { all, call, fork, put, takeLatest } from "redux-saga/effects";
+import {StatusCode} from "utils/constants/settings";
 import { movieDetailActions as actions } from ".";
 
-import movieApi from "./api";
+import api from "./api";
 // function* doSomething() {}
 
-export function* onGetDataMovieDetail({ payload }: PayloadAction<any>) {
+function* onGetMovieDetail({ payload }: PayloadAction<MovieDetailPayload>) {
     try {
-        const { response, error } = yield call(movieApi.getMovieDetail, payload);
-        yield put(actions.getMovieDetailDataSuccess(response.data));
-        console.log("getDetailMovie", response.data);
+        const { response, error } = yield call(api.getMovieDetail, payload);
+        console.log("response", response);
+        if (response?.status === StatusCode.Success) {
+            yield put(actions.getMovieDetailActionSuccess(response.data));
+        } else {
+            throw new Error(error);
+        }
     } catch (error) {
-        // yield put(getDataPaginationFail)
-        // console.log('error',error)
+        yield put(actions.getMovieDetailFailure(error.message));
     }
 }
+
+
 export function* movieDetailSaga() {
-    yield takeLatest(actions.getMovieDetailData.type, onGetDataMovieDetail);
+    yield takeLatest(actions.getMovieDetailAction.type, onGetMovieDetail);
 }
