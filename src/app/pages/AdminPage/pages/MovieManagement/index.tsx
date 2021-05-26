@@ -18,24 +18,35 @@ import { useHistory } from "react-router";
 import { ROUTES } from "utils/constants/settings";
 import { useMovieManagementSlice } from "./slice";
 import { selectMovieManagement } from "./slice/selectors";
-import { Filter } from "../../components/Filter";
+import { SearchForm } from "../../components/SearchForm";
 import { useDebounce } from "../../hooks/useDebounce";
+import { MovieForm } from "./MovieForm";
 
 interface Props {}
 
 export function MovieManagement(props: Props) {
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
+    const history = useHistory();
     const { actions } = useHomeSlice();
     const { movieManagementActions } = useMovieManagementSlice();
     const { successMessage, error } = useSelector(selectMovieManagement);
     const { moviePagination, isLoading } = useSelector(selectHome);
     const { resPagination, handlePageChange } = usePagination(1, 10);
-    const history = useHistory();
+    const [visible, setVisible] = React.useState(false);
+    const [edit, setEdit] = React.useState(false);
+
+    const showDrawer = () => {
+        setVisible(true);
+        setEdit(true);
+    };
+
+    const onClose = () => {
+        setVisible(false);
+        setEdit(false);
+    };
 
     const { handleChange, input } = useDebounce();
-
-    console.log("input", input);
 
     React.useEffect(() => {
         if (input === "") {
@@ -43,14 +54,12 @@ export function MovieManagement(props: Props) {
         }
     }, [resPagination, successMessage, input, dispatch, actions]);
 
-    // console.log("moviesPagination", moviesPagination);
-
     React.useEffect(() => {
         if (error) {
             message.error(error);
         }
         if (successMessage !== "") {
-            message.success("Xóa phim thành công!");
+            message.success(successMessage);
         }
     }, [error, successMessage]);
 
@@ -92,17 +101,7 @@ export function MovieManagement(props: Props) {
             render: (text: string, record: any, index: number) => (
                 <Space size="middle">
                     <Tooltip title="edit">
-                        <Buttons
-                            onClick={() => {
-                                history.push({
-                                    pathname: `${ROUTES.FORMADMIN}/${record.maPhim}`,
-                                    state: { isEdit: true },
-                                });
-                            }}
-                            className="icon-button"
-                            shape="circle"
-                            icon={<EditOutlined />}
-                        />
+                        <MovieForm record={record} edit={true} visible={visible} />
                     </Tooltip>
                     <Tooltip title="delete">
                         <Popconfirm
@@ -133,7 +132,7 @@ export function MovieManagement(props: Props) {
 
     return (
         <Wrapper>
-            <Filter />
+            <SearchForm />
             <Table
                 columns={columns}
                 dataSource={moviePagination.items || moviePagination}
@@ -143,10 +142,7 @@ export function MovieManagement(props: Props) {
                     total: moviePagination.totalCount,
                     onChange: handlePageChange,
                     defaultPageSize: 10,
-                    onShowSizeChange: (curren, size) => {
-                        console.log("curren", curren);
-                        console.log("size", size);
-                    },
+                    onShowSizeChange: (curren, size) => {},
                     pageSizeOptions: ["10", "20", "50", "100"],
                 }}
             />

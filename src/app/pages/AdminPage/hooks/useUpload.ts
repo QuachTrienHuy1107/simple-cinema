@@ -11,7 +11,7 @@ const getBase64 = (file: Blob, callback: Function) => {
 };
 
 const validateUploadFile = (file: File) => {
-    const { type: fileType, size: fileSize, name: fileName } = file;
+    const { type: fileType, size: fileSize } = file;
 
     const allowExtension = ["jpg", ".png", ".svg", "jpeg"];
     const allowSize = fileSize / 1024 / 1024 < 2;
@@ -46,7 +46,7 @@ export const useUpload = () => {
         setLoading(false);
     };
 
-    console.log("hinhAnh", hinhAnh);
+
 
     return { hinhAnh, handleFileChange, loading, imgPreview, setImgUpload };
 };
