@@ -1,0 +1,76 @@
+{
+    "reviews": [
+        {
+            "id": 1374,
+            "maPhim": 1374,
+            "danhSachBinhLuan": [
+                {
+                    "maNguoiDung": "1",
+                    "taiKhoan": "123",
+                    "binhLuan": "zaaaaa",
+                    "danhGia": 10
+                },
+                {
+                    "maNguoiDung": "11",
+                    "taiKhoan": "zzz",
+                    "danhGia": 5,
+                    "binhLuan": "1"
+                },
+                {
+                    "maNguoiDung": "11",
+                    "taiKhoan": "zzz",
+                    "danhGia": 3,
+                    "binhLuan": "1"
+                },
+                {
+                    "maNguoiDung": "11",
+                    "taiKhoan": "zzz",
+                    "danhGia": 3,
+                    "binhLuan": "zzzz"
+                },
+                {
+                    "maNguoiDung": "11",
+                    "taiKhoan": "zzz",
+                    "danhGia": 5,
+                    "binhLuan": "Phim hay quớ huhu"
+                },
+                {
+                    "maNguoiDung": "11",
+                    "taiKhoan": "zzz",
+                    "danhGia": 4,
+                    "binhLuan": "z"
+                },
+                {
+                    "maNguoiDung": "11",
+                    "taiKhoan": "zzz",
+                    "danhGia": 4,
+                    "binhLuan": "100d"
+                }
+            ]
+        },
+        {
+            "id": 1389,
+            "maPhim": 1389,
+            "danhSachBinhLuan": [
+                {
+                    "maNguoiDung": "1222",
+                    "taiKhoan": "hahaha",
+                    "binhLuan": "ok ",
+                    "danhGia": 10
+                }
+            ]
+        }
+    ],
+    "food": [
+        {
+            "maLichChieu": 1111,
+            "feed": [
+                {
+                    "price": 75000,
+                    "image": "11",
+                    "name": "thit bo"
+                }
+            ]
+        }
+    ]
+}
