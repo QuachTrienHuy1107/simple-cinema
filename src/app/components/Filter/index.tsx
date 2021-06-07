@@ -8,11 +8,12 @@ import { Button, Cascader, Col, Form, message, Row, Select } from "antd";
 import { CinemaListProps, TimerProps } from "app/pages/HomePage/components/Schedule/types";
 import { MovieResponse } from "app/pages/HomePage/slice/types";
 import { useMovieDetailSlice } from "app/pages/MovieDetail/slice";
+import { selectMovieDetail } from "app/pages/MovieDetail/slice/selectors";
 import { useGetMovieDetail } from "hooks/useGetMovieDetail";
 import moment from "moment";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
@@ -30,7 +31,7 @@ export const Filter = memo(({ movieList }: Props) => {
     const { actions } = useMovieDetailSlice();
     const history = useHistory();
     const [id, setId] = React.useState({});
-    const { movieDetail } = useGetMovieDetail(id);
+    const { movieDetail, getMovieDetail } = useGetMovieDetail();
     const [arrMovie, setArrMovie] = React.useState([]) as any;
     const [cinemaKey, setCinemaKey] = React.useState("") as any;
     const [getDateTime, setDateTime] = React.useState(null);
@@ -38,13 +39,9 @@ export const Filter = memo(({ movieList }: Props) => {
     const [selected, setSelected] = React.useState(null) as any;
     const [selectedTime, setSelectedTime] = React.useState(null) as any;
 
-    console.log("getTime", getTime);
-
     React.useEffect(() => {
         setArrMovie(movieDetail);
     }, [movieDetail]);
-
-    console.log("movieDetail", movieDetail);
 
     const options = movieDetail?.heThongRapChieu?.map((item: any) => {
         return {
@@ -71,6 +68,7 @@ export const Filter = memo(({ movieList }: Props) => {
                             optionFilterProp="children"
                             onSelect={(id: any, option: any) => {
                                 setId(id);
+                                getMovieDetail(id);
                             }}
                         >
                             {movieList &&
@@ -151,7 +149,6 @@ export const Filter = memo(({ movieList }: Props) => {
                             placeholder="Chọn giờ"
                             optionFilterProp="children"
                             onChange={(value: any, option: any) => {
-                                console.log("option", option);
                                 setDateTime(value);
                                 setSelectedTime(option.children);
                             }}
@@ -167,10 +164,9 @@ export const Filter = memo(({ movieList }: Props) => {
                                         const time = showTime.lichChieuPhim?.filter(item =>
                                             item.ngayChieuGioChieu?.includes(getTime),
                                         );
-                                        console.log("time", time);
+
                                         if (time) {
                                             return time?.map((timer: any) => {
-                                                console.log("timer", timer);
                                                 return (
                                                     <Option value={timer.maLichChieu}>
                                                         {moment(timer.ngayChieuGioChieu).format(
@@ -238,14 +234,14 @@ const FormStyled = styled(Form)`
 
 const FormItem = styled(Form.Item)`
     .ant-cascader-picker {
-        color: #000 !important;
+        color: #000;
 
         input {
             box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.1);
             border: none;
             &::placeholder {
                 color: #000;
-                font-size: 1.1rem;
+                font-size: 1.05rem;
             }
         }
 
@@ -265,9 +261,11 @@ const FormSelect = styled(Select)`
         outline: none;
     }
 
-    .ant-select-selection-item,
+    .ant-select-selection-item {
+        color: #000;
+    }
     .ant-select-selection-placeholder {
-        color: #000 !important;
+        color: #767676;
     }
 `;
 
