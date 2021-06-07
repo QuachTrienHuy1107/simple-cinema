@@ -42,7 +42,7 @@ const routes: RouterType[] = [
         exact: true,
         component: HomePage,
         layout: "Client",
-        restricted: true,
+        restricted: false,
     },
     {
         path: `${ROUTES.MOVIEDETAIL}/:maPhim`,
@@ -145,7 +145,9 @@ const AppLayout = ({
                             <Component {...props} />
                         </FormTemplate>
                     )) ||
-                    (!localStorage.getItem("user") && <Redirect to={ROUTES.LOGIN} />) ||
+                    (!localStorage.getItem("user") && restricted === true && (
+                        <Redirect to={ROUTES.LOGIN} />
+                    )) ||
                     (layout === "Client" && (
                         <ClientTemplate {...rest}>
                             <Component {...props} />
