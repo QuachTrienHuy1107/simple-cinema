@@ -15,6 +15,9 @@ import axios from "axios";
 import { fakeApi } from "utils/constants/settings";
 import { MovieDetailPayload } from "app/pages/HomePage/slice/types";
 import { Buttons } from "app/components/Common/Buttons";
+import { useSelector } from "react-redux";
+import { selectAuth } from "app/pages/Form/slice/selectors";
+import moment from "moment";
 
 interface ICommentProps {
     maPhim: any;
@@ -29,45 +32,45 @@ function callback(key) {
 
 export const Comments = memo(({ maPhim }: ICommentProps) => {
     const { t, i18n } = useTranslation();
-    const [commentList, setCommentList] = React.useState([]) as any;
+    const [commentList, setCommentList] = React.useState<any[] | null>([]) as any;
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState(null);
-
-    console.log("maPhim", maPhim);
+    const [error, setError] = React.useState<Error | null>(null);
+    const { credentials } = useSelector(selectAuth);
 
     React.useEffect(() => {
         const fetchReviewList = async (): Promise<void> => {
             try {
+                setLoading(true);
                 const response = await fetch(`${fakeApi}/reviews/${maPhim}`, {
                     method: "GET",
                 });
                 const data = await response.json();
-                console.log("responsezzzzzz", data);
+
                 setCommentList(data);
-            } catch (error) {
-                console.log("err", error);
+            } catch (err) {
+                setError(err);
+            } finally {
+                setLoading(false);
             }
         };
         fetchReviewList();
-        console.log("www");
     }, [maPhim]);
-
-    console.log("arrReviews", commentList);
 
     const onFinish = async (values: any) => {
         console.log(values);
-        const newComment = {
-            maNguoiDung: "11",
-            taiKhoan: "zzz",
-            ...values,
-        };
-        const data = {
-            ...commentList,
-            danhSachBinhLuan: [...commentList?.danhSachBinhLuan, newComment],
-        };
-        console.log("data", data);
         try {
             setLoading(true);
+            const newComment = {
+                maNguoiDung: "11",
+                taiKhoan: credentials?.hoTen,
+                ngayDang: moment().format("MMMM Do YYYY, h:mm:ss a"),
+                ...values,
+            };
+            const data = {
+                ...commentList,
+                danhSachBinhLuan: [...commentList?.danhSachBinhLuan, newComment],
+            };
+            console.log("data", data);
             const request = await fetch(`${fakeApi}/reviews/${maPhim}`, {
                 method: "PUT",
                 headers: {
@@ -77,13 +80,17 @@ export const Comments = memo(({ maPhim }: ICommentProps) => {
             });
             const result = await request.json();
             setCommentList(result);
-        } catch (error) {
-            setError(error);
-            message.error(error);
+        } catch (err) {
+            setError(err);
+            message.error(err);
         } finally {
             setLoading(false);
         }
     };
+
+    if (error) {
+        message.error(error.message);
+    }
 
     return (
         <Wrapper>
@@ -94,9 +101,7 @@ export const Comments = memo(({ maPhim }: ICommentProps) => {
                     extra={<img src={img} alt="listStar" />}
                     showArrow={false}
                 >
-                    {loading ? (
-                        <Skeleton />
-                    ) : (
+                    {(loading && <Skeleton />) || (error && <div>{error.message}</div>) || (
                         <Form onFinish={onFinish}>
                             <Form.Item
                                 name="danhGia"
@@ -117,7 +122,9 @@ export const Comments = memo(({ maPhim }: ICommentProps) => {
                             </Form.Item>
                             <Form.Item>
                                 <div style={{ textAlign: "right" }}>
-                                    <ButtonStyle htmlType="submit">Đăng</ButtonStyle>
+                                    <ButtonStyle htmlType="submit" loading={loading}>
+                                        Đăng
+                                    </ButtonStyle>
                                 </div>
                             </Form.Item>
                         </Form>
