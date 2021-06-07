@@ -1,24 +1,19 @@
 import React, { createContext } from "react";
-import { useProvider } from "./provider";
+import { useProvider } from "../hooks/useProvider";
+import { FoodType, SeatSelectedType } from "../slice/types";
 
 export interface CheckoutContextType {
-    ticketId: number;
-    arraySeat: Array<any>;
-    username: string;
-    bookingTicket: (maLichChieu: number, danhSachVe: Array<any>, taiKhoanNguoiDung: string) => void;
+    arraySeatSelected: Array<SeatSelectedType>;
     setArraySeat: ({ maVe, giaVe }: any) => void;
+    arrayFood: Array<FoodType>;
+    setArrayFood: ({ id, name, price, quantity }: any) => void;
 }
 
 export const CheckoutContext = createContext<CheckoutContextType>({
-    ticketId: 0,
-    arraySeat: [],
-    username: "",
-    bookingTicket: (
-        _maLichChieu: number,
-        _dachSachVe: Array<any>,
-        _taiKhoanNguoiDung: string,
-    ) => {},
+    arraySeatSelected: [],
     setArraySeat: ({ _maVe, _giaVe }: any) => {},
+    arrayFood: [],
+    setArrayFood: ({ id, name, price, quantity }: FoodType) => {},
 });
 
 export const useCheckoutContext = () => {
