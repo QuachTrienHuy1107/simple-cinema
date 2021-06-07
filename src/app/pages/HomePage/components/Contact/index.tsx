@@ -15,6 +15,7 @@ import slide2 from "./assets/slide2.jpg";
 import slide3 from "./assets/slide3.jpg";
 import slide4 from "./assets/slide4.jpg";
 import slide16 from "./assets/slide16.jpg";
+import { ANCHOR } from "utils/constants/settings";
 
 interface Props {}
 
@@ -31,7 +32,7 @@ export const Contact = memo((props: Props) => {
     const { t, i18n } = useTranslation();
 
     return (
-        <Wrapper>
+        <Wrapper id={ANCHOR.APPLiCATIONSTO}>
             <Content>
                 <Row justify="center" gutter={[12, 24]}>
                     <ColStyled md={10}>
@@ -42,7 +43,7 @@ export const Contact = memo((props: Props) => {
                             Không chỉ đặt vé, bạn còn có thể bình luận phim, chấm điểm rạp và đổi
                             quà hấp dẫn.
                         </p>
-                        <Button>App miễn phí - Tải về ngay!</Button>
+                        <ButtonStyle>App miễn phí - Tải về ngay!</ButtonStyle>
                         <p>TIX có hai phiên bản iOS / Android</p>
                     </ColStyled>
                     <ColStyled md={10} offset={4} style={{ height: 350 }}>
@@ -55,19 +56,6 @@ export const Contact = memo((props: Props) => {
                                 <img src={slide16} alt="" />
                             </Slider>
                         </MobileScreen>
-
-                        {/* <BgMobile>
-                             <MobileScreen>
-                                <img src={slide2} alt="" />
-                            </MobileScreen>
-                            <MobileContent>
-                                <Slider {...settings}>
-                                    <MobileScreen>
-                                        <img src={slide2} alt="" />
-                                    </MobileScreen>
-                                </Slider>
-                            </MobileContent>
-                        </BgMobile> */}
                     </ColStyled>
                 </Row>
             </Content>
@@ -77,14 +65,24 @@ export const Contact = memo((props: Props) => {
 
 const Wrapper = styled.div`
     background-image: url(${img});
-    height: 500px;
+    // height: 500px;
     padding: 120px 0 80px 0;
     background-size: contain;
     margin-top: 50px;
+    color: #fff;
+
+    h1 {
+        color: #fff;
+        font-size: 2rem;
+    }
 `;
 const Content = styled.div`
     width: 70%;
     margin: 0 auto;
+
+    p {
+        margin: 10px 0;
+    }
 `;
 
 const ColStyled = styled(Col)`
@@ -92,23 +90,15 @@ const ColStyled = styled(Col)`
     margin: 0 auto;
 `;
 
-const BgMobile = styled.div`
-    position: absolute;
-`;
-
-const MobileContent = styled.div`
-    position: absolute;
-    top: 11px;
-    left: 9px;
-    width: 150px;
-    height: 100%;
-    overflow: hidden;
-    border-radius: 14px;
-
-    img {
-        display: block;
-        width: 100%;
-    }
+const ButtonStyle = styled(Button)`
+    background-color: #fb4226;
+    padding: 10px 20px;
+    line-height: 10px;
+    color: #fff;
+    font-size: medium;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
 `;
 
 const MobileScreen = styled.div`

@@ -50,6 +50,18 @@ const api = {
             .then(response => ({ response }))
             .catch(error => ({ error }));
     },
+
+    fetchMultiApi: async (params: GetMovieWithDate) => {
+      console.log('prarmas',params)
+        const url1 = await axiosClient.get(`${API.GET_ALL_MOVIE}`);
+        const url2 = await axiosClient.get(`${API.GET_CINEMA_LIST}`);
+        const url3 = await axiosClient.get(`${API.GET_MOVIE_WITH_DATE}`, { params });
+
+        return axios
+            .all([url1, url2, url3])
+            .then(axios.spread((...response) => ({ response })))
+            .catch(error => ({ error }));
+    },
 };
 
 export default api;

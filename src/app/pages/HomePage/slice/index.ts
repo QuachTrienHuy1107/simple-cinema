@@ -7,14 +7,13 @@ import { homeSaga } from "./saga";
 import {
     GetMovieWithDate,
     HomeState,
-    MovieDetailPayload,
     MovieResponse,
     PaginationRequestType,
     SearchMoviePayload,
 } from "./types";
 
 export const initialState: HomeState = {
-    movie: [],
+    movieWithDate: [],
     moviePagination: [],
     cinemaList: [],
     cinemaInfo: [],
@@ -31,7 +30,8 @@ const slice = createSlice({
             state.isLoading = true;
         },
         getAllMovieActionSuccess(state, action: PayloadAction<MovieResponse[]>) {
-            state.movie = action.payload;
+            console.log("acc", action.payload);
+            state.movieWithDate = action.payload;
             state.isLoading = false;
         },
         getAllMovieActionFailure() {},
@@ -41,7 +41,7 @@ const slice = createSlice({
             state.isLoading = true;
         },
         getMovieWithDateSuccess(state, action: PayloadAction<PaginationResponseType>) {
-            state.movie = action.payload;
+            state.movieWithDate = action.payload;
             state.isLoading = false;
         },
         getMovieWithDateFailure(state, action: PayloadAction<Error>) {},
@@ -57,9 +57,7 @@ const slice = createSlice({
         getPaginateMoviesActionFailure() {},
 
         //Get info one cinema
-        getAllCinemaInfoAction(state, action: PayloadAction<any>) {
-
-        },
+        getAllCinemaInfoAction(state, action: PayloadAction<any>) {},
         getAllCinemaInfoActionSuccess: (state, action: PayloadAction<any>) => {
             state.cinemaInfo = action.payload;
             state.isLoading = false;
@@ -69,6 +67,7 @@ const slice = createSlice({
         //Get cinema list
         getAllCinemaListAction() {},
         getAllCinemaListActionSuccess: (state, action: PayloadAction<any>) => {
+            console.log("ssssss", action.payload);
             state.cinemaList = action.payload;
             state.isLoading = false;
         },
@@ -84,6 +83,21 @@ const slice = createSlice({
         },
         searchMovieFailure(state, action: PayloadAction<Error>) {
             console.log("error", action.payload);
+        },
+
+        /**
+         *
+         */
+        fetchMultiApi: (state, action: PayloadAction<GetMovieWithDate>) => {
+            state.isLoading = true;
+        },
+        fetchMultiApiSuccess: state => {
+            state.isLoading = false;
+        },
+        fetchMultiApiFailure: () => {},
+
+        clearData: state => {
+            return initialState;
         },
     },
 });
