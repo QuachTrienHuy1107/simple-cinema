@@ -69,7 +69,7 @@ export const Login = memo((props: Props) => {
             <Col span={24}>
                 <Form.Item {...formItemLayout} style={{ textAlign: "center" }}>
                     <ButtonStyle type="primary" htmlType="submit" loading={isLoading}>
-                        {t(messages.Login())}
+                        <span className="btnLogin">{t(messages.Login())}</span>
                     </ButtonStyle>
                 </Form.Item>
             </Col>
@@ -99,4 +99,14 @@ const ButtonStyle = styled(Buttons)`
     width: 50%;
     padding: 25px;
     margin: 30px 0;
+
+    span.ant-btn-loading-icon {
+        transform: translateY(-10px);
+    }
+
+    span.btnLogin {
+        font-size: 1.2rem;
+        transform: translateY(-3px);
+        margin-left: 2px;
+    }
 `;
