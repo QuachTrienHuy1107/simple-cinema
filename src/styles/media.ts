@@ -21,7 +21,7 @@ export const sizes = {
     xsmall: 575,
     small: 767,
     medium: 992,
-    large: 1300,
+    large: 1100,
 };
 
 // Iterate through the sizes and create a media template

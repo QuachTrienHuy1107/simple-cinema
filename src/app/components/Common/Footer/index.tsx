@@ -80,7 +80,12 @@ export function Footer(props: Props) {
     );
 }
 
-const Wrapper = styled.footer``;
+const Wrapper = styled.footer`
+    background-color: #222;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #fff;
+`;
 
 const Top = styled.div`
     display: flex;

@@ -10,5 +10,7 @@ export const navListMessages = {
     // someThing: () => _t(translations.someThing,'default value'),
     HomePage: () => _t(translations.Header.Navbar.Home),
     MovieList: () => _t(translations.Header.Navbar.MovieList),
-    AboutUs: () => _t(translations.Header.Navbar.AboutUs),
+    CinemaList: () => _t(translations.Header.Navbar.CinemaList),
+    News: () => _t(translations.Header.Navbar.News),
+    Applications: () => _t(translations.Header.Navbar.Applications),
 };

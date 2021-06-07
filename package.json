@@ -1,5 +1,5 @@
 {
-    "name": "simple-movie",
+    "name": "simple-cinema",
     "version": "0.1.0",
     "private": true,
     "dependencies": {
@@ -46,15 +46,17 @@
         "inquirer": "7.3.3",
         "inquirer-directory": "2.2.0",
         "jest-styled-components": "7.0.3",
+        "json-server": "0.16.3",
         "lint-staged": "10.3.0",
         "lodash": "4.17.21",
         "moment": "2.29.1",
         "node-plop": "0.26.2",
-        "node-sass": "5.0.0",
+        "node-sass": "6.0.0",
         "plop": "2.7.4",
         "prettier": "2.1.1",
         "query-string": "7.0.0",
         "react": "16.13.1",
+        "react-animated-css": "1.2.1",
         "react-app-polyfill": "1.0.6",
         "react-avatar": "3.10.0",
         "react-csv": "2.0.3",
@@ -67,10 +69,13 @@
         "react-highlight-words": "0.17.0",
         "react-hook-form": "7.1.0",
         "react-i18next": "11.7.2",
+        "react-modal-video": "1.2.7",
+        "react-player": "2.9.0",
         "react-redux": "7.2.1",
         "react-responsive": "8.2.0",
         "react-router-dom": "5.2.0",
         "react-scripts": "4.0.3",
+        "react-scroll": "1.8.2",
         "react-slick": "0.28.1",
         "react-test-renderer": "16.13.1",
         "redux-injectors": "1.3.0",
@@ -90,6 +95,7 @@
         "stylelint-config-styled-components": "0.1.1",
         "stylelint-processor-styled-components": "1.10.0",
         "surge": "0.23.0",
+        "sweetalert2": "11.0.16",
         "swiper": "6.5.9",
         "ts-node": "9.0.0",
         "typescript": "4.1.3",
@@ -110,7 +116,8 @@
         "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts",
         "cleanAndSetup": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/scripts/clean.ts",
         "prettify": "prettier --write",
-        "extract-messages": "i18next-scanner --config=internals/extractMessages/i18next-scanner.config.js"
+        "extract-messages": "i18next-scanner --config=internals/extractMessages/i18next-scanner.config.js",
+        "server": "yarn run json-server --watch db.json --port 8000"
     },
     "eslintConfig": {
         "extends": "react-app"

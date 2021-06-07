@@ -15,21 +15,41 @@ const slice = createSlice({
     initialState,
     reducers: {
         addMovieAction: (state, action: PayloadAction<any>) => {
-            console.log("aaa", action.payload);
             state.isLoading = true;
+            state.error = null;
+            state.successMessage = "";
         },
-        addMovieActionSuccess() {},
-        addMovieActionFailure() {},
+        addMovieActionSuccess(state, action: PayloadAction<any>) {
+            state.isLoading = false;
+            state.successMessage = "Thêm phim thành công!";
+            state.error = null;
+        },
+        addMovieActionFailure: (state, action: PayloadAction<Error>) => {
+            state.error = action.payload;
+            state.isLoading = false;
+            state.successMessage = "";
+        },
 
         editMovieAction: (state, action: PayloadAction<any>) => {
-            console.log("ss");
+            state.isLoading = true;
+            state.error = null;
+            state.successMessage = "";
         },
-        editMovieActionSuccess() {},
-        editMovieActionFailure() {},
+        editMovieActionSuccess(state, action: PayloadAction<any>) {
+            state.isLoading = false;
+            state.successMessage = "Sửa thành công!";
+            state.error = null;
+        },
+        editMovieActionFailure(state, action: PayloadAction<Error>) {
+            state.error = action.payload;
+            state.isLoading = false;
+            state.successMessage = "";
+        },
 
         deleteMovieAction(state, action: PayloadAction<DeleteMoviePayload>) {
             state.isLoading = true;
             state.error = null;
+            state.successMessage = "";
         },
 
         deleteMovieActionSuccess: (state, action: PayloadAction<any>) => {
@@ -42,6 +62,20 @@ const slice = createSlice({
             state.successMessage = "";
             state.error = action.payload;
             state.isLoading = false;
+        },
+        createShowTimeAction: (state, action: PayloadAction<any>) => {
+            state.error = null;
+            state.isLoading = true;
+            state.successMessage = "";
+        },
+        createShowTimeActionSuccess: (state, action: PayloadAction<any>) => {
+            state.isLoading = false;
+            state.successMessage = action.payload;
+        },
+        createShowTimeActionFailure: (state, action: PayloadAction<Error>) => {
+            state.error = action.payload;
+            state.isLoading = false;
+            state.successMessage = "";
         },
     },
 });

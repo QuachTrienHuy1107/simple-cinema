@@ -20,7 +20,6 @@ export const UploadImage = memo((props: Props) => {
     const { imgPreview, loading, handleFileChange } = useUpload();
 
     const handleUpload = () => {
-        console.log("111", fileRef.current.focus()?.click());
         fileRef.current.focus()?.click();
     };
 

@@ -6,22 +6,27 @@
  * contain code that should be seen on all pages. (e.g. navigation bar)
  */
 
+import "antd/dist/antd.css";
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import { renderRoutes, routes } from "router";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import GlobalStyle from "styles/global-styles";
 import { ROUTES } from "utils/constants/settings";
 import About from "./pages/About/Loadable";
+import { useAuthSlice } from "./pages/Form/slice";
 import HomePage from "./pages/HomePage/Loadable";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
-import { useDispatch } from "react-redux";
-import { useAuthSlice } from "./pages/Form/slice";
-import { useIdentity } from "hooks/useIdentity";
-import "./app.scss";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import firebase from "../firebase";
+// import "sweetalert2/src/sweetalert2.scss";
+
+// var database = firebase;
+// console.log("databaseRef", databaseRef);
+// console.log("firebase", firebase.database());
 
 export function App() {
     const { i18n } = useTranslation();
@@ -31,10 +36,13 @@ export function App() {
         const userLogin = localStorage.getItem("user");
         if (userLogin) {
             const credential = JSON.parse(userLogin);
-            console.log("cccc", credential);
+
             disptach(actions.checkLoginActionSuccess(credential));
         }
     }, []);
+
+    //=================
+
     return (
         <BrowserRouter>
             <Helmet
@@ -42,13 +50,10 @@ export function App() {
                 defaultTitle="React Boilerplate"
                 htmlAttributes={{ lang: i18n.language }}
             >
-                <meta name="description" content="A React Boilerplate application" />
+                <meta name="description" content="Simple Cinema" />
             </Helmet>
 
             <Switch>
-                <Route exact path={ROUTES.HOME} component={HomePage} />
-                <Route exact path={ROUTES.ABOUT} component={About} />
-
                 {renderRoutes(routes)}
                 <Route exact path={ROUTES.NOTFOUND} component={NotFoundPage} />
                 <Redirect from="*" to={ROUTES.NOTFOUND} />

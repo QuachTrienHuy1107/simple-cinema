@@ -28,16 +28,32 @@ const GlobalStyle = createGlobalStyle`
 }
 
 body{
-  background-color: #131720;
+  transition: all 0.2s;
+  scroll-behavior: smooth;
+}
+
+p{
+  margin-bottom: 0;
 }
 
 li{
   list-style-type: none;
 }
 
-a{
-  color: #fff;
+*{
+  &::-webkit-scrollbar {
+    width: 4px;
+    background-color: #F5F5F5;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #fff;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: 0 0 6px 0 rgba(0, 0, 0,0.3);
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
 }
+
 
 `;
 

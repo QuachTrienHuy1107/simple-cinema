@@ -15,9 +15,7 @@ export const Switcher = (props: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
     const [lang, setLang] = React.useState<string>("vi");
-    const handleLangChange = (isSelected, e: ChangeEvent<HTMLInputElement>) => {
-        console.log("e", e);
-    };
+    const handleLangChange = (isSelected, e: ChangeEvent<HTMLInputElement>) => {};
 
     return (
         <Div>
@@ -26,8 +24,6 @@ export const Switcher = (props: Props) => {
                 unCheckedChildren="en"
                 defaultChecked
                 onChange={(isCheck: boolean, e: MouseEvent) => {
-                    console.log("isCheck", isCheck);
-                    console.log("e", e.currentTarget);
                     if (!isCheck) {
                         setLang("en");
                     }

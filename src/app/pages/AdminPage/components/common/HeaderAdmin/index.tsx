@@ -62,9 +62,6 @@ const HeaderAdmin = memo(({ collapsed, onCollapse }: IHeaderAdminProps) => {
 const Wrapper = styled.header`
     box-shadow: 0 2px 2px 0 rgba(60, 75, 100, 0.14);
     width: 100%;
-    span {
-        color: ${p => p.theme.secondaryColor} !important;
-    }
 `;
 
 const LogoHeader = styled.div`

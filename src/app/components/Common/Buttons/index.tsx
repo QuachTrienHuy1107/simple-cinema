@@ -17,17 +17,16 @@ export function Buttons({ children, ...rest }: any) {
 
     return (
         <Wrapper>
-            <ButtonLogin shape="round" {...rest}>
+            <ButtonStyle shape="round" {...rest}>
                 {children}
-            </ButtonLogin>
+            </ButtonStyle>
         </Wrapper>
     );
 }
 
 const Wrapper = styled.div``;
 
-const ButtonLogin = styled(Button)`
-    background-color: #010819;
+const ButtonStyle = styled(Button)`
     line-height: 0;
     font-weight: 600;
     border-radius: 300px;
@@ -38,6 +37,5 @@ const ButtonLogin = styled(Button)`
     transition: all 0.5s;
     &:hover {
         box-shadow: 0px 10px 15px 0px rgba(59, 55, 188, 0.5);
-        // color: #fff;
     }
 `;

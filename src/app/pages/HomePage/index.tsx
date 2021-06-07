@@ -1,87 +1,113 @@
-import { Button, Col, Row, Skeleton, Spin } from "antd";
-import { Buttons } from "app/components/Common/Buttons";
-import { Footer } from "app/components/Common/Footer";
-import { Header } from "app/components/Common/Header";
+import { BackTop, Col, Row, Skeleton } from "antd";
+import { Carousel } from "app/components/Common/Carousel";
+import { Loading } from "app/components/Common/Loading";
+import { Filter } from "app/components/Filter";
 import { MovieList } from "app/components/MovieList";
-import { SearchForm } from "app/components/SearchForm";
+import { MovieListMobile } from "app/components/MovieList/MovieListMobile";
+import { useGetDate } from "hooks/useGetDate";
+import usePagination from "hooks/usePagination";
+import { useScreenType } from "hooks/useScreenType";
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch } from "react-router";
+import { useMediaQuery } from "react-responsive";
+import { useLocation } from "react-router";
+import { scroller } from "react-scroll";
 import styled from "styled-components";
-import { HomeMessages } from "./messages";
+import { Contact } from "./components/Contact";
+import { News } from "./components/News";
+import { Schedule } from "./components/Schedule";
 import { useHomeSlice } from "./slice";
 import { selectHome } from "./slice/selectors";
-import video from "./assets/img/Halloween.mp4";
-import { Schedule } from "./components/Schedule";
-import { Loading } from "app/components/Common/Loading";
-import { ROUTES } from "utils/constants/settings";
-import { useGetDate } from "hooks/useGetDate";
-import usePagination from "hooks/usePagination";
 import { HomeState } from "./slice/types";
-import { Contact } from "./components/Contact";
 
-export function HomePage() {
+export const HomePage: React.FC<Record<never, never>> = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { cinemaList, isLoading, movie, moviePagination } = useSelector(selectHome) as HomeState;
+    const { cinemaList, isLoading, moviePagination, movieWithDate } = useSelector(
+        selectHome,
+    ) as HomeState;
     const { actions } = useHomeSlice();
     const { today, dateBefore } = useGetDate();
-    const { resPagination } = usePagination(1, 10);
+    const { Desktop, Mobile } = useScreenType();
+    const isMobile = useMediaQuery({ minWidth: 0, maxWidth: 767 });
+    const [loadData, setLoadData] = React.useState(3);
+    const { resPagination, handlePageChange } = usePagination(1, isMobile ? 10 : 10);
+
+    const location = useLocation();
+
+    console.log("resPagination", resPagination);
+    console.log("loadData", loadData);
 
     React.useEffect(() => {
         const data = {
             ...resPagination,
+            tuNgay: dateBefore,
+            denNgay: today,
         };
-        dispatch(actions.getPaginateMoviesAction(data));
+        dispatch(actions.fetchMultiApi(data));
+        dispatch(actions.getPaginateMoviesAction(resPagination));
+
+        if (location.state) {
+            const { url } = location.state as any;
+            scroller.scrollTo(url, false, 0, -65);
+        }
+
+        return () => {
+            dispatch(actions.clearData());
+        };
     }, []);
 
-    React.useEffect(() => {
-        dispatch(actions.getAllCinemaListAction());
-    }, [actions, dispatch]);
+    console.log("moviePagination", moviePagination);
 
     return (
         <>
             <Helmet>
                 <title>Home Page</title>
-                <meta name="description" content="A Boilerplate application homepage" />
+                <meta name="description" content="Simple movie" />
             </Helmet>
             <>
-                <Header />
+                {isLoading && <Loading />}
                 <Wrapper>
-                    <CarouselStyled>
-                        <video src={video} loop autoPlay muted height="100vh"></video>
-                        <Content>
-                            <h1>{t(HomeMessages.Title())}</h1>
-                            <p>{t(HomeMessages.Desc())}</p>
-                        </Content>
-                    </CarouselStyled>
+                    <BackTop duration={1000} visibilityHeight={1500} />
+                    <Carousel />
                     <Row justify="center" gutter={[0, 40]}>
-                        <Col span={20}>
-                            <SearchForm movieList={moviePagination.items} />
-
-                            <MovieList />
+                        <Col span={24}>
+                            <Desktop>
+                                <Filter movieList={moviePagination.items} />
+                                <MovieList
+                                    moviePagination={moviePagination}
+                                    movieWithDate={movieWithDate}
+                                />
+                            </Desktop>
+                            <Mobile>
+                                <MovieListMobile
+                                    handlePageChange={handlePageChange}
+                                    moviePagination={moviePagination}
+                                    movieWithDate={movieWithDate}
+                                    isLoading={isLoading}
+                                />
+                            </Mobile>
                         </Col>
-                        <Col span={20}>
+                        <Col span={24}>
                             {isLoading ? <Skeleton /> : <Schedule cinemaList={cinemaList} />}
                         </Col>
+                        <Col span={24}>
+                            <News />
+                        </Col>
                     </Row>
-                </Wrapper>
-                <Contact />
-                <Footer />
-            </>
 
-            <Switch>
-                <Route exact path={`${ROUTES.MOVIELIST}`} component={MovieList} />
-            </Switch>
+                    <Contact />
+
+                    {/* <Playground /> */}
+                </Wrapper>
+            </>
         </>
     );
-}
+};
 
-const Wrapper = styled.div`
-    margin: 0px 0 50px;
-`;
+const Wrapper = styled.div``;
 
 const CarouselStyled = styled.div`
     position: relative;

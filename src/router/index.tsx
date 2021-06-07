@@ -4,19 +4,20 @@ import { FormTemplate } from "app/pages/Form/Loadable";
 import { Login } from "app/pages/Form/pages/Login";
 import { Register } from "app/pages/Form/pages/Register";
 import { selectAuth } from "app/pages/Form/slice/selectors";
+import HomePage from "app/pages/HomePage/Loadable";
 import { NotFoundPage } from "app/pages/NotFoundPage/Loadable";
 import ClientTemplate from "app/templates/ClientTemplate";
 import { useIdentity } from "hooks/useIdentity";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Redirect, Route, RouteProps } from "react-router-dom";
+import { Redirect, Route, RouteProps, useLocation } from "react-router-dom";
 import { ROUTES } from "utils/constants/settings";
 import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
 import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
 import { MovieForm } from "../app/pages/AdminPage/pages/MovieManagement/MovieForm";
 import { ShowTime } from "../app/pages/AdminPage/pages/MovieManagement/ShowTime";
 import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
-import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
+import MovieDetail from "../app/pages/MovieDetail/Loadable";
 
 type PrivateRouteProps = {
     component: React.ComponentType;
@@ -37,6 +38,13 @@ const routes: RouterType[] = [
      * Client
      */
     {
+        path: `${ROUTES.HOME}`,
+        exact: true,
+        component: HomePage,
+        layout: "Client",
+        restricted: true,
+    },
+    {
         path: `${ROUTES.MOVIEDETAIL}/:maPhim`,
         exact: true,
         component: MovieDetail,
@@ -50,6 +58,13 @@ const routes: RouterType[] = [
         layout: "Client",
         restricted: true,
     },
+    /* {
+        path: `${ROUTES.HOME}`,
+        exact: true,
+        component: HomePage,
+        layout: "Client",
+        restricted: true,
+    }, */
 
     /**
      * Form
@@ -94,13 +109,7 @@ const routes: RouterType[] = [
         layout: "Admin",
         restricted: true,
     },
-    {
-        path: `${ROUTES.FORMADMIN}/:maPhim`,
-        exact: true,
-        component: MovieForm,
-        layout: "Admin",
-        restricted: true,
-    },
+
     {
         path: `${ROUTES.SHOWTIME}`,
         exact: true,
@@ -108,15 +117,6 @@ const routes: RouterType[] = [
         layout: "Admin",
         restricted: true,
     },
-    /**
-     * Home
-     */
-    /*  {
-        path: `${ROUTES.NOTFOUND}`,
-        exact: true,
-        component: NotFoundPage,
-        layout: "",
-    }, */
 ];
 
 // const isAuthenticated = true;
@@ -129,8 +129,11 @@ const AppLayout = ({
     ...rest
 }: PrivateRouteProps): any => {
     const { isAuthenticated, credentials } = useSelector(selectAuth);
-    console.log("credentials", credentials);
-    console.log("isAuthenticated", isAuthenticated);
+    const location = useLocation();
+
+    React.useLayoutEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }, []);
 
     return (
         <>
@@ -148,7 +151,7 @@ const AppLayout = ({
                             <Component {...props} />
                         </ClientTemplate>
                     )) ||
-                    (restricted && layout === "Admin" && (
+                    (credentials?.maLoaiNguoiDung === "QuanTri" && layout === "Admin" && (
                         <AdminPage {...rest}>
                             <Component {...props} />
                         </AdminPage>

@@ -3,60 +3,128 @@
  * Checkout
  *
  */
-import * as React from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { Col, PageHeader, Row, Space, Spin } from "antd";
-import { Buttons } from "app/components/Common/Buttons";
+import { Col, message, PageHeader, Row, Skeleton, Space, Steps } from "antd";
 import Countdown from "antd/lib/statistic/Countdown";
-import { Payment } from "./components/Payment";
-import { Seat } from "./components/Seat";
+import { Header } from "app/components/Common/Header";
+import { Loading } from "app/components/Common/Loading";
+import { useScreenType } from "hooks/useScreenType";
+import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router";
+import styled from "styled-components/macro";
+import { media } from "styles/media";
+import { selectAuth } from "../Form/slice/selectors";
+import { Payment } from "./components/Payment";
+import { PaymentMobile } from "./components/Payment/components/PaymentMobile";
+import { Seat } from "./components/Seat";
+import { ContextProvider, useCheckoutContext } from "./context/createContext";
+import { useCheckout } from "./hooks/useCheckout";
 import { useCheckoutSlice } from "./slice";
 import { selectCheckout } from "./slice/selectors";
-import { ContextProvider } from "./context/createContext";
-import { Loading } from "app/components/Common/Loading";
+import Swal from "sweetalert2";
 
 interface Props {}
-
-const deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30; // Moment is also OK
-
-function onFinish() {
-    console.log("finished!");
-}
+const { Step } = Steps;
+// Date.now() + 1000 * 60 * 20;
 
 export function Checkout(props: Props) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const { actions } = useCheckoutSlice();
+    const history = useHistory();
     const { tickets, isLoading } = useSelector(selectCheckout);
-    const { message } = useSelector(selectCheckout);
+    const { Desktop, Mobile } = useScreenType();
+    const { setArraySeat } = useCheckoutContext();
+    const { credentials } = useSelector(selectAuth);
     const { danhSachGhe, thongTinPhim } = tickets;
+    const [out, setOut] = React.useState(false);
+    const { maLichChieu } = useParams() as any;
+
+    const onFinish = async () => {
+        message.warning("Hết thời gian đặt vé!!").then(() => {
+            setOut(true);
+            history.goBack();
+        });
+    };
+
+    const deadline = Date.now() + 10000 * 60; // Moment is also OK
 
     React.useEffect(() => {
-        dispatch(actions.getAllSeatAction({ maLichChieu: 16103 }));
-    }, [message]);
+        dispatch(actions.getAllSeatAction({ maLichChieu }));
+        return () => {
+            setArraySeat([]);
+            dispatch(actions.resetStore());
+        };
+    }, []);
 
     return (
         <ContextProvider>
+            {isLoading && <Loading />}
             <Wrapper>
-                <TopTitle
-                    onBack={() => null}
-                    title="Back"
-                    extra={[
-                        <Space>
-                            <Countdown value={deadline} onFinish={onFinish} />
-                        </Space>,
-                    ]}
-                />
-                <Row justify="center" style={{ margin: "50px 0" }}>
-                    <Col md={14} sm={22}>
-                        <Seat tickets={danhSachGhe} isLoading={isLoading} />
+                <Row>
+                    <Col xl={18} md={16} xs={24}>
+                        <Header />
+                        <Row justify="space-between">
+                            <Col lg={24} md={24}>
+                                <TopTitle onBack={() => null} />
+                                <SubTitle>
+                                    <Space>
+                                        <Desktop>
+                                            <div>
+                                                <img
+                                                    src={
+                                                        isLoading ? (
+                                                            <Skeleton />
+                                                        ) : (
+                                                            thongTinPhim?.hinhAnh
+                                                        )
+                                                    }
+                                                    alt=""
+                                                    width={60}
+                                                    height={60}
+                                                />
+                                            </div>
+                                        </Desktop>
+
+                                        <Space direction="vertical">
+                                            <div>
+                                                <span>{thongTinPhim?.tenCumRap}</span>
+                                                <span> - </span>
+                                                <span>{thongTinPhim?.tenRap}</span>
+                                            </div>
+                                            <div>
+                                                <p>{thongTinPhim?.diaChi}</p>
+                                            </div>
+                                        </Space>
+                                    </Space>
+                                    <div>
+                                        <p>Thời gian đặt vé</p>
+                                        <Space>
+                                            <CountdownStyle value={deadline} onFinish={onFinish} />
+                                        </Space>
+                                    </div>
+                                </SubTitle>
+                                <Row justify="center">
+                                    <Col xl={20} lg={24}>
+                                        <Seat arrayTickets={danhSachGhe} isLoading={isLoading} />
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
                     </Col>
-                    <Col md={6} sm={22} className="seat__payment">
-                        <Payment moviedetail={thongTinPhim} isLoading={isLoading} />
+                    <Col xl={6} md={8} xs={24}>
+                        <Desktop>
+                            <Payment
+                                moviedetail={thongTinPhim}
+                                isLoading={isLoading}
+                                credentials={credentials}
+                                out={out}
+                            />
+                        </Desktop>
+                        <Mobile>
+                            <PaymentMobile moviedetail={thongTinPhim} credentials={credentials} />
+                        </Mobile>
                     </Col>
                 </Row>
             </Wrapper>
@@ -65,12 +133,40 @@ export function Checkout(props: Props) {
 }
 
 const Wrapper = styled.div`
-    margin: 0px 0 50px;
+    height: 100%;
 `;
 
 const TopTitle = styled(PageHeader)`
-    padding: 50px 150px;
-    background-color: #0f1319;
-    border-top: 1px solid #17305f;
+    padding: 10px 50px;
     border-bottom: 1px solid #17305f;
+
+    ${media.small`
+        padding: 0 50px;
+    `}
+`;
+
+const SubTitle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    span {
+        color: #000;
+        font-size: 1.3rem;
+        margin-bottom: -10px;
+        font-weight: 600;
+
+        @media screen and (max-width: 576px) {
+            font-size: 1rem;
+        }
+    }
+
+    .ant-space-item {
+        margin-bottom: 0 !important;
+    }
+`;
+
+const CountdownStyle = styled(Countdown)`
+    .ant-space {
+        width: 100px;
+    }
 `;

@@ -8,9 +8,7 @@ import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { messages } from "./messages";
 
-interface Props {}
-
-export function Image({ ...rest }) {
+export function Img({ ...rest }) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
 
@@ -18,13 +16,11 @@ export function Image({ ...rest }) {
 }
 
 const Wrapper = styled.img`
-    background-image: url("https://tix.vn/app/assets/img/default-film.webp");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     width: 100%;
     display: block;
-    height: 350px;
     object-fit: cover;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;

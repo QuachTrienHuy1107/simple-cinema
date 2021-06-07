@@ -5,10 +5,11 @@
  */
 import { Col, Form, Row } from "antd";
 import Title from "antd/lib/typography/Title";
+import { Loading } from "app/components/Common/Loading";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { Prompt, useHistory } from "react-router";
 import styled from "styled-components/macro";
 import { layout } from "utils/helpers";
 import { useHandleSubmit } from "./hooks/useHandleSubmit";
@@ -23,7 +24,10 @@ export function FormTemplate({ children }) {
     const { actions } = useAuthSlice();
     const [form] = Form.useForm();
     const history = useHistory();
-    const { onLogin, onRegister } = useHandleSubmit();
+    const { onLogin, onRegister, isAuthenticated, isLoading } = useHandleSubmit();
+    const [out, setOut] = React.useState(false);
+
+    console.log("out", out);
 
     const onFinish = (values: any) => {
         if (Object.keys(values).length < 3) {
@@ -37,37 +41,73 @@ export function FormTemplate({ children }) {
         }
     };
 
+    const onFinishFailed = (errorInfo: any) => {
+        console.log("Failed:", errorInfo);
+    };
+
+    const onFieldsChange = change => {
+        console.log("change", change);
+        if (change[0].value !== "") {
+            setOut(true);
+        } else if (isAuthenticated) {
+            setOut(false);
+        } else {
+            setOut(false);
+        }
+    };
+
+    React.useEffect(() => {
+        console.log("isAuthenticated", isAuthenticated);
+    }, [isAuthenticated]);
+
     return (
-        <Wrapper>
-            <Content>
-                <Row justify="center">
-                    <ColStyled span={20}>
-                        <Title
-                            style={{
-                                textAlign: "center",
-                                cursor: "pointer",
-                            }}
-                            onClick={() => {
-                                history.goBack();
-                            }}
-                        >
-                            {window.location.pathname === "/login" ? "Đăng nhập" : "Đăng kí"}
-                        </Title>
-                        <Form
-                            form={form}
-                            {...layout}
-                            name="basic"
-                            initialValues={{
-                                remember: true,
-                            }}
-                            onFinish={onFinish}
-                        >
-                            {children}
-                        </Form>
-                    </ColStyled>
-                </Row>
-            </Content>
-        </Wrapper>
+        <>
+            {isAuthenticated ? (
+                <Loading />
+            ) : (
+                <Wrapper>
+                    <Content>
+                        <Row justify="center">
+                            <ColStyled span={20}>
+                                <Title
+                                    style={{
+                                        textAlign: "center",
+                                        cursor: "pointer",
+                                        color: "#fff",
+                                    }}
+                                    onClick={() => {
+                                        history.goBack();
+                                    }}
+                                >
+                                    {window.location.pathname === "/login"
+                                        ? "Đăng nhập"
+                                        : "Đăng kí"}
+                                </Title>
+                                <Form
+                                    form={form}
+                                    {...layout}
+                                    name="basic"
+                                    initialValues={{
+                                        remember: true,
+                                    }}
+                                    onFinish={onFinish}
+                                    onFinishFailed={onFinishFailed}
+                                    onFieldsChange={onFieldsChange}
+                                >
+                                    {children}
+                                </Form>
+                            </ColStyled>
+                        </Row>
+                    </Content>
+                    {/* <Prompt
+                    when={out}
+                    message={(location: any) => {
+                        return "Bạn có muốn thoát không?";
+                    }}
+                /> */}
+                </Wrapper>
+            )}
+        </>
     );
 }
 

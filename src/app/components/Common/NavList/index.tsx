@@ -18,11 +18,8 @@ export function NavList(props: Props) {
     return (
         <Wrapper>
             <Nav />
-            {/* <Switcher /> */}
         </Wrapper>
     );
 }
 
-const Wrapper = styled.div`
-    display: flex;
-`;
+const Wrapper = styled.div``;

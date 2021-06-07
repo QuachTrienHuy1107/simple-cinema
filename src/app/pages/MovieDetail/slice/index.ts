@@ -1,13 +1,12 @@
 import { PayloadAction } from "@reduxjs/toolkit";
+import { MovieDetailPayload, MovieResponse } from "app/pages/HomePage/slice/types";
 import { createSlice } from "utils/@reduxjs/toolkit";
 import { useInjectReducer, useInjectSaga } from "utils/redux-injectors";
 import { movieDetailSaga } from "./saga";
 import { MovieDetailProps, MovieDetailState } from "./types";
 
 export const initialState: MovieDetailState = {
-    movies: [],
     movieDetail: [],
-    isError: false,
     isLoading: false,
 };
 
@@ -15,22 +14,21 @@ const movieSlice = createSlice({
     name: "moviedetail",
     initialState,
     reducers: {
-        getDataSuccess: (state, action: PayloadAction<any>) => {
-            state.movies = action.payload;
-            state.isLoading = false;
+        getMovieDetailAction(state, action: PayloadAction<MovieDetailPayload>) {
+          console.log('zz')
+            state.isLoading = true;
         },
-        getDataFailure: state => {
-            state.isLoading = false;
-            state.isError = true;
-            state.isLoading = false;
-        },
-        getMovieDetailData(state, action: PayloadAction<any>) {
-            console.log("maaa", action.payload);
-        },
-        getMovieDetailDataSuccess: (state, action: PayloadAction<MovieDetailProps>) => {
+        getMovieDetailActionSuccess: (state, action: PayloadAction<any>) => {
             state.movieDetail = action.payload;
-            console.log(action.payload);
+            state.isLoading = false;
         },
+        getMovieDetailFailure(state, action: PayloadAction<Error>) {
+            state.error = action.payload;
+            state.isLoading = false;
+        },
+        clearData(state){
+          return initialState
+        }
     },
 });
 

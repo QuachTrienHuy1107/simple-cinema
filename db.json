@@ -1,0 +1,54 @@
+{
+  "reviews": [
+    {
+      "id": 1374,
+      "maPhim": 1374,
+      "danhSachBinhLuan": [
+        {
+          "maNguoiDung": "11",
+          "taiKhoan": "Admin Vương Gà",
+          "danhGia": 4,
+          "binhLuan": "222"
+        },
+        {
+          "maNguoiDung": "11",
+          "taiKhoan": "Admin Vương Gà",
+          "ngayDang": "May 26th 2021, 7:52:57 pm",
+          "danhGia": 4,
+          "binhLuan": "2222"
+        },
+        {
+          "maNguoiDung": "11",
+          "taiKhoan": "bbbb1",
+          "ngayDang": "May 28th 2021, 1:52:50 am",
+          "danhGia": 4,
+          "binhLuan": "111"
+        }
+      ]
+    },
+    {
+      "id": 1389,
+      "maPhim": 1389,
+      "danhSachBinhLuan": [
+        {
+          "maNguoiDung": "1222",
+          "taiKhoan": "hahaha",
+          "binhLuan": "ok ",
+          "danhGia": 10
+        }
+      ]
+    }
+  ],
+  "food": [
+    {
+      "maLichChieu": 1111,
+      "feed": [
+        {
+          "price": 75000,
+          "image": "11",
+          "name": "thit bo"
+        }
+      ]
+    }
+  ]
+}

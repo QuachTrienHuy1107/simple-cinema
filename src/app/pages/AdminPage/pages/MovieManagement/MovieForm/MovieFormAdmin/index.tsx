@@ -3,217 +3,194 @@
  * Form
  *
  */
-import React, { memo } from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { useDispatch, useSelector } from "react-redux";
-import { useHomeSlice } from "app/pages/HomePage/slice";
-import { selectHome } from "app/pages/HomePage/slice/selectors";
-import { useLocation, useParams } from "react-router";
+import { Button, Card, Col, DatePicker, Form, Input, InputNumber, message, Row } from "antd";
 import { useAddEdit } from "app/pages/AdminPage/hooks/useAddEdit";
-import { Button, Card, Col, Form, Input, Row, Skeleton } from "antd";
 import { useUpload } from "app/pages/AdminPage/hooks/useUpload";
+import moment from "moment";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import styled from "styled-components/macro";
 import { formItemLayout } from "utils/helpers";
-import { InputStyled } from "app/components/Common/InputStyled";
-import { UploadOutlined } from "@ant-design/icons";
-import { Buttons } from "app/components/Common/Buttons";
+import { selectMovieManagement } from "../../slice/selectors";
 
-interface Props {}
-
+interface Props {
+    movieDetail?: any;
+    isEdit: boolean | undefined;
+}
+/*
 interface LocationState {
     isEdit: boolean;
-}
+} */
 
-export const MovieFormAdmin = memo((props: Props) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const formData = new FormData();
-    const dispatch = useDispatch();
-    const { actions } = useHomeSlice();
-    const { isLoading, error, movie } = useSelector(selectHome) as any;
-
+export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
     const [form] = Form.useForm();
-    const params = useParams() as any;
-    const { maPhim } = params;
-    const location = useLocation<LocationState>();
-    const { onAddEdit, setEdit } = useAddEdit();
-    const { hinhAnh, imgPreview, loading, handleFileChange, setImgUpload } = useUpload();
-    const [isEdit, setIsEdit] = React.useState(false);
-    const { t, i18n } = useTranslation();
-    React.useEffect(() => {
-        if (location.state) {
-            const { isEdit } = location.state;
-            if (isEdit) {
-                setIsEdit(true);
-                for (let key in movie) {
-                    form.setFieldsValue({
-                        [key]: movie[key],
-                    });
-                }
-            } else {
-                setIsEdit(false);
-            }
-        }
-    }, [actions, dispatch, form, location.state, movie, params]);
 
-    console.log("params", params?.maPhim);
+    const { onAddEdit, setEdit } = useAddEdit();
+    const { hinhAnh, imgPreview, handleFileChange, setImgUpload } = useUpload();
+    const { isLoading } = useSelector(selectMovieManagement);
+    const { t, i18n } = useTranslation();
+    const [ngayKhoiChieu, setDate] = React.useState("");
+
+    React.useEffect(() => {
+        setEdit(isEdit);
+    }, [isEdit, setEdit]);
 
     React.useEffect(() => {
         if (isEdit) {
-            dispatch(actions.getMovieDetail(params));
+            for (let key in movieDetail) {
+                form.setFieldsValue({
+                    // key: movieDetail[key],
+                    tenPhim: movieDetail.tenPhim,
+                    biDanh: movieDetail.biDanh,
+                    danhGia: movieDetail.danhGia,
+                    trailer: movieDetail.trailer,
+                    moTa: movieDetail.moTa,
+                    ngayKhoiChieu: moment(movieDetail?.ngayKhoiChieu),
+                });
+            }
+            setDate(moment(movieDetail?.ngayKhoiChieu).format("DD-MM-YYYY"));
         }
-    }, [actions, dispatch, isEdit, params]);
+    }, [form, isEdit, movieDetail]);
 
     const onFinish = (values: any) => {
         if (isEdit) {
-            setEdit(true);
-            onAddEdit({ ...values, hinhAnh, maPhim });
+            const { maPhim } = movieDetail;
+            onAddEdit({ ...values, hinhAnh, maPhim, ngayKhoiChieu, maNhom: "GP01" });
         } else {
-            onAddEdit({ ...values, hinhAnh });
-            setEdit(false);
+            // setEdit(false);
+            onAddEdit({ ...values, hinhAnh, ngayKhoiChieu, maNhom: "GP01" });
         }
     };
-
-    if (error) {
-        alert(error);
-    }
 
     return (
         <Wrapper>
             <Form form={form} onFinish={onFinish} name="movie">
-                {isLoading ? (
-                    <Skeleton />
-                ) : (
-                    <>
-                        <Row justify="space-around" gutter={[20, 35]}>
-                            <ColStyled md={15}>
-                                <LeftPanel>
-                                    <Row gutter={[24, 12]} justify="space-around">
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Tên phim"
-                                                name="tenPhim"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <InputStyled
-                                                    size="large"
-                                                    placeholder="Mời bạn nhập tên phim"
-                                                />
-                                            </Form.Item>
-                                        </Col>
+                <Row justify="space-around" gutter={[20, 0]}>
+                    <ColStyled md={24}>
+                        <LeftPanel>
+                            <Row gutter={[24, 0]} justify="space-around">
+                                <Col md={12}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Tên phim"
+                                        name="tenPhim"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Input placeholder="Mời bạn nhập tên phim" />
+                                    </Form.Item>
+                                </Col>
 
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Bí danh"
-                                                name="biDanh"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <InputStyled placeholder="Mời bạn nhập email" />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Trailer"
-                                                name="trailer"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <InputStyled placeholder="Mời bạn nhập họ tên" />
-                                            </Form.Item>
-                                        </Col>
-
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Mô tả"
-                                                name="moTa"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <InputStyled placeholder="Mời bạn nhập tài khoản" />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Mã nhóm"
-                                                name="maNhom"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <InputStyled placeholder="Mời bạn nhập tài khoản" />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Ngày chiếu"
-                                                name="ngayKhoiChieu"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <InputStyled placeholder="Mời bạn nhập tài khoản" />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Đánh giá"
-                                                name="danhGia"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <InputStyled placeholder="Mời bạn nhập tài khoản" />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={12}>
-                                            <Form.Item style={{ textAlign: "center" }}>
-                                                <Buttons
-                                                    type="primary"
-                                                    htmlType="submit"
-                                                    className="login__btn"
-                                                >
-                                                    Submit
-                                                </Buttons>
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                </LeftPanel>
-                            </ColStyled>
-                            <ColStyled md={6}>
-                                <RightPanel>
-                                    {imgPreview ? (
-                                        <Card
-                                            hoverable
-                                            style={{ width: 240 }}
-                                            cover={<img alt="example" src={imgPreview} />}
+                                <Col md={12}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Ngày chiếu"
+                                        name="ngayKhoiChieu"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <DatePicker
+                                            // value={moment(movieDetail?.ngayKhoiChieu)}
+                                            style={{ width: "100%" }}
+                                            format="DD-MM-YYYY"
+                                            onChange={(date: any, dateTime: string) => {
+                                                const data = `${dateTime}`;
+                                                setDate(data);
+                                            }}
                                         />
-                                    ) : (
-                                        <Form.Item>
-                                            <Input
-                                                name="hinhAnh"
-                                                type="file"
-                                                onChange={handleFileChange}
-                                                // style={{ display: "none" }}
-                                            />
-                                        </Form.Item>
-                                    )}
+                                    </Form.Item>
+                                </Col>
 
-                                    {isEdit ? <img width={250} src={movie?.hinhAnh} alt="" /> : ""}
-                                </RightPanel>
-                            </ColStyled>
-                        </Row>
-                    </>
-                )}
+                                <Col md={12}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Bí danh"
+                                        name="biDanh"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Input placeholder="Mời bạn nhập email" />
+                                    </Form.Item>
+                                </Col>
+
+                                <Col md={12}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Đánh giá"
+                                        name="danhGia"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <InputNumber
+                                            style={{ width: "100%" }}
+                                            defaultValue={movieDetail?.danhGia}
+                                            value={movieDetail?.danhGia}
+                                            min={1}
+                                            max={10}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col md={24}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Mô tả"
+                                        name="moTa"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Input.TextArea
+                                            rows={4}
+                                            placeholder="please enter url description"
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        </LeftPanel>
+                    </ColStyled>
+                    <ColStyled md={24}>
+                        <RightPanel>
+                            {imgPreview ? (
+                                <Card
+                                    hoverable
+                                    style={{ width: 240 }}
+                                    cover={<img alt="example" src={imgPreview} />}
+                                />
+                            ) : (
+                                <>
+                                    <Card
+                                        hoverable
+                                        style={{ width: 240 }}
+                                        cover={<img alt="example" src={imgPreview} />}
+                                    />
+                                    <Form.Item>
+                                        <Input
+                                            name="hinhAnh"
+                                            type="file"
+                                            onChange={handleFileChange}
+                                            // style={{ display: "none" }}
+                                        />
+                                    </Form.Item>
+                                </>
+                            )}
+
+                            {isEdit ? <img width={250} src={movieDetail?.hinhAnh} alt="" /> : ""}
+                            <Form.Item {...formItemLayout} label="Trailer" name="trailer">
+                                <Input placeholder="Mời bạn nhập tên phim" />
+                                {/* <a href={movieDetail?.trailer} target="_blank" rel="noreferrer">
+                                    {movieDetail?.trailer}
+                                </a> */}
+                            </Form.Item>
+                        </RightPanel>
+                    </ColStyled>
+                </Row>
+                <ButtonStyle type="primary" htmlType="submit" /*  loading={isLoading} */>
+                    Submit
+                </ButtonStyle>
             </Form>
         </Wrapper>
     );
-});
+};
 
 const Wrapper = styled.div`
-    background-color: #131720;
     border-radius: 16px;
     position: relative;
     width: 100%;
-    border: 1px solid #151f30;
 `;
 
 const ColStyled = styled(Col)`
@@ -228,3 +205,10 @@ const LeftPanel = styled.div`
 `;
 
 const RightPanel = styled.div``;
+
+const ButtonStyle = styled(Button)`
+    position: fixed;
+    right: 25px;
+    bottom: 10px;
+    z-index: 100;
+`;
