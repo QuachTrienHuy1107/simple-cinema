@@ -22,6 +22,4 @@ export function NavList(props: Props) {
     );
 }
 
-const Wrapper = styled.div`
-    display: flex;
-`;
+const Wrapper = styled.div``;

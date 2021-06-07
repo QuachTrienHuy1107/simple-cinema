@@ -4,7 +4,7 @@
  *
  */
 import { StarOutlined } from "@ant-design/icons";
-import { Col, Progress, Row, Space } from "antd";
+import { Anchor, Button, Col, Progress, Row, Space } from "antd";
 import { useScreenType } from "hooks/useScreenType";
 import moment from "moment";
 import React, { memo } from "react";
@@ -12,6 +12,9 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
 import { Buttons } from "../Common/Buttons";
+import { LinkTo } from "../Common/LinkTo";
+import { Link } from "react-scroll";
+import { ANCHOR } from "utils/constants/settings";
 
 interface MovieDetailProps {
     movieDetail: any;
@@ -61,7 +64,19 @@ export const Banner = memo(({ movieDetail }: MovieDetailProps) => {
                                                         "hh:MM A",
                                                     )}
                                                 </span>
-                                                <ButtonBooking>Mua vé</ButtonBooking>
+                                                <ButtonBooking>
+                                                    <Link
+                                                        activeClass="active"
+                                                        to={ANCHOR.SCHEDULEFORM}
+                                                        spy={true}
+                                                        smooth={true}
+                                                        hashSpy={true}
+                                                        offset={-50}
+                                                        duration={500}
+                                                    >
+                                                        Mua vé
+                                                    </Link>
+                                                </ButtonBooking>
                                             </Date>
                                         </Detail>
                                     </Space>
@@ -74,7 +89,6 @@ export const Banner = memo(({ movieDetail }: MovieDetailProps) => {
                                             format={percent => `${percent + "%"}`}
                                             width={120}
                                         />
-                                        {/* <i className="fa fa-star" /> */}
                                     </Rate>
                                     <RateTitle>
                                         <Space>
@@ -230,17 +244,25 @@ const Date = styled.div`
     }
 `;
 
-const ButtonBooking = styled(Buttons)`
-    background-color: #e73e2c;
-    padding: 8px 30px;
-    border-radius: 5px;
-    margin-right: 10px;
-    font-weight: 600;
-    margin-top: 15px;
-    :hover {
-        background-color: #e73e2c !important;
-        span {
-            color: #fff;
+const ButtonBooking = styled.div`
+    a {
+        color: #fff;
+        font-size: 1.2rem;
+        display: inline-block;
+        width: 170px;
+        text-align: center;
+        background-color: #e73e2c;
+        padding: 10px 0px;
+        border-radius: 5px;
+        margin-right: 10px;
+        font-weight: 600;
+        margin-top: 15px;
+        cursor: pointer;
+        -webkit-transition: all 0.4s;
+        transition: all 0.4s;
+
+        &:hover {
+            background-color: #ef602a;
         }
     }
 `;

@@ -10,7 +10,7 @@ import ClientTemplate from "app/templates/ClientTemplate";
 import { useIdentity } from "hooks/useIdentity";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Redirect, Route, RouteProps } from "react-router-dom";
+import { Redirect, Route, RouteProps, useLocation } from "react-router-dom";
 import { ROUTES } from "utils/constants/settings";
 import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
 import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
@@ -37,6 +37,13 @@ const routes: RouterType[] = [
     /**
      * Client
      */
+    {
+        path: `${ROUTES.HOME}`,
+        exact: true,
+        component: HomePage,
+        layout: "Client",
+        restricted: true,
+    },
     {
         path: `${ROUTES.MOVIEDETAIL}/:maPhim`,
         exact: true,
@@ -110,15 +117,6 @@ const routes: RouterType[] = [
         layout: "Admin",
         restricted: true,
     },
-    /**
-     * Home
-     */
-    /*  {
-        path: `${ROUTES.NOTFOUND}`,
-        exact: true,
-        component: NotFoundPage,
-        layout: "",
-    }, */
 ];
 
 // const isAuthenticated = true;
@@ -131,6 +129,11 @@ const AppLayout = ({
     ...rest
 }: PrivateRouteProps): any => {
     const { isAuthenticated, credentials } = useSelector(selectAuth);
+    const location = useLocation();
+
+    React.useLayoutEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    }, []);
 
     return (
         <>

@@ -56,4 +56,19 @@ export enum ActionType {
     view,
 }
 
+export enum ANCHOR {
+  MOVIELISTFROM = "/#movielist",
+  MOVIELISTTO = "/#movielist",
+  HOMEFROM = "/#home",
+  HOMETO = "/#home",
+  APPLiCATIONSFROM = "app",
+  APPLiCATIONSTO = "app",
+  CINEMAFROM = "cinema",
+  CINEMATO = "cinema",
+  NEWSFORM = "news",
+  NEWSTO = "news",
+  SCHEDULEFORM = "schedule",
+  SCHEDULETO = "schedule"
+}
+
 export const fakeApi = 'http://localhost:8000'
