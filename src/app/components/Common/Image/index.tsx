@@ -8,9 +8,7 @@ import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { messages } from "./messages";
 
-interface Props {}
-
-export function Image({ ...rest }) {
+export function Img({ ...rest }) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
 
@@ -23,7 +21,6 @@ const Wrapper = styled.img`
     background-position: center center;
     width: 100%;
     display: block;
-    height: 350px;
     object-fit: cover;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
