@@ -27,8 +27,6 @@ export function FormTemplate({ children }) {
     const { onLogin, onRegister, isAuthenticated, isLoading } = useHandleSubmit();
     const [out, setOut] = React.useState(false);
 
-    console.log("out", out);
-
     const onFinish = (values: any) => {
         if (Object.keys(values).length < 3) {
             onLogin({ ...values });
@@ -41,12 +39,9 @@ export function FormTemplate({ children }) {
         }
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log("Failed:", errorInfo);
-    };
+    const onFinishFailed = (errorInfo: any) => {};
 
     const onFieldsChange = change => {
-        console.log("change", change);
         if (change[0].value !== "") {
             setOut(true);
         } else if (isAuthenticated) {
@@ -56,9 +51,7 @@ export function FormTemplate({ children }) {
         }
     };
 
-    React.useEffect(() => {
-        console.log("isAuthenticated", isAuthenticated);
-    }, [isAuthenticated]);
+    React.useEffect(() => {}, [isAuthenticated]);
 
     return (
         <>

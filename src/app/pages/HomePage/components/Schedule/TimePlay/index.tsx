@@ -32,10 +32,6 @@ export const TimePlay = memo(({ movie }: Props) => {
 
     const rangeTime = getRangeTime(movie);
 
-    console.log("rangeTime", rangeTime);
-
-    console.log("movie", movie);
-
     return (
         <Wrapper>
             <Timer>

@@ -29,7 +29,6 @@ export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
     const { t, i18n } = useTranslation();
     const [open, setOpen] = React.useState(false);
 
-    console.log("movie", movie);
     return (
         <>
             <CardStyle

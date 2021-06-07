@@ -52,7 +52,6 @@ const api = {
     },
 
     fetchMultiApi: async (params: GetMovieWithDate) => {
-      console.log('prarmas',params)
         const url1 = await axiosClient.get(`${API.GET_ALL_MOVIE}`);
         const url2 = await axiosClient.get(`${API.GET_CINEMA_LIST}`);
         const url3 = await axiosClient.get(`${API.GET_MOVIE_WITH_DATE}`, { params });

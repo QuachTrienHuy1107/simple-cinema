@@ -22,11 +22,6 @@ import { useAuthSlice } from "./pages/Form/slice";
 import HomePage from "./pages/HomePage/Loadable";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
 import firebase from "../firebase";
-// import "sweetalert2/src/sweetalert2.scss";
-
-// var database = firebase;
-// console.log("databaseRef", databaseRef);
-// console.log("firebase", firebase.database());
 
 export function App() {
     const { i18n } = useTranslation();

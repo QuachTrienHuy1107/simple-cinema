@@ -37,9 +37,6 @@ export const HomePage: React.FC<Record<never, never>> = () => {
 
     const location = useLocation();
 
-    console.log("resPagination", resPagination);
-    console.log("loadData", loadData);
-
     React.useEffect(() => {
         const data = {
             ...resPagination,
@@ -58,8 +55,6 @@ export const HomePage: React.FC<Record<never, never>> = () => {
             dispatch(actions.clearData());
         };
     }, []);
-
-    console.log("moviePagination", moviePagination);
 
     return (
         <>

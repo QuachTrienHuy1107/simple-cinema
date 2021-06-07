@@ -29,8 +29,6 @@ export const TabDetail = memo(({ date, cumRapChieu }: Props) => {
     const reFormatDate = formatDate.split("-");
     const filterDateTime = `${reFormatDate[2]}-${reFormatDate[1]}-${reFormatDate[0]}`;
 
-    console.log("cumRapChieu", cumRapChieu);
-
     return (
         <Wrapper>
             {cumRapChieu?.map((movie: MovieInfo) => {
@@ -39,9 +37,6 @@ export const TabDetail = memo(({ date, cumRapChieu }: Props) => {
                 const newArr = movie.lichChieuPhim.filter((timePlay: MovieShowtime) =>
                     timePlay.ngayChieuGioChieu.includes(filterDateTime),
                 );
-
-                console.log("newArr", newArr);
-                console.log("movie", movie);
 
                 return (
                     <>

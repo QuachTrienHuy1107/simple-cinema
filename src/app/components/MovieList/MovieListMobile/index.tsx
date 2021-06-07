@@ -188,8 +188,6 @@ export const MovieListMobile = memo(
         };
     }, [dateBefore, today]); */
 
-        // console.log("movieWithDate", movieWithDate);
-
         return (
             <Wrapper>
                 <Tabs defaultActiveKey="1" animated type="card" centered>

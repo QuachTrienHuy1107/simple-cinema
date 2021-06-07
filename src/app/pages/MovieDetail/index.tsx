@@ -35,7 +35,7 @@ let arr = [];
 
 export const MovieDetail: React.FC = (props: MovieDetailProps) => {
     const param = useParams();
-    console.log(param);
+
     const { Mobile, Desktop } = useScreenType();
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
@@ -53,12 +53,6 @@ export const MovieDetail: React.FC = (props: MovieDetailProps) => {
         };
     }, [actions, dispatch, maPhim]);
 
-    console.log("movieDetail", movieDetail);
-
-    const handleTabChange = tabs => {
-        console.log("aaa", tabs);
-    };
-
     return (
         <>
             {isLoading && <Loading />}
@@ -68,16 +62,8 @@ export const MovieDetail: React.FC = (props: MovieDetailProps) => {
                     <TabStyle centered defaultActiveKey="1" style={{ marginBottom: 32 }}>
                         <TabContent tab="Lịch Chiếu" key="schedule">
                             <Desktop>
-                                <Tabs tabPosition="left" onChange={handleTabChange}>
+                                <Tabs tabPosition="left">
                                     {movieDetail.heThongRapChieu?.map((item: TheaterInfo) => {
-                                        /* for (let key of item.cumRapChieu) {
-                                            let newArr = [...lichChieuPhim];
-                                            const { lichChieuPhim } = key;
-                                            newArr = newArr.filter((timePlay: MovieShowtime) =>
-                                                timePlay.ngayChieuGioChieu.includes("2019-01-01"),
-                                            );
-                                            console.log("newArr", newArr);
-                                        } */
                                         return (
                                             <TabPane
                                                 key={item.maHeThongRap}

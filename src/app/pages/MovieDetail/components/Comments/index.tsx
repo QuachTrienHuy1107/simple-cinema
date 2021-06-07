@@ -26,9 +26,7 @@ interface ICommentProps {
 const { Panel } = Collapse;
 const { TextArea } = Input;
 
-function callback(key) {
-    console.log(key);
-}
+function callback(key) {}
 
 export const Comments = memo(({ maPhim }: ICommentProps) => {
     const { t, i18n } = useTranslation();
@@ -57,7 +55,6 @@ export const Comments = memo(({ maPhim }: ICommentProps) => {
     }, [maPhim]);
 
     const onFinish = async (values: any) => {
-        console.log(values);
         try {
             setLoading(true);
             const newComment = {
@@ -70,7 +67,7 @@ export const Comments = memo(({ maPhim }: ICommentProps) => {
                 ...commentList,
                 danhSachBinhLuan: [...commentList?.danhSachBinhLuan, newComment],
             };
-            console.log("data", data);
+
             const request = await fetch(`${fakeApi}/reviews/${maPhim}`, {
                 method: "PUT",
                 headers: {

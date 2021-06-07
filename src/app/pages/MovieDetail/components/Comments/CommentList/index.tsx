@@ -16,7 +16,6 @@ interface Props {
 export const CommentList = memo(({ commentList }: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
-    console.log("commentList", commentList);
 
     return (
         <Wrapper>

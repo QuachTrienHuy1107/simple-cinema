@@ -12,7 +12,7 @@ import api from "./api";
 function* onGetMovieDetail({ payload }: PayloadAction<MovieDetailPayload>) {
     try {
         const { response, error } = yield call(api.getMovieDetail, payload);
-        console.log("response", response);
+
         yield delay(1000)
         if (response?.status === StatusCode.Success) {
             yield put(actions.getMovieDetailActionSuccess(response.data));

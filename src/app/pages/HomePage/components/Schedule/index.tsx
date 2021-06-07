@@ -31,7 +31,6 @@ export const Schedule = memo(({ cinemaList }: IScheduleProps) => {
     const history = useHistory();
     const { getRangeTime } = useGetRangeTime();
 
-    console.log("cinemaList", cinemaList);
 
     const renderCinema = (cinemaList: CinemaListResponse[], Mobile: any, Desktop: any) => {
         return cinemaList?.map((item: CinemaListResponse) => (

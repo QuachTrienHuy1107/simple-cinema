@@ -44,14 +44,14 @@ function* onDeleteMovie({ payload }: PayloadAction<DeleteMoviePayload>) {
         }
     } catch (error) {
         yield put(actions.deleteMovieActionFailure(error.message));
-        console.log("error", error);
+
     }
 }
 
 function* onCreateShowTime({ payload }: PayloadAction<any>) {
     try {
         const { response, error } = yield call(api.createShowTime, payload);
-        console.log("response", response);
+
         if (response?.status === StatusCode.Success) {
             yield put(actions.createShowTimeActionSuccess(response.data));
         } else {

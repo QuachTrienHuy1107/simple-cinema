@@ -83,7 +83,7 @@ function* onSearchMovie({ payload }: PayloadAction<SearchMoviePayload>) {
             throw new Error(error);
         }
     } catch (error) {
-        console.log("erer", error);
+
         yield put(actions.searchMovieFailure(error.message));
     }
 }
@@ -91,15 +91,12 @@ function* onSearchMovie({ payload }: PayloadAction<SearchMoviePayload>) {
 function* fetchMultiApi({ payload }: PayloadAction<GetMovieWithDate>) {
     try {
         const { response, error } = yield call(api.fetchMultiApi, payload);
-        console.log("error", error);
-        console.log("response", response);
-        yield delay(1000)
+        yield delay(1400)
         yield put(actions.getAllMovieActionSuccess(response[0].data));
         yield put(actions.getAllCinemaListActionSuccess(response[1].data));
         yield put(actions.getMovieWithDateSuccess(response[2].data));
     } catch (error) {
-        console.log("error111", error);
-        // yield put(actions.getAllMovieActionFailure());
+        yield put(actions.fetchMultiApiFailure());
     }
 }
 

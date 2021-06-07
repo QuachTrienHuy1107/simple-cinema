@@ -19,8 +19,6 @@ export const useGetRangeTime = () => {
             return data;
         });
 
-        console.log("newTime", newTime);
-
         for (let key in newTime) {
             let newKey = +key + 1;
 

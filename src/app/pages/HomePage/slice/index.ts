@@ -30,7 +30,6 @@ const slice = createSlice({
             state.isLoading = true;
         },
         getAllMovieActionSuccess(state, action: PayloadAction<MovieResponse[]>) {
-            console.log("acc", action.payload);
             state.movieWithDate = action.payload;
             state.isLoading = false;
         },
@@ -44,7 +43,9 @@ const slice = createSlice({
             state.movieWithDate = action.payload;
             state.isLoading = false;
         },
-        getMovieWithDateFailure(state, action: PayloadAction<Error>) {},
+        getMovieWithDateFailure(state, action: PayloadAction<Error>) {
+          state.isLoading = false
+        },
 
         //Get movies with pagination
         getPaginateMoviesAction: (state, action: PayloadAction<PaginationRequestType>) => {
@@ -67,7 +68,7 @@ const slice = createSlice({
         //Get cinema list
         getAllCinemaListAction() {},
         getAllCinemaListActionSuccess: (state, action: PayloadAction<any>) => {
-            console.log("ssssss", action.payload);
+
             state.cinemaList = action.payload;
             state.isLoading = false;
         },
@@ -82,7 +83,7 @@ const slice = createSlice({
             state.isLoading = false;
         },
         searchMovieFailure(state, action: PayloadAction<Error>) {
-            console.log("error", action.payload);
+
         },
 
         /**
@@ -94,7 +95,9 @@ const slice = createSlice({
         fetchMultiApiSuccess: state => {
             state.isLoading = false;
         },
-        fetchMultiApiFailure: () => {},
+        fetchMultiApiFailure: (state) => {
+          state.isLoading = false
+        },
 
         clearData: state => {
             return initialState;
