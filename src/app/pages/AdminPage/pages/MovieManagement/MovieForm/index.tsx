@@ -14,17 +14,12 @@ import { MovieFormAdmin } from "./MovieFormAdmin";
 
 interface IMovieFormProps {
     record?: MovieResponse;
-    visible?: boolean;
     edit?: boolean;
 }
 
 export const MovieForm = React.memo(({ record, edit }: IMovieFormProps) => {
     const { t, i18n } = useTranslation();
     const [visible, setVisible] = React.useState(false);
-    // const [edit, setEdit] = React.useState(false);
-
-    console.log("record", record);
-    console.log("visible", visible);
 
     const showDrawer = () => {
         setVisible(true);
@@ -36,17 +31,24 @@ export const MovieForm = React.memo(({ record, edit }: IMovieFormProps) => {
 
     return (
         <Wrapper>
-            <Buttons
-                onClick={showDrawer}
-                className="icon-button"
-                shape="circle"
-                icon={<EditOutlined />}
-            />
+            {edit ? (
+                <Buttons
+                    onClick={showDrawer}
+                    className="icon-button"
+                    shape="circle"
+                    icon={<EditOutlined />}
+                />
+            ) : (
+                <Buttons onClick={showDrawer} className="icon-button" size="large">
+                    Create
+                </Buttons>
+            )}
+
             <Drawer
                 title={edit ? "Edit" : "Create"}
                 width={720}
                 placement="right"
-                closable={false}
+                closable={true}
                 onClose={onClose}
                 visible={visible}
                 bodyStyle={{ paddingBottom: 80 }}

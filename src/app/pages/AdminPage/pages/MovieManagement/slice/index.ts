@@ -15,17 +15,25 @@ const slice = createSlice({
     initialState,
     reducers: {
         addMovieAction: (state, action: PayloadAction<any>) => {
-            console.log("aaa", action.payload);
             state.isLoading = true;
+            state.error = null;
+            state.successMessage = "";
         },
-        addMovieActionSuccess() {},
-        addMovieActionFailure() {},
+        addMovieActionSuccess(state, action: PayloadAction<any>) {
+            state.isLoading = false;
+            state.successMessage = "Thêm phim thành công!";
+            state.error = null;
+        },
+        addMovieActionFailure: (state, action: PayloadAction<Error>) => {
+            state.error = action.payload;
+            state.isLoading = false;
+            state.successMessage = "";
+        },
 
         editMovieAction: (state, action: PayloadAction<any>) => {
             state.isLoading = true;
             state.error = null;
             state.successMessage = "";
-            console.log("ss", action.payload);
         },
         editMovieActionSuccess(state, action: PayloadAction<any>) {
             state.isLoading = false;
@@ -58,7 +66,7 @@ const slice = createSlice({
         createShowTimeAction: (state, action: PayloadAction<any>) => {
             state.error = null;
             state.isLoading = true;
-            state.successMessage = ''
+            state.successMessage = "";
         },
         createShowTimeActionSuccess: (state, action: PayloadAction<any>) => {
             state.isLoading = false;
@@ -67,7 +75,7 @@ const slice = createSlice({
         createShowTimeActionFailure: (state, action: PayloadAction<Error>) => {
             state.error = action.payload;
             state.isLoading = false;
-            state.successMessage = ""
+            state.successMessage = "";
         },
     },
 });
