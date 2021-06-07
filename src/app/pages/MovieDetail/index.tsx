@@ -3,27 +3,35 @@
  * MovieDetail
  *
  */
-import { DislikeFilled, DislikeOutlined, LikeFilled, LikeOutlined } from "@ant-design/icons";
-import { Avatar, Collapse, Comment, Divider, Space, Tabs, Tooltip } from "antd";
+import { Alert, Collapse, Divider, Space, Tabs } from "antd";
 import { Banner } from "app/components/Banner";
+import { Loading } from "app/components/Common/Loading";
+import { useGetDate } from "hooks/useGetDate";
 import { useScreenType } from "hooks/useScreenType";
 import moment from "moment";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
+import { ANCHOR, ROUTES } from "utils/constants/settings";
+import { TimePlay } from "../HomePage/components/Schedule/TimePlay";
+import { MovieDetailPayload } from "../HomePage/slice/types";
+import { Comments } from "./components/Comments";
+import { Detail } from "./components/Detail";
+import { TabDetail } from "./components/TabDetail";
+import { useBookingTicketWithDate } from "./hooks/useBookingTicketWithDate";
 import { useMovieDetailSlice } from "./slice";
 import { selectMovieDetail } from "./slice/selectors";
-import { MovieInfo, TheaterInfo } from "./slice/types";
-import { Comments } from "./components/Comments";
-import { MovieDetailPayload } from "../HomePage/slice/types";
+import { MovieDetailState, MovieInfo, TheaterInfo, MovieShowtime } from "./slice/types";
 
 interface MovieDetailProps {}
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
+
+let arr = [];
 
 export const MovieDetail: React.FC = (props: MovieDetailProps) => {
     const param = useParams();
@@ -31,70 +39,45 @@ export const MovieDetail: React.FC = (props: MovieDetailProps) => {
     const { Mobile, Desktop } = useScreenType();
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
-    const { movieDetail } = useSelector(selectMovieDetail);
+    const history = useHistory();
+    const { movieDetail, isLoading } = useSelector(selectMovieDetail) as MovieDetailState;
+    const { arrayDate } = useBookingTicketWithDate(movieDetail?.ngayKhoiChieu);
     const { actions } = useMovieDetailSlice();
+    const [isFull, setIsFull] = React.useState(false);
     const { maPhim } = useParams() as MovieDetailPayload;
 
     React.useEffect(() => {
         dispatch(actions.getMovieDetailAction({ maPhim }));
-    }, [dispatch]);
-
-    // Comment
-    const [likes, setLikes] = React.useState(0);
-    const [dislikes, setDislikes] = React.useState(0);
-    const [action, setAction] = React.useState(null);
-
-    const like = () => {
-        setLikes(1);
-        setDislikes(0);
-        // setAction("liked");
-    };
-
-    const dislike = () => {
-        setLikes(0);
-        setDislikes(1);
-        // setAction("disliked");
-    };
-    const comments = [
-        <Tooltip key="comment-basic-like" title="Like">
-            <span onClick={like}>
-                {React.createElement(action === "liked" ? LikeFilled : LikeOutlined)}
-                <span className="comment-action">{likes}</span>
-            </span>
-        </Tooltip>,
-        <Tooltip key="comment-basic-dislike" title="Dislike">
-            <span onClick={dislike}>
-                {React.createElement(action === "disliked" ? DislikeFilled : DislikeOutlined)}
-                <span className="comment-action">{dislikes}</span>
-            </span>
-        </Tooltip>,
-        <span key="comment-basic-reply-to">Reply to</span>,
-    ];
+        return () => {
+            dispatch(actions.clearData());
+        };
+    }, [actions, dispatch, maPhim]);
 
     console.log("movieDetail", movieDetail);
 
-    const handleTabChange = activeKey => {
-        console.log("activeKey", activeKey);
-        if (activeKey === "review") {
-            console.log("1");
-        }
+    const handleTabChange = tabs => {
+        console.log("aaa", tabs);
     };
 
     return (
         <>
+            {isLoading && <Loading />}
             <Banner movieDetail={movieDetail} />
-            <Wrapper>
+            <Wrapper id={ANCHOR.SCHEDULETO}>
                 <Content>
-                    <Tabs
-                        centered
-                        defaultActiveKey="1"
-                        style={{ marginBottom: 32 }}
-                        onChange={handleTabChange}
-                    >
+                    <TabStyle centered defaultActiveKey="1" style={{ marginBottom: 32 }}>
                         <TabContent tab="Lịch Chiếu" key="schedule">
                             <Desktop>
-                                <Tabs tabPosition="left">
+                                <Tabs tabPosition="left" onChange={handleTabChange}>
                                     {movieDetail.heThongRapChieu?.map((item: TheaterInfo) => {
+                                        /* for (let key of item.cumRapChieu) {
+                                            let newArr = [...lichChieuPhim];
+                                            const { lichChieuPhim } = key;
+                                            newArr = newArr.filter((timePlay: MovieShowtime) =>
+                                                timePlay.ngayChieuGioChieu.includes("2019-01-01"),
+                                            );
+                                            console.log("newArr", newArr);
+                                        } */
                                         return (
                                             <TabPane
                                                 key={item.maHeThongRap}
@@ -106,57 +89,37 @@ export const MovieDetail: React.FC = (props: MovieDetailProps) => {
                                                     />
                                                 }
                                             >
-                                                {item.cumRapChieu?.map((movie: MovieInfo) => {
-                                                    return (
-                                                        <>
-                                                            <TabRight className="schedule__right">
-                                                                <div style={{ width: "100%" }}>
-                                                                    <Collapse
-                                                                        ghost
-                                                                        expandIconPosition="right"
-                                                                    >
-                                                                        <Panel
-                                                                            header={
-                                                                                <Space>
-                                                                                    <img
-                                                                                        src="https://reviewphimaz.com/wp-content/uploads/2018/07/rap-chieu-phim-bhd-bitexco-tphcm.jpg"
-                                                                                        alt=""
-                                                                                        width="60"
-                                                                                    />
-                                                                                    <h5>
-                                                                                        {
-                                                                                            movie.tenCumRap
-                                                                                        }
-                                                                                    </h5>
-                                                                                </Space>
-                                                                            }
-                                                                            key={movie.maCumRap}
+                                                <TabStyle defaultActiveKey="1" tabPosition="top">
+                                                    {arrayDate.map((date: Date, index: number) => {
+                                                        const getDate = moment(date).format(
+                                                            "DD-MM",
+                                                        );
+                                                        const getWeek = moment(date).format("dddd");
+
+                                                        return (
+                                                            <TabPane
+                                                                tab={
+                                                                    <>
+                                                                        <h3
+                                                                            style={{
+                                                                                marginBottom: 0,
+                                                                            }}
                                                                         >
-                                                                            {movie.lichChieuPhim
-                                                                                ?.slice(0, 6)
-                                                                                .map(
-                                                                                    (
-                                                                                        timer: any,
-                                                                                    ) => {
-                                                                                        return (
-                                                                                            <Timer>
-                                                                                                {moment(
-                                                                                                    timer.ngayChieuGioChieu,
-                                                                                                ).format(
-                                                                                                    "hh:MM A",
-                                                                                                )}
-                                                                                            </Timer>
-                                                                                        );
-                                                                                    },
-                                                                                )}
-                                                                        </Panel>
-                                                                    </Collapse>
-                                                                </div>
-                                                            </TabRight>
-                                                            <Divider />
-                                                        </>
-                                                    );
-                                                })}
+                                                                            {getWeek}
+                                                                        </h3>
+                                                                        <span>{getDate}</span>
+                                                                    </>
+                                                                }
+                                                                key={index}
+                                                            >
+                                                                <TabDetail
+                                                                    date={date}
+                                                                    cumRapChieu={item.cumRapChieu}
+                                                                />
+                                                            </TabPane>
+                                                        );
+                                                    })}
+                                                </TabStyle>
                                             </TabPane>
                                         );
                                     })}
@@ -206,23 +169,11 @@ export const MovieDetail: React.FC = (props: MovieDetailProps) => {
                                                                             }
                                                                             key={movie.maCumRap}
                                                                         >
-                                                                            {movie.lichChieuPhim
-                                                                                ?.slice(0, 6)
-                                                                                .map(
-                                                                                    (
-                                                                                        timer: any,
-                                                                                    ) => {
-                                                                                        return (
-                                                                                            <Timer>
-                                                                                                {moment(
-                                                                                                    timer.ngayChieuGioChieu,
-                                                                                                ).format(
-                                                                                                    "hh:MM A",
-                                                                                                )}
-                                                                                            </Timer>
-                                                                                        );
-                                                                                    },
-                                                                                )}
+                                                                            <TimePlay
+                                                                                movie={
+                                                                                    movie.lichChieuPhim
+                                                                                }
+                                                                            />
                                                                         </Panel>
                                                                     </Collapse>
                                                                 </div>
@@ -239,12 +190,13 @@ export const MovieDetail: React.FC = (props: MovieDetailProps) => {
                         </TabContent>
 
                         <TabPane tab="Thông Tin" key="info" style={{ padding: 20 }}>
-                            {movieDetail.moTa}
+                            <Detail movieDetail={movieDetail} />
+                            {/* {movieDetail.moTa} */}
                         </TabPane>
                         <TabPane tab="Đánh giá" key="review">
                             <Comments maPhim={maPhim} />
                         </TabPane>
-                    </Tabs>
+                    </TabStyle>
                 </Content>
             </Wrapper>
         </>
@@ -260,11 +212,23 @@ const Wrapper = styled.div`
         width: 100%;
     `}
 
-    .ant-tabs-nav {
-        .ant-tabs-nav-wrap {
-            white-space: break-spaces !important;
-        }
+    .ant-tabs-nav-wrap .ant-tabs-nav-wrap-ping-right {
+        white-space: break-spaces !important;
     }
+`;
+
+const TabStyle = styled(Tabs)`
+    /*  background-color: #0a2029;
+    color: #fff !important;
+
+    h3 {
+        color: #fff !important;
+    }
+
+    .ant-tabs-tabpane-active {
+        color: #fff;
+        font-weight: 500;
+    } */
 `;
 
 const Content = styled.div`
@@ -272,6 +236,7 @@ const Content = styled.div`
     margin: 0 auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     background-color: #fff;
+    margin-top: 60px;
 
     ${media.small`
         width: 80%;
@@ -318,6 +283,19 @@ const TabRight = styled.div`
     }
 `;
 
+const CinemaName = styled.div`
+.schedule__left {
+    &--title {
+        font-size: 1rem;
+        font-weight: 500;
+        display: inline;
+
+        &-left {
+            color: ${props => props.theme.titleColor};
+        }
+    }
+`;
+
 const Timer = styled.span`
     background-color: #ebebeb;
     border-radius: 5px;
@@ -330,48 +308,5 @@ const Timer = styled.span`
 
     @media screen and (max-width: 576px) {
         font-size: $text6;
-    }
-`;
-
-const BackgroundWrapper = styled.div`
-    line-height: 1em;
-    background-color: white;
-    margin: 0 250px;
-    color: black;
-    font-size: 1.2rem;
-    height: auto;
-    .wrapper {
-        padding: 15px 25px;
-        display: flex;
-        justify-content: space-between;
-        .left {
-            display: flex;
-            img {
-                border-radius: 50%;
-            }
-            .name_user {
-                font-weight: 700;
-                margin-left: 10px;
-                .online__left {
-                    font-weight: normal;
-                    font-size: 0.785rem;
-                }
-            }
-        }
-        .right {
-            text-align: center;
-            .review__rate {
-                margin-top: 5px;
-                span {
-                    color: #5ec51c;
-                }
-                i {
-                    color: #e73e2c;
-                }
-            }
-        }
-    }
-    .comment {
-        padding: 15px 25px;
     }
 `;
