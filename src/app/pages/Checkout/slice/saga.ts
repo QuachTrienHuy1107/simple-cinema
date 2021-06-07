@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { take, call, put, select, takeLatest } from "redux-saga/effects";
+import { call, delay, put, takeLatest } from "redux-saga/effects";
 import { StatusCode } from "utils/constants/settings";
 import { checkoutActions as actions } from ".";
 import { api } from "./api";
@@ -7,6 +7,7 @@ import { BookingPayload, SeatIdPayload } from "./types";
 
 function* onFetchSeats({ payload }: PayloadAction<SeatIdPayload>) {
     try {
+        yield delay(1500);
         const { response, error } = yield call(api.getAllSeat, payload);
         if (response?.status === StatusCode.Success) {
             yield put(actions.getAllSeatActionSuccess(response.data));

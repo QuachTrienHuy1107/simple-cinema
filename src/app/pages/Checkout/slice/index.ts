@@ -2,12 +2,13 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "utils/@reduxjs/toolkit";
 import { useInjectReducer, useInjectSaga } from "utils/redux-injectors";
 import { checkoutSaga } from "./saga";
-import { BookingPayload, CheckoutDetail, CheckoutState, SeatIdPayload, SeatType } from "./types";
+import { BookingPayload, TicketInfoResponse, CheckoutState, SeatIdPayload, SeatType, FoodType } from "./types";
 
 export const initialState: CheckoutState = {
     tickets: [],
+    arrayFood: [],
     isLoading: false,
-    message: null,
+    messageSuccess: null,
 };
 
 const slice = createSlice({
@@ -17,30 +18,32 @@ const slice = createSlice({
         getAllSeatAction(state, action: PayloadAction<SeatIdPayload>) {
             state.isLoading = true;
         },
-        getAllSeatActionSuccess(state, action: PayloadAction<CheckoutDetail>) {
+        getAllSeatActionSuccess(state, action: PayloadAction<TicketInfoResponse>) {
             state.tickets = action.payload;
             state.isLoading = false;
         },
         getAllSeatActionFailure(state, action: PayloadAction<Error>) {
             state.error = action.payload;
+            state.isLoading = false
         },
         bookingTicket: (state, action: PayloadAction<BookingPayload>): void => {
             state.isLoading = true;
-            state.message = null;
+            state.messageSuccess = null;
             state.error = null;
-            state.tickets = [];
         },
         bookingTicketSuccess(state, action: PayloadAction<any>) {
             state.isLoading = false;
-            state.message = action.payload;
-            state.tickets = [];
-
+            state.messageSuccess = action.payload;
         },
         bookingTicketFailure(state, action: PayloadAction<Error>) {
             state.error = action.payload;
             state.isLoading = false;
             state.error = action.payload;
         },
+        resetStore: (state) => {
+
+          return initialState
+        }
     },
 });
 

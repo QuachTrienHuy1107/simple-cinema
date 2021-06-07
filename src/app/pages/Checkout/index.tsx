@@ -3,10 +3,10 @@
  * Checkout
  *
  */
-import { Col, PageHeader, Row, Space, Steps } from "antd";
+import { Col, message, PageHeader, Row, Skeleton, Space, Steps } from "antd";
 import Countdown from "antd/lib/statistic/Countdown";
 import { Header } from "app/components/Common/Header";
-import { Logo } from "app/components/Common/Logo";
+import { Loading } from "app/components/Common/Loading";
 import { useScreenType } from "hooks/useScreenType";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -16,70 +16,77 @@ import styled from "styled-components/macro";
 import { media } from "styles/media";
 import { selectAuth } from "../Form/slice/selectors";
 import { Payment } from "./components/Payment";
+import { PaymentMobile } from "./components/Payment/components/PaymentMobile";
 import { Seat } from "./components/Seat";
-import { ContextProvider } from "./context/createContext";
+import { ContextProvider, useCheckoutContext } from "./context/createContext";
+import { useCheckout } from "./hooks/useCheckout";
 import { useCheckoutSlice } from "./slice";
 import { selectCheckout } from "./slice/selectors";
+import Swal from "sweetalert2";
 
 interface Props {}
 const { Step } = Steps;
 // Date.now() + 1000 * 60 * 20;
-const deadline = Date.now() + 1000 * 60 * 20; // Moment is also OK
 
 export function Checkout(props: Props) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const { actions } = useCheckoutSlice();
     const history = useHistory();
     const { tickets, isLoading } = useSelector(selectCheckout);
+    const { Desktop, Mobile } = useScreenType();
+    const { setArraySeat } = useCheckoutContext();
     const { credentials } = useSelector(selectAuth);
     const { danhSachGhe, thongTinPhim } = tickets;
+    const [out, setOut] = React.useState(false);
     const { maLichChieu } = useParams() as any;
-    console.log("maLichChieu", maLichChieu);
 
-    const onFinish = () => {
-        console.log("finished!");
-        history.goBack();
+    const onFinish = async () => {
+        message.warning("Hết thời gian đặt vé!!").then(() => {
+            setOut(true);
+            history.goBack();
+        });
     };
 
-    console.log("credentials", credentials);
-
-    const title = (
-        <div>
-            <Logo />
-        </div>
-    );
+    const deadline = Date.now() + 10000 * 60; // Moment is also OK
 
     React.useEffect(() => {
         dispatch(actions.getAllSeatAction({ maLichChieu }));
+        return () => {
+            setArraySeat([]);
+            dispatch(actions.resetStore());
+        };
     }, []);
 
     return (
         <ContextProvider>
+            {isLoading && <Loading />}
             <Wrapper>
                 <Row>
-                    <Col xl={18} md={24} xs={24}>
+                    <Col xl={18} md={16} xs={24}>
                         <Header />
                         <Row justify="space-between">
                             <Col lg={24} md={24}>
-                                <TopTitle
-                                    onBack={() => null}
-
-                                    // title={title}
-                                    // subTitle={subTitle}
-                                    // extra={title}
-                                />
+                                <TopTitle onBack={() => null} />
                                 <SubTitle>
                                     <Space>
-                                        <div>
-                                            <img
-                                                src={thongTinPhim?.hinhAnh}
-                                                alt=""
-                                                width={60}
-                                                height={60}
-                                            />
-                                        </div>
+                                        <Desktop>
+                                            <div>
+                                                <img
+                                                    src={
+                                                        isLoading ? (
+                                                            <Skeleton />
+                                                        ) : (
+                                                            thongTinPhim?.hinhAnh
+                                                        )
+                                                    }
+                                                    alt=""
+                                                    width={60}
+                                                    height={60}
+                                                />
+                                            </div>
+                                        </Desktop>
+
                                         <Space direction="vertical">
                                             <div>
                                                 <span>{thongTinPhim?.tenCumRap}</span>
@@ -100,14 +107,24 @@ export function Checkout(props: Props) {
                                 </SubTitle>
                                 <Row justify="center">
                                     <Col xl={20} lg={24}>
-                                        <Seat tickets={danhSachGhe} isLoading={isLoading} />
+                                        <Seat arrayTickets={danhSachGhe} isLoading={isLoading} />
                                     </Col>
                                 </Row>
                             </Col>
                         </Row>
                     </Col>
-                    <Col xl={6} md={24} xs={24}>
-                        <Payment moviedetail={thongTinPhim} isLoading={isLoading} />
+                    <Col xl={6} md={8} xs={24}>
+                        <Desktop>
+                            <Payment
+                                moviedetail={thongTinPhim}
+                                isLoading={isLoading}
+                                credentials={credentials}
+                                out={out}
+                            />
+                        </Desktop>
+                        <Mobile>
+                            <PaymentMobile moviedetail={thongTinPhim} credentials={credentials} />
+                        </Mobile>
                     </Col>
                 </Row>
             </Wrapper>
@@ -137,14 +154,16 @@ const SubTitle = styled.div`
         font-size: 1.3rem;
         margin-bottom: -10px;
         font-weight: 600;
+
+        @media screen and (max-width: 576px) {
+            font-size: 1rem;
+        }
     }
 
     .ant-space-item {
         margin-bottom: 0 !important;
     }
 `;
-
-const SubTitleStyle = styled(Space)``;
 
 const CountdownStyle = styled(Countdown)`
     .ant-space {
