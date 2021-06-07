@@ -8,24 +8,28 @@ import { DeleteMoviePayload, MovieCreationPayload } from "./types";
 function* onAddMovie({ payload }: PayloadAction<any>) {
     try {
         const { response, error } = yield call(api.addMovie, payload);
-        console.log("response", response);
-        console.log("error", error);
+        if (response?.status === StatusCode.Success) {
+            yield put(actions.addMovieActionSuccess(response.data));
+        } else {
+            throw new Error(error);
+        }
     } catch (error) {
-        console.log("eee", error);
+
+        yield put(actions.editMovieActionFailure(error.message));
     }
 }
 
 function* onEditMovie({ payload }: PayloadAction<any>) {
     try {
         const { response, error } = yield call(api.editMovie, payload);
-        console.log("resss", response);
+
         if (response?.status === StatusCode.Success) {
             yield put(actions.editMovieActionSuccess(response.data));
         } else {
             throw new Error(error);
         }
     } catch (error) {
-        console.log("error", error);
+
         yield put(actions.editMovieActionFailure(error.message));
     }
 }
@@ -45,17 +49,17 @@ function* onDeleteMovie({ payload }: PayloadAction<DeleteMoviePayload>) {
 }
 
 function* onCreateShowTime({ payload }: PayloadAction<any>) {
-  try {
-      const { response, error } = yield call(api.createShowTime, payload);
-      console.log('response',response)
-      if (response?.status === StatusCode.Success) {
-          yield put(actions.createShowTimeActionSuccess(response.data));
-      } else {
-          throw new Error(error);
-      }
-  } catch (error) {
-      yield put(actions.createShowTimeActionFailure(error.message));
-  }
+    try {
+        const { response, error } = yield call(api.createShowTime, payload);
+        console.log("response", response);
+        if (response?.status === StatusCode.Success) {
+            yield put(actions.createShowTimeActionSuccess(response.data));
+        } else {
+            throw new Error(error);
+        }
+    } catch (error) {
+        yield put(actions.createShowTimeActionFailure(error.message));
+    }
 }
 
 export function* movieManagementSaga() {

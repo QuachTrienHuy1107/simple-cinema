@@ -22,6 +22,7 @@ import { useAuthSlice } from "./pages/Form/slice";
 import HomePage from "./pages/HomePage/Loadable";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
 import firebase from "../firebase";
+// import "sweetalert2/src/sweetalert2.scss";
 
 // var database = firebase;
 // console.log("databaseRef", databaseRef);
@@ -40,20 +41,6 @@ export function App() {
         }
     }, []);
 
-    /**
-     * Test mode
-     */
-    const [spells, setSpells] = React.useState([]);
-    React.useEffect(() => {
-        const fetchData = async () => {
-            const db = firebase;
-            console.log("db", db);
-            /*   const data = await db.collection("spells").get();
-            setSpells(data.docs.map(doc => ({ ...doc.data(), id: doc.id }))); */
-        };
-        fetchData();
-    }, []);
-
     //=================
 
     return (
@@ -63,13 +50,10 @@ export function App() {
                 defaultTitle="React Boilerplate"
                 htmlAttributes={{ lang: i18n.language }}
             >
-                <meta name="description" content="A React Boilerplate application" />
+                <meta name="description" content="Simple Cinema" />
             </Helmet>
 
             <Switch>
-                <Route exact path={ROUTES.HOME} component={HomePage} />
-                <Route exact path={ROUTES.ABOUT} component={About} />
-
                 {renderRoutes(routes)}
                 <Route exact path={ROUTES.NOTFOUND} component={NotFoundPage} />
                 <Redirect from="*" to={ROUTES.NOTFOUND} />

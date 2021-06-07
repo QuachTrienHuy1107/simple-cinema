@@ -5,7 +5,7 @@ import { DeleteMoviePayload, MovieCreationPayload } from "./types";
 
 export const api = {
     addMovie: (params: any) => {
-        console.log("params", params);
+
         const url = `/QuanLyPhim/ThemPhimUploadHinh`;
         return axiosClient
             .post(url, params)
@@ -14,7 +14,7 @@ export const api = {
     },
 
     editMovie: (params: any) => {
-        console.log("params", params);
+
         const url = `/QuanLyPhim/CapNhatPhimUpload`;
         return axiosClient
             .post(url, params)

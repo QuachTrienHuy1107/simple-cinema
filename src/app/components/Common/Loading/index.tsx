@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { messages } from "./messages";
 import { Space, Spin } from "antd";
 import loading from "./assets/loading.gif";
+import { Animated } from "react-animated-css";
 
 interface Props {}
 
@@ -37,10 +38,10 @@ export function Loading(props: Props) {
                     background: "#F5F3ED",
                 }}
             >
+                <style></style>
                 <span className="display-4 text-white">
                     <Space size="middle">
                         <img src={loading} alt="loading" />
-                        {/* <Spin style={{ width: 200 }} size="large" /> */}
                     </Space>
                 </span>
             </div>

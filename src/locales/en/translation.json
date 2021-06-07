@@ -1,17 +1,22 @@
 {
     "Banner": {
-        "Title": "Booking",
+        "Title": "Đặt vé",
         "Description": "Đặt vé"
     },
     "Button": {
-        "Login": "Login",
-        "Register": "Register",
+        "Login": "Đăng nhập",
+        "Register": "Đăng kí",
         "Show more": "Xem thêm",
         "Logout": "Đăng xuất"
     },
     "SearchForm": {
         "Search": "Tìm kiếm",
-        "SelectedDate": "Chọn ngày"
+        "SelectedDate": "Chọn ngày",
+        "Rules": {
+            "ValidateEmpty": "Không được bỏ trống",
+            "ValidateEmail": "Không đúng định dạng email",
+            "ValidatePassword": "Mật khẩu không hợp lệ"
+        }
     },
 
     "Form": {
@@ -20,14 +25,21 @@
         "Name": "Họ tên",
         "PhoneNumber": "Số điện thoại",
         "GroupId": "Mã nhóm",
-        "Email": "Email"
+        "Email": "Email",
+        "Rules": {
+            "ValidateEmpty": "Không được bỏ trống",
+            "ValidateEmail": "Không đúng định dạng email",
+            "ValidatePassword": "Mật khẩu không hợp lệ"
+        }
     },
 
     "Header": {
         "Navbar": {
-            "Home": "Home",
-            "MovieList": "Movies",
-            "AboutUs": "About us"
+            "Home": "Trang chủ",
+            "MovieList": "Lịch chiếu",
+            "CinemaList": "Cụm rạp",
+            "News": "Tin tức",
+            "Applications": "Ứng dụng"
         }
     }
 }

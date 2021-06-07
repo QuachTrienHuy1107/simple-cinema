@@ -1,11 +1,24 @@
 import { Table } from "antd";
-import React from "react";
+import { TheaterInfo, Movie } from "app/pages/MovieDetail/slice/types";
+import React, { memo } from "react";
 
 export interface Props {
-    movieDetail: any;
+    movieDetail: Movie;
 }
 
-const CinemaDetail: React.FC<Props> = ({ movieDetail }) => {
+const CinemaDetail: React.FC<Props> = memo(({ movieDetail }) => {
+    const [data, setData] = React.useState<null>(null) as any;
+
+    React.useEffect(() => {
+        const arr = [] as any;
+        movieDetail.heThongRapChieu?.forEach((element, index, array) => {
+            const data = { ...element, key: index };
+            arr.push(data);
+        });
+
+        setData(arr);
+    }, [movieDetail]);
+
     const expandedRowRender = (record: any) => {
         const column = [
             { title: "Mã cụm rạp", dataIndex: "maCumRap", key: "maCumRap" },
@@ -23,12 +36,12 @@ const CinemaDetail: React.FC<Props> = ({ movieDetail }) => {
             render: (text: string) => <img src={text} alt="" width={40} />,
             width: "30%",
         },
-        /* {
+        {
             title: "Mã hệ thống rạp",
             dataIndex: "maHeThongRap",
             key: "maHeThongRap",
             width: "30%",
-        }, */
+        },
         {
             title: "Tên hệ thống rạp",
             dataIndex: "tenHeThongRap",
@@ -39,12 +52,12 @@ const CinemaDetail: React.FC<Props> = ({ movieDetail }) => {
     return (
         <Table
             className="components-table-demo-nested"
-            dataSource={movieDetail?.heThongRapChieu}
+            dataSource={data}
             expandable={{ expandedRowRender }}
             columns={columns}
             // rowSelection={{ ...rowSelection }}
         ></Table>
     );
-};
+});
 
 export default CinemaDetail;

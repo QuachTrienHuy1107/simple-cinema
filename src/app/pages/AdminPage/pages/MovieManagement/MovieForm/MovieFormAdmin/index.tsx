@@ -9,8 +9,10 @@ import { useUpload } from "app/pages/AdminPage/hooks/useUpload";
 import moment from "moment";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import styled from "styled-components/macro";
 import { formItemLayout } from "utils/helpers";
+import { selectMovieManagement } from "../../slice/selectors";
 
 interface Props {
     movieDetail?: any;
@@ -24,18 +26,15 @@ interface LocationState {
 export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
     const [form] = Form.useForm();
 
-    const { onAddEdit, setEdit, successMessage, error, isLoading } = useAddEdit();
-    const { hinhAnh, imgPreview, loading, handleFileChange, setImgUpload } = useUpload();
+    const { onAddEdit, setEdit } = useAddEdit();
+    const { hinhAnh, imgPreview, handleFileChange, setImgUpload } = useUpload();
+    const { isLoading } = useSelector(selectMovieManagement);
     const { t, i18n } = useTranslation();
     const [ngayKhoiChieu, setDate] = React.useState("");
-    // const [edit, setEdit] = React.useState(false);
 
-    console.log("isEdit", isEdit);
-
-    console.log("zzzzz");
-
-    console.log("date", ngayKhoiChieu);
-    console.log("movieDetail", movieDetail);
+    React.useEffect(() => {
+        setEdit(isEdit);
+    }, [isEdit, setEdit]);
 
     React.useEffect(() => {
         if (isEdit) {
@@ -50,23 +49,17 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
                     ngayKhoiChieu: moment(movieDetail?.ngayKhoiChieu),
                 });
             }
-        } else {
-            console.log("creation");
+            setDate(moment(movieDetail?.ngayKhoiChieu).format("DD-MM-YYYY"));
         }
     }, [form, isEdit, movieDetail]);
 
     const onFinish = (values: any) => {
-        console.log("values creation", values);
-        console.log("isEdddd", isEdit);
-        const { maPhim } = movieDetail;
         if (isEdit) {
-            setEdit(true);
+            const { maPhim } = movieDetail;
             onAddEdit({ ...values, hinhAnh, maPhim, ngayKhoiChieu, maNhom: "GP01" });
         } else {
-            console.log("zzz");
-            alert(222);
-            /*   setEdit(false);
-            onAddEdit({ ...values, hinhAnh, ngayKhoiChieu }); */
+            // setEdit(false);
+            onAddEdit({ ...values, hinhAnh, ngayKhoiChieu, maNhom: "GP01" });
         }
     };
 
@@ -88,7 +81,7 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
                                     </Form.Item>
                                 </Col>
 
-                                {/*  <Col md={12}>
+                                <Col md={12}>
                                     <Form.Item
                                         {...formItemLayout}
                                         label="Ngày chiếu"
@@ -96,7 +89,7 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
                                         rules={[{ required: true }]}
                                     >
                                         <DatePicker
-                                            // defaultValue={moment(movieDetail?.ngayKhoiChieu)}
+                                            // value={moment(movieDetail?.ngayKhoiChieu)}
                                             style={{ width: "100%" }}
                                             format="DD-MM-YYYY"
                                             onChange={(date: any, dateTime: string) => {
@@ -125,7 +118,13 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
                                         name="danhGia"
                                         rules={[{ required: true }]}
                                     >
-                                        <InputNumber style={{ width: "100%" }} min={1} max={10} />
+                                        <InputNumber
+                                            style={{ width: "100%" }}
+                                            defaultValue={movieDetail?.danhGia}
+                                            value={movieDetail?.danhGia}
+                                            min={1}
+                                            max={10}
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col md={24}>
@@ -140,7 +139,7 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
                                             placeholder="please enter url description"
                                         />
                                     </Form.Item>
-                                </Col> */}
+                                </Col>
                             </Row>
                         </LeftPanel>
                     </ColStyled>
@@ -180,7 +179,7 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
                         </RightPanel>
                     </ColStyled>
                 </Row>
-                <ButtonStyle type="primary" htmlType="submit" loading={isLoading}>
+                <ButtonStyle type="primary" htmlType="submit" /*  loading={isLoading} */>
                     Submit
                 </ButtonStyle>
             </Form>

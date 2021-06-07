@@ -3,24 +3,23 @@
  * MovieManagement
  *
  */
-import * as React from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { Button, message, Popconfirm, Space, Table, Tooltip } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { useHomeSlice } from "app/pages/HomePage/slice";
-import usePagination from "hooks/usePagination";
+import { DeleteOutlined } from "@ant-design/icons";
+import { message, Popconfirm, Space, Table, Tooltip } from "antd";
 import { Buttons } from "app/components/Common/Buttons";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { useHomeSlice } from "app/pages/HomePage/slice";
 import { selectHome } from "app/pages/HomePage/slice/selectors";
+import usePagination from "hooks/usePagination";
+import moment from "moment";
+import * as React from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { ROUTES } from "utils/constants/settings";
-import { useMovieManagementSlice } from "./slice";
-import { selectMovieManagement } from "./slice/selectors";
-import { SearchForm } from "../../components/SearchForm";
+import styled from "styled-components/macro";
+import { Operations } from "../../components/Operations";
 import { useDebounce } from "../../hooks/useDebounce";
 import { MovieForm } from "./MovieForm";
+import { useMovieManagementSlice } from "./slice";
+import { selectMovieManagement } from "./slice/selectors";
 
 interface Props {}
 
@@ -36,17 +35,7 @@ export function MovieManagement(props: Props) {
     const [visible, setVisible] = React.useState(false);
     const [edit, setEdit] = React.useState(false);
 
-    const showDrawer = () => {
-        setVisible(true);
-        setEdit(true);
-    };
-
-    const onClose = () => {
-        setVisible(false);
-        setEdit(false);
-    };
-
-    const { handleChange, input } = useDebounce();
+    const { input } = useDebounce();
 
     React.useEffect(() => {
         if (input === "") {
@@ -75,7 +64,7 @@ export function MovieManagement(props: Props) {
             key: "hinhAnh",
             title: "Hình ảnh",
             dataIndex: "hinhAnh",
-            render: (text: string) => <img src={text} alt="" width={50} height={50} />,
+            render: (src: string) => <img src={src} alt="" width={50} height={50} />,
             width: "10%",
         },
         {
@@ -89,9 +78,15 @@ export function MovieManagement(props: Props) {
             key: "biDanh",
             title: "Bí danh",
             dataIndex: "biDanh",
-            width: "20%",
+            width: "15%",
         },
-        { key: "ngayKhoiChieu", title: "Ngày chiếu", dataIndex: "ngayKhoiChieu", width: "20%" },
+        {
+            key: "ngayKhoiChieu",
+            title: "Ngày chiếu",
+            dataIndex: "ngayKhoiChieu",
+            width: "20%",
+            render: (date: string) => <span>{moment(date).format("DD-MM-YYYY")}</span>,
+        },
         { key: "danhGia", title: "Đánh giá", dataIndex: "danhGia" },
 
         {
@@ -101,7 +96,7 @@ export function MovieManagement(props: Props) {
             render: (text: string, record: any, index: number) => (
                 <Space size="middle">
                     <Tooltip title="edit">
-                        <MovieForm record={record} edit={true} visible={visible} />
+                        <MovieForm record={record} edit={true} />
                     </Tooltip>
                     <Tooltip title="delete">
                         <Popconfirm
@@ -132,7 +127,7 @@ export function MovieManagement(props: Props) {
 
     return (
         <Wrapper>
-            <SearchForm />
+            <Operations />
             <Table
                 columns={columns}
                 dataSource={moviePagination.items || moviePagination}

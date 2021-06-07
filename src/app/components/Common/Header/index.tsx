@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /**
  *
  * Header
@@ -105,6 +106,7 @@ export const Header: React.FC = (props: IHeaderProps) => {
             style={{
                 backgroundColor: navBackground ? "rgba(255,255,255,0.95)" : "transparent",
                 position: isCheckout ? "relative" : "sticky",
+                zIndex: isCheckout ? 0 : 10,
             }}
         >
             <Desktop>
@@ -112,15 +114,13 @@ export const Header: React.FC = (props: IHeaderProps) => {
                     <Col span={4}>
                         <Logo />
                     </Col>
-
-                    <ColStyled span={14}>
+                    <Col span={12} offset={2}>
                         <NavList />
-                    </ColStyled>
-
+                    </Col>
                     <Col span={6} style={{ paddingRight: 20, textAlign: "right" }}>
                         {Object.keys(credentials).length === 0 ? (
                             <Buttons className="header__button--joinus">
-                                <Link to="/login">Đăng nhập</Link>
+                                <Link to={ROUTES.LOGIN}>Đăng nhập</Link>
                             </Buttons>
                         ) : (
                             <Dropdown overlay={menu} trigger={["click"]}>
@@ -136,18 +136,9 @@ export const Header: React.FC = (props: IHeaderProps) => {
             <Mobile>
                 <Row justify="space-between" align="middle" style={{ padding: "0 15px" }}>
                     <Col span={8}>
-                        {/* <img src={logo} alt="logo" width={50} /> */}
                         <Logo />
                     </Col>
-                    {/* {isCheckout && (
-                        <Col span={8}>
-                            <Steps size="small" current={1}>
-                                <Step title="Finished" />
-                                <Step title="In Progress" />
-                                <Step title="Waiting" />
-                            </Steps>
-                        </Col>
-                    )} */}
+
                     <Col span={8} style={{ textAlign: "right" }}>
                         <ButtonStyle
                             onClick={() => {
@@ -162,16 +153,23 @@ export const Header: React.FC = (props: IHeaderProps) => {
                     title={
                         Object.keys(credentials).length === 0 ? (
                             <Buttons className="header__button--joinus">
-                                <Link to="/login">Đăng nhập</Link>
+                                <Link to={ROUTES.LOGIN}>Đăng nhập</Link>
                             </Buttons>
                         ) : (
                             <Dropdown overlay={menu} trigger={["click"]}>
-                                <Buttons
+                                <a
+                                    className="ant-dropdown-link"
+                                    style={{ color: "#000" }}
+                                    onClick={e => e.preventDefault()}
+                                >
+                                    {credentials.hoTen} <DownOutlined />
+                                </a>
+                                {/* <Buttons
                                     className="header__button--joinus"
                                     style={{ paddingLeft: 0 }}
                                 >
                                     {credentials.hoTen}
-                                </Buttons>
+                                </Buttons> */}
                             </Dropdown>
                         )
                     }
@@ -183,7 +181,8 @@ export const Header: React.FC = (props: IHeaderProps) => {
                     visible={visible}
                     key="left"
                 >
-                    <Menu
+                    <NavList />
+                    {/* <Menu
                         mode="inline"
                         defaultSelectedKeys={["1"]}
                         defaultOpenKeys={["sub1"]}
@@ -196,7 +195,7 @@ export const Header: React.FC = (props: IHeaderProps) => {
                             <Link to={ROUTES.MOVIELIST}>{t(navListMessages.MovieList())}</Link>
                         </Menu.Item>
                         <Menu.Item>
-                            <Link to={ROUTES.ABOUT}>{t(navListMessages.AboutUs())}</Link>
+                            <Link to={ROUTES.ABOUT}>{t(navListMessages.CinemaList())}</Link>
                         </Menu.Item>
                         <Menu.Item
                             key="1"
@@ -207,7 +206,7 @@ export const Header: React.FC = (props: IHeaderProps) => {
                         >
                             Logout
                         </Menu.Item>
-                    </Menu>
+                    </Menu> */}
                 </DrawerStyle>
             </Mobile>
         </Wrapper>

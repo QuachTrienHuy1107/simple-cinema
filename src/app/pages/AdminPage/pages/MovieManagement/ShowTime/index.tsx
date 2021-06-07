@@ -58,20 +58,19 @@ export const ShowTime = React.memo((props: Props) => {
     const [timer, setTimer] = React.useState("");
     const [cinemaSelected, setCinemaSelected] = React.useState<any>({});
     const [price, setPrice] = React.useState<number>(0);
-    const { movieDetail } = useGetMovieDetail(movieSelected.value);
+    const { movieDetail, getMovieDetail } = useGetMovieDetail();
     const { movieManagementActions } = useMovieManagementSlice();
-    const { movie, cinemaList, cinemaInfo } = useSelector(selectHome) as HomeState;
+    const { movieWithDate, cinemaList, cinemaInfo } = useSelector(selectHome) as HomeState;
     const { successMessage, error, isLoading } = useSelector(selectMovieManagement);
     const { resPagination } = usePagination(1, 10);
     const [arrMovie, setArrMovie] = React.useState([]) as any;
 
-    console.log("successMessage", successMessage);
-
     React.useEffect(() => {
         dispatch(actions.getAllMovieAction());
+        return () => {
+            dispatch(actions.clearData());
+        };
     }, []);
-
-    console.log("movieDetail", movieDetail);
 
     const options = cinemaInfo?.map((item: any) => {
         return {
@@ -87,9 +86,6 @@ export const ShowTime = React.memo((props: Props) => {
             }),
         };
     });
-
-    console.log("cinemaInfo", cinemaInfo);
-    console.log("cinemaId", cinemaSelected);
 
     const onFinish = (value: any) => {
         dispatch(
@@ -116,192 +112,176 @@ export const ShowTime = React.memo((props: Props) => {
     return (
         <Wrapper>
             <Form form={form} name="showtime" onFinish={onFinish}>
-                {isLoading ? (
-                    <Skeleton />
-                ) : (
-                    <>
-                        <Row justify="space-around" gutter={[20, 35]}>
-                            <ColStyled md={15}>
-                                <LeftPanel>
-                                    <Row gutter={[24, 12]} justify="space-around">
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Chọn phim"
-                                                name="tenPhim"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <Select
-                                                    loading={isLoading}
-                                                    size="large"
-                                                    onChange={(maPhim: any, value: any) => {
-                                                        console.log("vaaa", value);
-                                                        setMovieSelected(value);
-                                                        dispatch(actions.getAllCinemaListAction());
-                                                    }}
-                                                >
-                                                    {movie &&
-                                                        movie.map((movie: MovieResponse) => {
-                                                            return (
-                                                                <Option
-                                                                    key={movie.maPhim}
-                                                                    value={movie.maPhim}
-                                                                >
-                                                                    {movie.tenPhim}
-                                                                </Option>
-                                                            );
-                                                        })}
-                                                </Select>
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Chọn hệ thống rạp"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <Select
-                                                    loading={isLoading}
-                                                    size="large"
-                                                    onChange={maHeThongRap => {
-                                                        dispatch(
-                                                            actions.getAllCinemaInfoAction({
-                                                                maHeThongRap,
-                                                            }),
-                                                        );
-                                                    }}
-                                                >
-                                                    {cinemaList?.map(item => {
-                                                        return (
-                                                            <Option
-                                                                key={item.maHeThongRap}
-                                                                value={item.maHeThongRap}
-                                                            >
-                                                                {item.tenHeThongRap}
-                                                            </Option>
-                                                        );
-                                                    })}
-                                                </Select>
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Chọn rạp"
-                                                name="maRap"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <Cascader
-                                                    size="large"
-                                                    options={options}
-                                                    onChange={(value: any, selectedOptions) => {
-                                                        console.log("value", value);
-                                                        console.log(
-                                                            "selectedOptions",
-                                                            selectedOptions,
-                                                        );
-                                                        const newValue = [...value];
-                                                        const id = newValue.pop();
-                                                        setCinemaSelected(selectedOptions);
-                                                    }}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={12}>
-                                            <FormItem
-                                                {...formItemLayout}
-                                                label="Chọn ngày giờ"
-                                                name="ngayChieuGioChieu"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <DatePicker
-                                                    format="DD-MM-YYYY HH:mm"
-                                                    showTime={{
-                                                        defaultValue: moment("00:00:00", "HH:mm"),
-                                                        format: "HH:mm",
-                                                    }}
-                                                    size="large"
-                                                    onChange={(date: any, dateTime: string) => {
-                                                        const data = `${dateTime}:00`;
-                                                        console.log("data", data);
-                                                        setTimer(data);
-                                                    }}
-                                                />
-                                            </FormItem>
-                                        </Col>
+                {isLoading && <Skeleton />}
+                <Row justify="space-around" gutter={[20, 35]}>
+                    <ColStyled md={15}>
+                        <LeftPanel>
+                            <Row gutter={[24, 12]} justify="space-around">
+                                <Col md={12}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Chọn phim"
+                                        name="tenPhim"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Select
+                                            loading={isLoading}
+                                            size="large"
+                                            onChange={(maPhim: any, value: any) => {
+                                                // setMovieSelected(value);
+                                                getMovieDetail(value);
+                                                dispatch(actions.getAllCinemaListAction());
+                                            }}
+                                        >
+                                            {movieWithDate &&
+                                                movieWithDate.map((movie: MovieResponse) => {
+                                                    return (
+                                                        <Option
+                                                            key={movie.maPhim}
+                                                            value={movie.maPhim}
+                                                        >
+                                                            {movie.tenPhim}
+                                                        </Option>
+                                                    );
+                                                })}
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
+                                <Col md={12}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Chọn hệ thống rạp"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Select
+                                            loading={isLoading}
+                                            size="large"
+                                            onChange={maHeThongRap => {
+                                                dispatch(
+                                                    actions.getAllCinemaInfoAction({
+                                                        maHeThongRap,
+                                                    }),
+                                                );
+                                            }}
+                                        >
+                                            {cinemaList?.map(item => {
+                                                return (
+                                                    <Option
+                                                        key={item.maHeThongRap}
+                                                        value={item.maHeThongRap}
+                                                    >
+                                                        {item.tenHeThongRap}
+                                                    </Option>
+                                                );
+                                            })}
+                                        </Select>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Chọn rạp"
+                                        name="maRap"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Cascader
+                                            size="large"
+                                            options={options}
+                                            onChange={(value: any, selectedOptions) => {
+                                                const newValue = [...value];
+                                                const id = newValue.pop();
+                                                setCinemaSelected(selectedOptions);
+                                            }}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <FormItem
+                                        {...formItemLayout}
+                                        label="Chọn ngày giờ"
+                                        name="ngayChieuGioChieu"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <DatePicker
+                                            format="DD-MM-YYYY HH:mm"
+                                            showTime={{
+                                                defaultValue: moment("00:00:00", "HH:mm"),
+                                                format: "HH:mm",
+                                            }}
+                                            size="large"
+                                            onChange={(date: any, dateTime: string) => {
+                                                const data = `${dateTime}:00`;
 
-                                        <Col md={12}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                label="Nhập giá vé"
-                                                name="giaVe"
-                                                rules={[{ required: true }]}
-                                            >
-                                                <InputNumberStyle
-                                                    size="large"
-                                                    step={1000}
-                                                    min={50000}
-                                                    max={150000}
-                                                    formatter={value =>
-                                                        `VND ${value}`.replace(
-                                                            /\B(?=(\d{3})+(?!\d))/g,
-                                                            ",",
-                                                        )
-                                                    }
-                                                    parser={(value: any) =>
-                                                        value.replace(/\$\s?|(,*)/g, "")
-                                                    }
-                                                    onChange={(value: any): void => setPrice(value)}
-                                                />
-                                            </Form.Item>
-                                        </Col>
-                                        <Col md={12} style={{ alignSelf: "center" }}>
-                                            <Form.Item
-                                                {...formItemLayout}
-                                                style={{ marginBottom: 0 }}
-                                            >
-                                                <ButtonStyle htmlType="submit" loading={isLoading}>
-                                                    Tạo lịch chiếu
-                                                </ButtonStyle>
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                </LeftPanel>
-                            </ColStyled>
-                            <ColStyled md={8}>
-                                <RightPanel>
-                                    <TableStyle>
-                                        <thead>
-                                            <tr>
-                                                <th>Tên phim</th>
-                                                <th>{movieSelected.children}</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Hệ thống rạp</th>
-                                                <th>
-                                                    {cinemaSelected[0]?.label
-                                                        ? cinemaSelected[0]?.label
-                                                        : "Vui lòng chọn hệ thống rạp"}
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>Ngày giờ</th>
-                                                <th>{timer}</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Giá vé</th>
-                                                <th>{price}</th>
-                                            </tr>
-                                        </thead>
-                                    </TableStyle>
-                                </RightPanel>
-                            </ColStyled>
-                            <Col span={24}>
-                                <CinemaDetail movieDetail={movieDetail} />
-                            </Col>
-                        </Row>
-                    </>
-                )}
+                                                setTimer(data);
+                                            }}
+                                        />
+                                    </FormItem>
+                                </Col>
+
+                                <Col md={12}>
+                                    <Form.Item
+                                        {...formItemLayout}
+                                        label="Nhập giá vé"
+                                        name="giaVe"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <InputNumberStyle
+                                            size="large"
+                                            step={1000}
+                                            min={50000}
+                                            max={150000}
+                                            formatter={value =>
+                                                `VND ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                                            }
+                                            parser={(value: any) =>
+                                                value.replace(/\$\s?|(,*)/g, "")
+                                            }
+                                            onChange={(value: any): void => setPrice(value)}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col md={12} style={{ alignSelf: "center" }}>
+                                    <Form.Item {...formItemLayout} style={{ marginBottom: 0 }}>
+                                        <ButtonStyle htmlType="submit" loading={isLoading}>
+                                            Tạo lịch chiếu
+                                        </ButtonStyle>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        </LeftPanel>
+                    </ColStyled>
+                    <ColStyled md={8}>
+                        <RightPanel>
+                            <TableStyle>
+                                <thead>
+                                    <tr>
+                                        <th>Tên phim</th>
+                                        <th>{movieSelected.children}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Hệ thống rạp</th>
+                                        <th>
+                                            {cinemaSelected[0]?.label
+                                                ? cinemaSelected[0]?.label
+                                                : "Vui lòng chọn hệ thống rạp"}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Ngày giờ</th>
+                                        <th>{timer}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Giá vé</th>
+                                        <th>{price}</th>
+                                    </tr>
+                                </thead>
+                            </TableStyle>
+                        </RightPanel>
+                    </ColStyled>
+                    <Col span={24}>
+                        <CinemaDetail movieDetail={movieDetail} />
+                    </Col>
+                </Row>
             </Form>
         </Wrapper>
     );

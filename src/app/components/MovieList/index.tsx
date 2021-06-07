@@ -3,7 +3,7 @@
  * MovieList
  *
  */
-import { Avatar, Button, List, Row, Tabs } from "antd";
+import { Button, List, Tabs } from "antd";
 import { useHomeSlice } from "app/pages/HomePage/slice";
 import { selectHome } from "app/pages/HomePage/slice/selectors";
 import { MovieResponse } from "app/pages/HomePage/slice/types";
@@ -13,13 +13,19 @@ import { useScreenType } from "hooks/useScreenType";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
+import { ANCHOR, ROUTES } from "utils/constants/settings";
 import { carouselData } from "../Common/Carousel";
+import { PaginationResponseType } from "../Paginations/types";
 import { MovieCard } from "./MovieCard";
 
-interface Props {}
+interface Props {
+    movieWithDate: MovieResponse[];
+    moviePagination: PaginationResponseType;
+}
 
 const settings = {
     className: "center",
@@ -43,9 +49,10 @@ const settings = {
         {
             breakpoint: 576,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: 2,
                 slidesPerRow: 1,
                 slidesToScroll: 1,
+                rows: 2,
             },
         },
     ],
@@ -53,109 +60,52 @@ const settings = {
 
 const { TabPane } = Tabs;
 
-export const MovieList = memo((props: Props) => {
+export const MovieList = memo(({ moviePagination, movieWithDate }: Props) => {
     const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const { today, dateBefore } = useGetDate();
-    const { Desktop, Mobile } = useScreenType();
     const { actions } = useHomeSlice();
-    const { moviePagination, movie, isLoading } = useSelector(selectHome);
+    const { isLoading } = useSelector(selectHome);
     const [count, setCount] = React.useState(1);
     const { resPagination } = usePagination(1, 16);
-    const [key, setKey] = React.useState<boolean>(false);
 
-    console.log("resPagination", resPagination);
-
-    React.useEffect(() => {
+    /* React.useEffect(() => {
         const data = {
             ...resPagination,
             tuNgay: dateBefore,
             denNgay: today,
         };
         dispatch(actions.getMovieWithDate(data));
+
+        return () => {
+            dispatch(actions.clearData());
+        };
     }, [dateBefore, today]);
 
     React.useEffect(() => {
         dispatch(actions.getPaginateMoviesAction(resPagination));
-    }, []);
-
-    console.log("movie", movie);
-
-    const loadMore = (
-        <div style={{ textAlign: "center" }}>
-            <Button
-                onClick={() => {
-                    setCount(count + 3);
-                    const data = {
-                        ...resPagination,
-                        tuNgay: dateBefore,
-                        denNgay: today,
-                    };
-                    dispatch(actions.getMovieWithDate(data));
-                }}
-            >
-                Xem thêm
-            </Button>
-        </div>
-    );
-
-    console.log("carouselData", carouselData.length);
+    }, []); */
 
     return (
-        <Wrapper>
-            <Tabs defaultActiveKey="1" onChange={key => setKey(true)} animated type="card">
+        <Wrapper id={ANCHOR.MOVIELISTTO}>
+            <Tabs defaultActiveKey="1" animated type="card">
                 <TabPane tab="Đang chiếu" key="1">
-                    <Desktop>
-                        <Slider {...settings}>
-                            {movie?.map((movie: any) => (
-                                <div key={movie.maPhim}>
-                                    <MovieCard movie={movie} />
-                                </div>
-                            ))}
-                        </Slider>
-                    </Desktop>
-                    <Mobile>
-                        <List
-                            style={{ padding: "20px 10px 0" }}
-                            itemLayout="horizontal"
-                            dataSource={movie}
-                            loadMore={loadMore}
-                            // loading={true}
-                            renderItem={(item: any, index: number) => {
-                                return (
-                                    <List.Item key={item.maPhim}>
-                                        <img
-                                            src={item.hinhAnh}
-                                            alt={item.tenPhim}
-                                            style={{ width: "100%", height: 250 }}
-                                        />
-                                    </List.Item>
-                                );
-                            }}
-                            /* renderItem={item => (
-                                <List.Item>
-                                    <List.Item.Meta
-                                        avatar={
-                                            <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                                        }
-                                        title={<a href="https://ant.design">{item.title}</a>}
-                                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                                    />
-                                </List.Item>
-                            )} */
-                        />
-                    </Mobile>
+                    <Slider {...settings}>
+                        {movieWithDate?.map((movie: any) => (
+                            <div key={movie.maPhim}>
+                                <MovieCard movie={movie} />
+                            </div>
+                        ))}
+                    </Slider>
                 </TabPane>
                 <TabPane tab="Sắp chiếu" key="2">
-                    <Desktop>
-                        <Slider {...settings}>
-                            {moviePagination?.items?.map((movie: any) => (
-                                <div key={movie.maPhim}>
-                                    <MovieCard movie={movie} isComming={true} />
-                                </div>
-                            ))}
-                        </Slider>
-                    </Desktop>
+                    <Slider {...settings}>
+                        {moviePagination.items?.map((movie: any) => (
+                            <div key={movie.maPhim}>
+                                <MovieCard movie={movie} isComming={true} />
+                            </div>
+                        ))}
+                    </Slider>
                 </TabPane>
             </Tabs>
         </Wrapper>

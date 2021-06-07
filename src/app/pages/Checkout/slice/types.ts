@@ -4,7 +4,6 @@ export type SeatIdPayload = {
     maLichChieu: number;
 };
 
-export type ArraySeat = { maGhe: number; giaVe: number };
 
 export interface SeatType {
     readonly maGhe: number;
@@ -28,10 +27,23 @@ export interface MovieBooking {
     tenRap: string;
 }
 
-export type CheckoutDetail = {
+export type TicketInfoResponse = {
     danhSachGhe: Array<SeatType>;
     thongTinPhim: any;
 };
+
+
+export type SeatSelectedType = { maGhe: number; giaVe: number; tenGhe?: string };
+
+
+
+export interface FoodType {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 export type TicketDetail = {
     readonly maLichChieu: string;
     tenCumRap: string;
@@ -51,7 +63,8 @@ export interface BookingPayload {
 
 export interface CheckoutState {
     tickets: SeatType[] | any;
+    arrayFood: any[],
     isLoading: boolean;
     error?: Error | null;
-    message: string | null
+    messageSuccess: string | null
 }

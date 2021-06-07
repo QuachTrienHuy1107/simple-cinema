@@ -1,5 +1,7 @@
 /* --- STATE --- */
 
+import {TimerProps} from "app/pages/HomePage/components/Schedule/types";
+
 /**
  * Movie
  */
@@ -29,16 +31,11 @@ export interface TheaterInfo {
 }
 
 export interface MovieInfo {
-    lichChieuPhim: Array<any>;
+    lichChieuPhim: Array<MovieShowtime>;
     maCumRap: string;
     tenCumRap: string;
 }
-export interface MovieShowtime {
-    giaVe: number;
-    maLichChieu: string;
-    maRap: string;
-    ngayChieuGioChieu: string;
-    tenRap: string;
+export interface MovieShowtime extends TimerProps {
     thoiLuong: string;
 }
 export interface MovieDetailProps {

@@ -4,9 +4,9 @@
  *
  */
 import { SearchOutlined } from "@ant-design/icons";
-import { Col, Drawer, Form, Row } from "antd";
-import { Buttons } from "app/components/Common/Buttons";
+import { Form, Input } from "antd";
 import { InputStyled } from "app/components/Common/InputStyled";
+import { useDebounce } from "app/pages/AdminPage/hooks/useDebounce";
 import { useHomeSlice } from "app/pages/HomePage/slice";
 import usePagination from "hooks/usePagination";
 import React, { memo } from "react";
@@ -14,8 +14,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import styled from "styled-components/macro";
-import { useDebounce } from "../../hooks/useDebounce";
-import { MovieFormAdmin } from "../../pages/MovieManagement/MovieForm/MovieFormAdmin";
 
 interface Props {}
 
@@ -29,20 +27,6 @@ export const SearchForm = memo((props: Props) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const { resPagination, handlePageChange } = usePagination(1, 10);
-    const [visible, setVisible] = React.useState(false);
-    const [edit, setEdit] = React.useState(false);
-
-    console.log("visible", visible);
-
-    const showDrawer = () => {
-        setVisible(true);
-        setEdit(false);
-    };
-
-    const onClose = () => {
-        setVisible(false);
-        setEdit(false);
-    };
 
     React.useEffect(() => {
         if (location.pathname.includes("moviemanagement") && input !== "") {
@@ -60,32 +44,13 @@ export const SearchForm = memo((props: Props) => {
     return (
         <Wrapper>
             <Form form={form}>
-                <Row justify="space-between" gutter={[16, 20]}>
-                    <Col flex="auto">
-                        <InputStyled
-                            onChange={handleChange}
-                            placeholder="Search..."
-                            suffix={<SearchOutlined style={{ fontSize: "1.2rem" }} />}
-                        />
-                    </Col>
+                <Input
+                    size="large"
+                    onChange={handleChange}
+                    placeholder="Search..."
+                    suffix={<SearchOutlined style={{ fontSize: "1.2rem" }} />}
+                />
 
-                    <Col style={{ textAlign: "right" }} flex="100px">
-                        <Buttons size="large" onClick={showDrawer}>
-                            Create
-                        </Buttons>
-                        <Drawer
-                            title={edit ? "Edit" : "Create"}
-                            width={720}
-                            placement="right"
-                            closable={false}
-                            onClose={onClose}
-                            visible={visible}
-                            bodyStyle={{ paddingBottom: 80 }}
-                        >
-                            <MovieFormAdmin isEdit={false} />
-                        </Drawer>
-                    </Col>
-                </Row>
                 {/*  <Row>
                     <Col span={24} style={{ textAlign: "right" }}>
                         <Buttons type="primary" htmlType="submit">
@@ -108,5 +73,4 @@ export const SearchForm = memo((props: Props) => {
 
 const Wrapper = styled.div`
     color: #000;
-    margin: 10px 0 40px;
 `;

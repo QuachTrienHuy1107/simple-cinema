@@ -25,7 +25,7 @@ export const CommentItem = memo(({ binhLuan }: Props) => {
                     <Avatar icon={<UserOutlined />} />
                     <div>
                         <h5>{binhLuan?.taiKhoan}</h5>
-                        <span className="timer">1111</span>
+                        <span className="timer">{binhLuan?.ngayDang}</span>
                     </div>
                 </Info>
 

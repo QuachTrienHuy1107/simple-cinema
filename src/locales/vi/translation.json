@@ -36,8 +36,10 @@
     "Header": {
         "Navbar": {
             "Home": "Trang chủ",
-            "MovieList": "Danh sách phim",
-            "AboutUs": "Về chúng tôi"
+            "MovieList": "Lịch chiếu",
+            "CinemaList": "Cụm rạp",
+            "News": "Tin tức",
+            "Applications": "Ứng dụng"
         }
     }
 }

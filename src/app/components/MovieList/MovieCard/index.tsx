@@ -7,15 +7,18 @@ import React, { memo } from "react";
 import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { messages } from "./messages";
-import { Button, Card, Progress } from "antd";
+import { Button, Card, Modal, Progress } from "antd";
 import { Link } from "react-router-dom";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { MovieResponse } from "app/pages/HomePage/slice/types";
-import { Image } from "app/components/Common/Image";
+
 import { ROUTES } from "utils/constants/settings";
 import star from "../../../assets/star1.png";
 import moment from "moment";
-
+import ModalVideo from "react-modal-video";
+import ReactPlayer from "react-player";
+import "./style.scss";
+import { Img } from "app/components/Common/Image";
 interface IMovieCardProps {
     movie: MovieResponse;
     isComming?: boolean;
@@ -24,41 +27,93 @@ interface IMovieCardProps {
 export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
-    return (
-        <CardStyle
-            cover={
-                <CardLink to={`${ROUTES.MOVIEDETAIL}/${movie.maPhim}`}>
-                    <Image
-                        className="card__img"
-                        style={{
-                            backgroundImage: `url('${movie.hinhAnh}'), url('https://tix.vn/app/assets/img/default-film.webp')`,
-                        }}
-                    />
-                    {movie.danhGia ? (
-                        <Rating>
-                            <p className="rate">{movie.danhGia}</p>
-                            <p>
-                                <Img src={star} alt="" />
-                                <Img src={star} alt="" />
-                                <Img src={star} alt="" />
-                                <Img src={star} alt="" />
-                            </p>
-                        </Rating>
-                    ) : (
-                        ""
-                    )}
+    const [open, setOpen] = React.useState(false);
 
-                    <PlayCircleOutlined className="movieCard__img--play" />
-                </CardLink>
-            }
-        >
-            <Link to={`${ROUTES.MOVIEDETAIL}/${movie.maPhim}`}>
-                <p className="ant-card-body__title">{movie.tenPhim}</p>
-            </Link>
-            <span className="ant-card-body__datetime">
-                {moment(movie.ngayKhoiChieu).format("DD-MM-YYYY")}
-            </span>
-        </CardStyle>
+    console.log("movie", movie);
+    return (
+        <>
+            <CardStyle
+                cover={
+                    <CardInfo>
+                        <Link to={`${ROUTES.MOVIEDETAIL}/${movie.maPhim}`}>
+                            <Img
+                                height="350"
+                                className="card__img"
+                                style={{
+                                    backgroundImage: `url('${movie.hinhAnh}'), url('https://tix.vn/app/assets/img/default-film.webp')`,
+                                }}
+                            />
+                        </Link>
+
+                        {movie.danhGia ? (
+                            <Rating>
+                                <p className="rate">{movie.danhGia}</p>
+                                <p>
+                                    <ImgStyle src={star} alt="" />
+                                    <ImgStyle src={star} alt="" />
+                                    <ImgStyle src={star} alt="" />
+                                    <ImgStyle src={star} alt="" />
+                                </p>
+                            </Rating>
+                        ) : (
+                            ""
+                        )}
+
+                        <PlayCircleOutlined
+                            className="movieCard__img--play"
+                            onClick={() => {
+                                setOpen(true);
+                            }}
+                        />
+                    </CardInfo>
+                }
+            >
+                <Link to={`${ROUTES.MOVIEDETAIL}/${movie.maPhim}`}>
+                    <p className="ant-card-body__title">{movie.tenPhim}</p>
+                </Link>
+                <span className="ant-card-body__datetime">
+                    {moment(movie.ngayKhoiChieu).format("DD-MM-YYYY")}
+                </span>
+            </CardStyle>
+
+            <Modal
+                visible={open}
+                onOk={() => setOpen(false)}
+                onCancel={() => setOpen(false)}
+                centered
+                footer={<div style={{ padding: 0 }}></div>}
+                width={520}
+                style={{ padding: 0, border: "none" }}
+                closable={false}
+            >
+                {/* <iframe
+                    title={movie?.tenPhim}
+                    width="800"
+                    height="400"
+                    src={`${movie.trailer}`}
+                    className="video"
+                ></iframe> */}
+                <ReactPlayer
+                    url={movie.trailer}
+                    className="react-player"
+                    style={{
+                        position: "absolute",
+                        left: "50%",
+                        top: "50%",
+                        transform: "translate(-50%,-50%)",
+                    }}
+                />
+            </Modal>
+
+            {/* <ModalVideo
+                channel="youtube"
+                isOpen={open}
+                videoId="https://youtu.be/TcMBFSGVi1c"
+                onClose={() => setOpen(false)}
+                maxwidth={"100%"}
+                maxheight={"100%"}
+            /> */}
+        </>
     );
 });
 
@@ -66,7 +121,7 @@ const CardStyle = styled(Card)`
     border: none;
     transition: all 0.5s;
     border-radius: 10px;
-    height: 300px;
+
     padding: 10px;
 
     a {
@@ -82,7 +137,6 @@ const CardStyle = styled(Card)`
         padding: 9px 0px;
 
         &__title {
-            font-weight: $bolder;
             font-size: 1.2rem;
             margin-bottom: 0px;
         }
@@ -132,7 +186,7 @@ const CardStyle = styled(Card)`
     }
 `;
 
-const CardLink = styled(Link)`
+const CardInfo = styled.div`
     position: relative;
     transition: all 0.5s;
     overflow: hidden;
@@ -187,6 +241,20 @@ const CardLink = styled(Link)`
         opacity: 0;
         visibility: hidden;
     }
+
+    .ant-modal-body {
+        position: relative;
+        padding: 0;
+
+        .video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
 `;
 
 const Rating = styled.div`
@@ -212,7 +280,7 @@ const Rating = styled.div`
     }
 `;
 
-const Img = styled.img`
+const ImgStyle = styled(Img)`
     width: 8px;
     display: inline-block !important;
 `;

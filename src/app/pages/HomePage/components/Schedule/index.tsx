@@ -3,7 +3,7 @@
  * Schedule
  *
  */
-import { Button, Collapse, Divider, Space, Tabs } from "antd";
+import { Button, Collapse, Divider, Space, Tabs, Tag } from "antd";
 import { Buttons } from "app/components/Common/Buttons";
 import { useScreenType } from "hooks/useScreenType";
 import moment from "moment";
@@ -12,8 +12,10 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
-import { ROUTES } from "utils/constants/settings";
+import { ANCHOR, ROUTES } from "utils/constants/settings";
 import bgTime from "./assets/movie-seat.png";
+import { useGetRangeTime } from "./hooks/useGetRangeTime";
+import { TimePlay } from "./TimePlay";
 import { CinemaListProps, CinemaListResponse, MovieProps, TimerProps } from "./types";
 
 interface IScheduleProps {
@@ -27,6 +29,9 @@ export const Schedule = memo(({ cinemaList }: IScheduleProps) => {
     const { t, i18n } = useTranslation();
     const { Mobile, Desktop } = useScreenType();
     const history = useHistory();
+    const { getRangeTime } = useGetRangeTime();
+
+    console.log("cinemaList", cinemaList);
 
     const renderCinema = (cinemaList: CinemaListResponse[], Mobile: any, Desktop: any) => {
         return cinemaList?.map((item: CinemaListResponse) => (
@@ -36,126 +41,218 @@ export const Schedule = memo(({ cinemaList }: IScheduleProps) => {
             >
                 <Desktop>
                     <Tabs tabPosition="left">
-                        {item.lstCumRap?.map((cinema: CinemaListProps) => (
-                            <TabPane
-                                key={cinema.maCumRap}
-                                tab={
-                                    <TabLeft>
-                                        <h5 className="schedule__left--title">
-                                            {cinema.tenCumRap}
-                                        </h5>
+                        {item.lstCumRap?.map((cinema: CinemaListProps) => {
+                            const cinemaName = cinema?.tenCumRap.split("-");
+                            return (
+                                <TabPane
+                                    key={cinema.maCumRap}
+                                    tab={
+                                        <TabLeft>
+                                            <div>
+                                                <h5 className="schedule__left--title schedule__left--title-left">
+                                                    {cinemaName[0]}
+                                                </h5>
+                                                {" - "}
+                                                <h5 className="schedule__left--title schedule__left--title-right">
+                                                    {cinemaName[1]}
+                                                </h5>
+                                            </div>
 
-                                        <span className="schedule__left--address">
-                                            {cinema.diaChi}
-                                        </span>
-                                        <Link to="/">Chi tiet</Link>
-                                    </TabLeft>
-                                }
-                            >
-                                {cinema.danhSachPhim?.slice(0, 6).map((movie: MovieProps) => (
-                                    <>
-                                        <TabRight className="schedule__right">
-                                            <div style={{ width: "100%" }}>
-                                                <Collapse
-                                                    ghost
-                                                    expandIconPosition="right"
-                                                    key={movie.maPhim}
-                                                >
-                                                    <Panel
-                                                        header={
-                                                            <Space className="schedule__right--header-img">
-                                                                <img
-                                                                    src={movie.hinhAnh}
-                                                                    alt={movie.tenPhim}
-                                                                    width={50}
-                                                                    height={50}
-                                                                />
-                                                                <h5>{movie.tenPhim}</h5>
-                                                            </Space>
-                                                        }
-                                                        key={movie.maPhim}
-                                                        style={{ fontSize: "1rem" }}
-                                                    >
-                                                        {movie.lstLichChieuTheoPhim
-                                                            .slice(0, 10)
-                                                            ?.map((timer: TimerProps) => (
-                                                                <Timer
-                                                                    className="schedule__right--timer"
-                                                                    key={timer.maLichChieu}
-                                                                    onClick={() => {
-                                                                        history.push(
-                                                                            `${ROUTES.CHECKOUT}/${timer.maLichChieu}`,
-                                                                        );
+                                            <span className="schedule__left--address">
+                                                {cinema.diaChi}
+                                            </span>
+                                            <Link to="/">Chi tiet</Link>
+                                        </TabLeft>
+                                    }
+                                >
+                                    {cinema.danhSachPhim?.slice(0, 3).map((movie: MovieProps) => {
+                                        return (
+                                            <>
+                                                {movie.lstLichChieuTheoPhim.length === 0 && (
+                                                    <p>Khong co</p>
+                                                )}
+                                                <TabRight className="schedule__right">
+                                                    <div style={{ width: "100%" }}>
+                                                        <Collapse
+                                                            ghost
+                                                            expandIconPosition="right"
+                                                            key={movie.maPhim}
+                                                        >
+                                                            <Panel
+                                                                header={
+                                                                    <>
+                                                                        <Space className="schedule__right--header-img">
+                                                                            <img
+                                                                                src={movie.hinhAnh}
+                                                                                alt={movie.tenPhim}
+                                                                                width={50}
+                                                                                height={50}
+                                                                            />
+                                                                            <MovieInfo>
+                                                                                <div
+                                                                                    style={{
+                                                                                        display:
+                                                                                            "flex",
+                                                                                    }}
+                                                                                >
+                                                                                    <Tag
+                                                                                        color="#f50"
+                                                                                        style={{
+                                                                                            lineHeight:
+                                                                                                "24px",
+                                                                                        }}
+                                                                                    >
+                                                                                        C13
+                                                                                    </Tag>
+                                                                                    {" - "}
+                                                                                    <h5>
+                                                                                        {
+                                                                                            movie.tenPhim
+                                                                                        }
+                                                                                    </h5>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <span className="info__score">
+                                                                                        116p - TIX
+                                                                                        8.6 - IMDb
+                                                                                        10
+                                                                                    </span>
+                                                                                </div>
+                                                                            </MovieInfo>
+                                                                        </Space>
+                                                                    </>
+                                                                }
+                                                                key={movie.maPhim}
+                                                                style={{ fontSize: "1rem" }}
+                                                            >
+                                                                <p
+                                                                    style={{
+                                                                        margin: "15px 0 5px 5px",
+                                                                        fontWeight: 500,
                                                                     }}
                                                                 >
-                                                                    {moment(
-                                                                        timer.ngayChieuGioChieu,
-                                                                    ).format("hh:MM A")}
-                                                                </Timer>
-                                                            ))}
-                                                    </Panel>
-                                                </Collapse>
-                                            </div>
-                                        </TabRight>
-                                        <Divider />
-                                    </>
-                                ))}
-                            </TabPane>
-                        ))}
+                                                                    2D Digital
+                                                                </p>
+
+                                                                <TimePlay
+                                                                    movie={
+                                                                        movie.lstLichChieuTheoPhim
+                                                                    }
+                                                                />
+                                                            </Panel>
+                                                        </Collapse>
+                                                    </div>
+                                                </TabRight>
+                                                <Divider />
+                                            </>
+                                        );
+                                    })}
+                                </TabPane>
+                            );
+                        })}
                     </Tabs>
                 </Desktop>
                 <Mobile>
                     <Collapse>
-                        {item.lstCumRap?.map((cinemaList: CinemaListProps) => (
-                            <Panel
-                                showArrow={false}
-                                header={cinemaList.tenCumRap}
-                                key={cinemaList.maCumRap}
-                            >
-                                {cinemaList.danhSachPhim.map((movieList: MovieProps) => (
-                                    <TabRight className="schedule__right" key={movieList.maPhim}>
-                                        <div style={{ width: "100%" }}>
-                                            <Collapse ghost expandIconPosition="right">
-                                                <Panel
-                                                    header={
-                                                        <div className="schedule__right--header">
-                                                            <Space className="schedule__right--header-img">
-                                                                <img
-                                                                    src={movieList.hinhAnh}
-                                                                    alt={movieList.tenPhim}
-                                                                    width={40}
-                                                                />
-                                                                <h5>{movieList.tenPhim}</h5>
-                                                            </Space>
-                                                        </div>
-                                                    }
-                                                    key={movieList.maPhim}
-                                                    style={{ fontSize: "1rem" }}
-                                                >
-                                                    {movieList.lstLichChieuTheoPhim
-                                                        .slice(0, 10)
-                                                        ?.map((timer: TimerProps) => (
-                                                            <Timer
-                                                                className="schedule__right--timer"
-                                                                key={timer.maLichChieu}
-                                                                onClick={() => {
-                                                                    history.push(
-                                                                        `${ROUTES.CHECKOUT}/${timer.maLichChieu}`,
-                                                                    );
+                        {item.lstCumRap?.map((cinemaList: CinemaListProps) => {
+                            const cinemaName = cinemaList.tenCumRap.split("-");
+                            return (
+                                <Panel
+                                    showArrow={false}
+                                    header={
+                                        <TabLeft>
+                                            <div>
+                                                <h5 className="schedule__left--title schedule__left--title-left">
+                                                    {cinemaName[0]}
+                                                </h5>
+                                                {" - "}
+                                                <h5 className="schedule__left--title schedule__left--title-right">
+                                                    {cinemaName[1]}
+                                                </h5>
+                                            </div>
+
+                                            <span className="schedule__left--address">
+                                                {cinemaList.diaChi}
+                                            </span>
+                                        </TabLeft>
+                                    }
+                                    key={cinemaList.maCumRap}
+                                >
+                                    {cinemaList.danhSachPhim.map((movieList: MovieProps) => (
+                                        <>
+                                            <TabRight key={movieList.maPhim}>
+                                                <div style={{ width: "100%" }}>
+                                                    <Collapse ghost expandIconPosition="right">
+                                                        <Panel
+                                                            header={
+                                                                <>
+                                                                    <Space className="schedule__right--header-img">
+                                                                        <img
+                                                                            src={movieList.hinhAnh}
+                                                                            alt={movieList.tenPhim}
+                                                                            width={50}
+                                                                            height={50}
+                                                                        />
+                                                                        <MovieInfo>
+                                                                            <div
+                                                                                style={{
+                                                                                    display: "flex",
+                                                                                    alignItems:
+                                                                                        "center",
+                                                                                }}
+                                                                            >
+                                                                                <Tag
+                                                                                    color="#f50"
+                                                                                    style={{
+                                                                                        lineHeight:
+                                                                                            "24px",
+                                                                                    }}
+                                                                                >
+                                                                                    C13
+                                                                                </Tag>
+                                                                                {" - "}
+                                                                                <h5>
+                                                                                    {
+                                                                                        movieList.tenPhim
+                                                                                    }
+                                                                                </h5>
+                                                                            </div>
+                                                                            <div>
+                                                                                <span className="info__score">
+                                                                                    116p - TIX 8.6 -
+                                                                                    IMDb 10
+                                                                                </span>
+                                                                            </div>
+                                                                        </MovieInfo>
+                                                                    </Space>
+                                                                </>
+                                                            }
+                                                            key={movieList.maPhim}
+                                                            style={{ fontSize: "1rem" }}
+                                                        >
+                                                            <p
+                                                                style={{
+                                                                    margin: "5px 0 5px 5px",
+                                                                    fontWeight: 600,
                                                                 }}
                                                             >
-                                                                {moment(
-                                                                    timer.ngayChieuGioChieu,
-                                                                ).format("hh:MM A")}
-                                                            </Timer>
-                                                        ))}
-                                                </Panel>
-                                            </Collapse>
-                                        </div>
-                                    </TabRight>
-                                ))}
-                            </Panel>
-                        ))}
+                                                                2D Digital
+                                                            </p>
+                                                            <TimePlay
+                                                                movie={
+                                                                    movieList.lstLichChieuTheoPhim
+                                                                }
+                                                            />
+                                                        </Panel>
+                                                    </Collapse>
+                                                </div>
+                                            </TabRight>
+                                            <Divider />
+                                        </>
+                                    ))}
+                                </Panel>
+                            );
+                        })}
                     </Collapse>
                 </Mobile>
             </TabContent>
@@ -163,8 +260,8 @@ export const Schedule = memo(({ cinemaList }: IScheduleProps) => {
     };
 
     return (
-        <Wrapper>
-            <Tabs defaultActiveKey="1" centered style={{ transition: "all 0.5s" }}>
+        <Wrapper id={ANCHOR.CINEMATO}>
+            <Tabs defaultActiveKey="1" centered style={{ transition: "all 0.5s" }} size="large">
                 {renderCinema(cinemaList, Mobile, Desktop)}
             </Tabs>
         </Wrapper>
@@ -218,14 +315,21 @@ const TabLeft = styled.div`
     flex-direction: column;
     text-align: left;
 
-    .schedule__left--title {
-        font-size: 1rem;
-        color: ${props => props.theme.titleColor};
-    }
+    .schedule__left {
+        &--title {
+            font-size: 1rem;
+            font-weight: 500;
+            display: inline;
 
-    .schedule__left--address {
-        font-size: 0.8rem;
-        color: #636363;
+            &-left {
+                color: ${props => props.theme.titleColor};
+            }
+        }
+
+        &--address {
+            font-size: 0.8rem;
+            color: #636363;
+        }
     }
 `;
 
@@ -236,8 +340,8 @@ const TabRight = styled.div`
     }
 
     .ant-collapse-content-box {
-        display: flex;
-        flex-wrap: wrap;
+        /*  display: flex;
+        flex-wrap: wrap; */
         padding-top: 10px !important;
         padding-bottom: 0;
     }
@@ -247,17 +351,22 @@ const TabRight = styled.div`
     }
 `;
 
-const Timer = styled.span`
-    background-color: #ebebeb;
-    border-radius: 5px;
-    background-size: cover;
-    font-size: 0.8rem;
-    padding: 8px 10px;
-    margin-right: 10px;
-    margin-top: 10px;
-    cursor: pointer;
+const MovieInfo = styled.div`
+    h5 {
+        margin-bottom: 0;
+        margin-left: 5px;
+        font-weight: 700;
+    }
 
-    @media screen and (max-width: 576px) {
-        font-size: $text6;
+    > span {
+        line-height: 21px;
+    }
+
+    .info {
+        &__score {
+            font-size: 0.75rem;
+            color: #b7b3b3;
+            font-weight: 500;
+        }
     }
 `;
