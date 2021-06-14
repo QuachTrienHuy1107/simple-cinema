@@ -3,22 +3,19 @@
  * MovieList
  *
  */
-import { Button, List, Tabs } from "antd";
+import { Tabs } from "antd";
 import { useHomeSlice } from "app/pages/HomePage/slice";
 import { selectHome } from "app/pages/HomePage/slice/selectors";
 import { MovieResponse } from "app/pages/HomePage/slice/types";
 import { useGetDate } from "hooks/useGetDate";
 import usePagination from "hooks/usePagination";
-import { useScreenType } from "hooks/useScreenType";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
-import { ANCHOR, ROUTES } from "utils/constants/settings";
-import { carouselData } from "../Common/Carousel";
+import { ANCHOR } from "utils/constants/settings";
 import { PaginationResponseType } from "../Paginations/types";
 import { MovieCard } from "./MovieCard";
 
@@ -36,6 +33,7 @@ const settings = {
     slidesToShow: 1,
     speed: 400,
     rows: 2,
+
     slidesPerRow: 4,
     responsive: [
         {
@@ -61,34 +59,9 @@ const settings = {
 const { TabPane } = Tabs;
 
 export const MovieList = memo(({ moviePagination, movieWithDate }: Props) => {
-    const { t, i18n } = useTranslation();
-    const dispatch = useDispatch();
-    const { today, dateBefore } = useGetDate();
-    const { actions } = useHomeSlice();
-    const { isLoading } = useSelector(selectHome);
-    const [count, setCount] = React.useState(1);
-    const { resPagination } = usePagination(1, 16);
-
-    /* React.useEffect(() => {
-        const data = {
-            ...resPagination,
-            tuNgay: dateBefore,
-            denNgay: today,
-        };
-        dispatch(actions.getMovieWithDate(data));
-
-        return () => {
-            dispatch(actions.clearData());
-        };
-    }, [dateBefore, today]);
-
-    React.useEffect(() => {
-        dispatch(actions.getPaginateMoviesAction(resPagination));
-    }, []); */
-
     return (
         <Wrapper id={ANCHOR.MOVIELISTTO}>
-            <Tabs defaultActiveKey="1" animated type="card">
+            <Tabs defaultActiveKey="1" animated type="card" tabPosition="top">
                 <TabPane tab="Đang chiếu" key="1">
                     <Slider {...settings}>
                         {movieWithDate?.map((movie: any) => (
@@ -161,9 +134,12 @@ const Wrapper = styled.div`
 
     .ant-tabs-tab-btn {
         font-size: 1.2rem;
+        color: #000;
     }
 
     .ant-tabs-tab.ant-tabs-tab-active {
-        color: #ff2f00;
+        .ant-tabs-tab-btn {
+            color: #fb4226 !important;
+        }
     }
 `;

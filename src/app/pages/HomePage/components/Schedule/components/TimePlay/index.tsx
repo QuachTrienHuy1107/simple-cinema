@@ -7,11 +7,11 @@ import React, { memo, useRef } from "react";
 import styled from "styled-components/macro";
 import { useTranslation } from "react-i18next";
 import { messages } from "./messages";
-import { MovieProps, TimerProps } from "../types";
+import { MovieProps, TimerProps } from "../../types";
 import moment from "moment";
 import { useHistory } from "react-router";
 import { ROUTES } from "utils/constants/settings";
-import { useGetRangeTime } from "../hooks/useGetRangeTime";
+import { useGetRangeTime } from "../../hooks/useGetRangeTime";
 import { MovieShowtime } from "app/pages/MovieDetail/slice/types";
 
 interface Props {
@@ -31,10 +31,6 @@ export const TimePlay = memo(({ movie }: Props) => {
     const { getRangeTime } = useGetRangeTime();
 
     const rangeTime = getRangeTime(movie);
-
-    console.log("rangeTime", rangeTime);
-
-    console.log("movie", movie);
 
     return (
         <Wrapper>
@@ -63,7 +59,7 @@ const Timer = styled.div`
     display: flex;
     flex-wrap: wrap;
     > span {
-        background-color: #ebebeb;
+        background-color: #f6f6f6;
         border-radius: 5px;
         background-size: cover;
 
@@ -73,25 +69,40 @@ const Timer = styled.div`
         cursor: pointer;
 
         @media screen and (max-width: 576px) {
-            font-size: $text6;
+            font-size: 0.8rem;
+        }
+
+        @media screen and (max-width: 460px) {
+            width: 80%;
+            margin: 10px auto;
+            text-align: center;
+        }
+
+        @media screen and (max-width: 300px) {
+            width: 100%;
         }
 
         .timeStart {
             font-size: 1.1rem;
-            color: #06c406;
+            color: #108f3e;
             font-weight: 700;
             letter-spacing: 1.5px;
             transition: all 0.4s;
         }
         .timeEnd {
             font-size: 0.9rem;
-            color: #484747;
+            color: #9b9b9b;
         }
 
         &:hover {
             .timeStart {
-                color: #0a610a;
+                color: #013501;
             }
         }
+    }
+
+    @media screen and (max-width: 576px) {
+        /*   justify-content: space-between;
+        align-items: center; */
     }
 `;

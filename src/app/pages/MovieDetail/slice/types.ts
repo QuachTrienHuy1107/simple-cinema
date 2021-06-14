@@ -40,8 +40,8 @@ export interface MovieShowtime extends TimerProps {
 }
 export interface MovieDetailProps {
     biDanh: string;
-    danhGia: string;
-    hinhAnh: string;
+    danhGia: number;
+    hinhAnh: string | File ;
     readonly maPhim: number;
     readonly maNhom: string;
     moTa: string;
@@ -49,7 +49,7 @@ export interface MovieDetailProps {
     trailer: string;
     lichChieu: Array<MovieInfo>;
     ngayKhoiChieu: string;
-    thoiLuong: number;
+    thoiLuong?: number;
 }
 
 export interface MovieDetailState {

@@ -9,7 +9,7 @@ export const useIdentity = () => {
       const userLogin = localStorage.getItem("user");
       if (userLogin) {
           const credential = JSON.parse(userLogin);
-          console.log("cccc", credential);
+
           disptach(actions.checkLoginActionSuccess(credential));
       }
   }, [actions, disptach]);

@@ -53,7 +53,7 @@ export const MovieForm = React.memo(({ record, edit }: IMovieFormProps) => {
                 visible={visible}
                 bodyStyle={{ paddingBottom: 80 }}
             >
-                <MovieFormAdmin movieDetail={record} isEdit={edit} />
+                <MovieFormAdmin movieDetail={record} isEdit={edit} onClose={onClose} />
             </Drawer>
         </Wrapper>
     );

@@ -14,7 +14,7 @@ const api = {
         return axiosClient
             .post(url, payload)
             .then(response => ({ response }))
-            .catch(error => error);
+            .catch(error => ({ error }));
     },
 };
 

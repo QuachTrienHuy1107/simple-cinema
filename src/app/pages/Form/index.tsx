@@ -9,11 +9,13 @@ import { Loading } from "app/components/Common/Loading";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Prompt, useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import styled from "styled-components/macro";
 import { layout } from "utils/helpers";
+import bgLogin from "./assets/bgLogin.jpg";
 import { useHandleSubmit } from "./hooks/useHandleSubmit";
 import { useAuthSlice } from "./slice";
+import { UserLoginResponse } from "./slice/types";
 
 interface Props {}
 
@@ -26,8 +28,18 @@ export function FormTemplate({ children }) {
     const history = useHistory();
     const { onLogin, onRegister, isAuthenticated, isLoading } = useHandleSubmit();
     const [out, setOut] = React.useState(false);
+    const location = useLocation();
+    const [account, setAccount] = React.useState<UserLoginResponse>({});
 
-    console.log("out", out);
+    React.useEffect(() => {
+        if (location.state) {
+            const { credentials } = location.state as any;
+            form.setFieldsValue({
+                taiKhoan: credentials?.taiKhoan,
+                matKhau: credentials?.matKhau,
+            });
+        }
+    }, [location.state]);
 
     const onFinish = (values: any) => {
         if (Object.keys(values).length < 3) {
@@ -41,12 +53,9 @@ export function FormTemplate({ children }) {
         }
     };
 
-    const onFinishFailed = (errorInfo: any) => {
-        console.log("Failed:", errorInfo);
-    };
+    const onFinishFailed = (errorInfo: any) => {};
 
     const onFieldsChange = change => {
-        console.log("change", change);
         if (change[0].value !== "") {
             setOut(true);
         } else if (isAuthenticated) {
@@ -55,10 +64,6 @@ export function FormTemplate({ children }) {
             setOut(false);
         }
     };
-
-    React.useEffect(() => {
-        console.log("isAuthenticated", isAuthenticated);
-    }, [isAuthenticated]);
 
     return (
         <>
@@ -112,7 +117,7 @@ export function FormTemplate({ children }) {
 }
 
 const Wrapper = styled.div`
-    background-image: url("http://pixner.net/boleto/demo/assets/images/account/account-bg.jpg");
+    background-image: url(${bgLogin});
     background-size: cover;
     background-repeat: no-repeat;
     background-color: $bgPrimary;
@@ -139,9 +144,8 @@ const ColStyled = styled(Col)`
 
     padding: 60px 45px;
 
-    background-color: rgba(68, 90, 153, 0.051);
-    -webkit-box-shadow: 0px 0px 29.4px 0.6px rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 0px 29.4px 0.6px rgba(0, 0, 0, 0.5);
+    background-image: linear-gradient(to bottom, rgba(20, 50, 93, 0.9), rgba(8, 22, 48, 0.9));
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 45%);
 
     @media screen and (max-width: 576px) {
         padding: 60px 10px;

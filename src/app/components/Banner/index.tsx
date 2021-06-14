@@ -3,49 +3,72 @@
  * BannerDetail
  *
  */
-import { StarOutlined } from "@ant-design/icons";
-import { Anchor, Button, Col, Progress, Row, Space } from "antd";
+import { Col, Progress, Rate, Row, Space } from "antd";
 import { useScreenType } from "hooks/useScreenType";
 import moment from "moment";
 import React, { memo } from "react";
-import { useDispatch } from "react-redux";
+import ReactPlayer from "react-player";
+import { Link } from "react-scroll";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
-import { Buttons } from "../Common/Buttons";
-import { LinkTo } from "../Common/LinkTo";
-import { Link } from "react-scroll";
 import { ANCHOR } from "utils/constants/settings";
+import iconPlay from "./assets/play-video.png";
 
 interface MovieDetailProps {
     movieDetail: any;
 }
 
 export const Banner = memo(({ movieDetail }: MovieDetailProps) => {
-    const dispatch = useDispatch();
     const { Mobile, Desktop } = useScreenType();
-    // const { actions } = useMovieDetailSlice();
+    const [isPlay, setPlay] = React.useState(false);
+    const handlePlay = () => {
+        setPlay(true);
+    };
 
     return (
         <>
             <Wrapper>
                 <BannerDetail>
-                    <img src={movieDetail.hinhAnh} alt="" style={{ width: "100%" }} />
+                    <img
+                        src={movieDetail.hinhAnh}
+                        alt=""
+                        style={{ width: "100%", display: isPlay ? "none" : "block" }}
+                    />
+                    <Mobile>
+                        <Content>
+                            <div style={{ textAlign: "center" }}>
+                                <img
+                                    src={iconPlay}
+                                    alt="play"
+                                    className="iconPlay"
+                                    onClick={handlePlay}
+                                    style={{ display: (isPlay && "none") || "inline-block" }}
+                                />
+                            </div>
+                        </Content>
+                    </Mobile>
+
+                    <ReactPlayer
+                        url={movieDetail.trailer}
+                        className="react-player"
+                        controls={true}
+                        style={{ display: isPlay ? "block" : "none" }}
+                        // ref={play}
+                    />
                     <Content>
                         <Desktop>
                             <Row justify="center" align="middle">
                                 <Col lg={16} xl={14}>
                                     <Space>
-                                        <a href={movieDetail.trailer}>
-                                            <Image>
-                                                <img
-                                                    width={260}
-                                                    height={350}
-                                                    src={movieDetail.hinhAnh}
-                                                    alt=""
-                                                />
-                                                <i className="fa fa-play" />
-                                            </Image>
-                                        </a>
+                                        <ImageStyle>
+                                            <img
+                                                width={260}
+                                                height={360}
+                                                src={movieDetail.hinhAnh}
+                                                alt=""
+                                            />
+                                            {/* <i className="fa fa-play" /> */}
+                                        </ImageStyle>
                                         <Detail>
                                             <Date>
                                                 <span>
@@ -82,25 +105,16 @@ export const Banner = memo(({ movieDetail }: MovieDetailProps) => {
                                     </Space>
                                 </Col>
                                 <Col lg={8} xl={8}>
-                                    <Rate>
+                                    <Score>
                                         <Progress
                                             type="circle"
                                             percent={movieDetail.danhGia * 10}
                                             format={percent => `${percent + "%"}`}
                                             width={120}
                                         />
-                                    </Rate>
+                                    </Score>
                                     <RateTitle>
-                                        <Space>
-                                            <StarOutlined />
-                                            <StarOutlined />
-                                            <StarOutlined />
-                                            <StarOutlined />
-                                            <StarOutlined />
-                                        </Space>
-                                        <p style={{ color: "#fff", margin: "20px 0" }}>
-                                            43 người đánh giá
-                                        </p>
+                                        <Rate disabled defaultValue={5} />
                                     </RateTitle>
                                 </Col>
                             </Row>
@@ -135,8 +149,7 @@ export const Banner = memo(({ movieDetail }: MovieDetailProps) => {
 // Style Components
 
 const Wrapper = styled.div`
-    /* height: 500px;
-    min-height: 800px; */
+    position: relative;
 `;
 
 const BannerDetail = styled.div`
@@ -154,9 +167,17 @@ const BannerDetail = styled.div`
         height: 800px;
 
         ${media.small`
-    filter: blur(0);
-    margin: -50px 0 -5px 0px;
-    `}
+            filter: blur(0);
+            margin: -50px 0 -5px 0px;
+        `}
+    }
+
+    .react-player {
+        display: block;
+        height: 100% !important;
+        width: 100% !important;
+        position: absolute;
+        z-index: 3;
     }
 
     &:before {
@@ -168,6 +189,10 @@ const BannerDetail = styled.div`
         height: 100%;
         z-index: 2;
     }
+
+    @media screen and (max-width: 576px) {
+        height: 350px;
+    }
 `;
 
 const Content = styled.div`
@@ -177,9 +202,15 @@ const Content = styled.div`
     transform: translate(-50%, -50%);
     z-index: 3;
     width: 100%;
+
+    .iconPlay {
+        width: 80px;
+        color: #fff;
+        text-align: center;
+    }
 `;
 
-const Image = styled.div`
+const ImageStyle = styled.div`
     position: relative;
     cursor: pointer;
     ${media.small`
@@ -267,12 +298,16 @@ const ButtonBooking = styled.div`
     }
 `;
 
-const Rate = styled.div`
+const Score = styled.div`
     font-size: 1.2rem;
     margin-bottom: 12px;
     text-align: center;
     i {
         color: yellow;
+    }
+    span {
+        color: #fff !important;
+        font-size: 2rem !important;
     }
 `;
 

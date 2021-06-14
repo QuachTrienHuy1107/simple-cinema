@@ -42,13 +42,15 @@ export function Checkout(props: Props) {
     const { maLichChieu } = useParams() as any;
 
     const onFinish = async () => {
-        message.warning("Hết thời gian đặt vé!!").then(() => {
-            setOut(true);
-            history.goBack();
-        });
+        message
+            .warning("Bạn đã đạt giới hạn thời gian đặt vé cho phép. Xin vui lòng đặt vé lại!!")
+            .then(() => {
+                setOut(true);
+                history.goBack();
+            });
     };
 
-    const deadline = Date.now() + 10000 * 60; // Moment is also OK
+    const deadline = Date.now() + 2000 * 60; // Moment is also OK
 
     React.useEffect(() => {
         dispatch(actions.getAllSeatAction({ maLichChieu }));
@@ -69,7 +71,7 @@ export function Checkout(props: Props) {
                             <Col lg={24} md={24}>
                                 <TopTitle onBack={() => null} />
                                 <SubTitle>
-                                    <Space>
+                                    <Space className="movieDetail">
                                         <Desktop>
                                             <div>
                                                 <img
@@ -123,7 +125,11 @@ export function Checkout(props: Props) {
                             />
                         </Desktop>
                         <Mobile>
-                            <PaymentMobile moviedetail={thongTinPhim} credentials={credentials} />
+                            <PaymentMobile
+                                moviedetail={thongTinPhim}
+                                credentials={credentials}
+                                out={out}
+                            />
                         </Mobile>
                     </Col>
                 </Row>
@@ -157,6 +163,15 @@ const SubTitle = styled.div`
 
         @media screen and (max-width: 576px) {
             font-size: 1rem;
+        }
+    }
+
+    @media screen and (max-width: 420px) {
+        padding: 10px;
+        .movieDetail {
+            width: 70%;
+            flex: 1;
+            padding-right: 5px;
         }
     }
 

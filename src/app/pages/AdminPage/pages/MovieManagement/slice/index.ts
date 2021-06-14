@@ -8,6 +8,7 @@ export const initialState: MovieManagementState = {
     movieCreation: {},
     isLoading: false,
     successMessage: "",
+    error: null
 };
 
 const slice = createSlice({
@@ -77,6 +78,9 @@ const slice = createSlice({
             state.isLoading = false;
             state.successMessage = "";
         },
+        clearData: () => {
+          return initialState
+        }
     },
 });
 

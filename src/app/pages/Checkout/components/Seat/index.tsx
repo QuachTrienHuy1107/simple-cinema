@@ -44,15 +44,11 @@ export const Seat = memo(({ arrayTickets, isLoading }: ISeatProps) => {
                             key={item.maGhe}
                             disabled={item.daDat}
                             onClick={() => {
-                                if (arraySeatSelected.length === 10) {
-                                    message.warning("Số lượng ghế không được vượt quá 10");
-                                } else {
-                                    handlePickSeat({
-                                        id: item.maGhe,
-                                        price: item.giaVe,
-                                        seatName: item.tenGhe,
-                                    });
-                                }
+                                handlePickSeat({
+                                    id: item.maGhe,
+                                    price: item.giaVe,
+                                    seatName: item.tenGhe,
+                                });
                             }}
                             className={`seat__btn ${
                                 (item.loaiGhe === "Vip" &&
@@ -61,7 +57,7 @@ export const Seat = memo(({ arrayTickets, isLoading }: ISeatProps) => {
                                 (item.daDat === true && "seat__btn--disabled")
                             } seat__btn--${now}`}
                         >
-                            {/* {item.tenGhe} */}{" "}
+                            {" "}
                         </Button>{" "}
                         {(index + 1) % 16 === 0 ? <br /> : ""}
                     </XSmallMobile>
@@ -101,19 +97,19 @@ export const Seat = memo(({ arrayTickets, isLoading }: ISeatProps) => {
     return (
         <Wrapper>
             <Row justify="center">
-                <Col xl={24} sm={24}>
+                <Col xl={24} xs={24}>
                     <img src={screenThumb} alt="" width="100%" />
                 </Col>
                 {isLoading ? (
-                    <Col xl={24} sm={24} style={{ textAlign: "center" }}>
+                    <Col xl={24} xs={24} style={{ textAlign: "center" }}>
                         <Skeleton />
                     </Col>
                 ) : (
-                    <ArraySeatStyle xl={24} sm={24}>
+                    <ArraySeatStyle xl={24} xs={24}>
                         <div>{renderSeat(arrayTickets)}</div>
                     </ArraySeatStyle>
                 )}
-                <ColStyle xl={24} sm={24}>
+                <ColStyle xl={24} xs={24}>
                     <SeatDetail>
                         <Space direction="vertical" align="center">
                             <div className="seat__model seat__model--normal"></div>

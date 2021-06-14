@@ -41,7 +41,7 @@ export const CommentItem = memo(({ binhLuan }: Props) => {
             <CommentDetail>
                 <p>{binhLuan.binhLuan}</p>
             </CommentDetail>
-            <Divider />
+            <DividerStyle />
             <Rating>
                 <Button icon={<LikeFilled />} style={{ border: "none" }}></Button>
                 <span className="amount">0 Thích</span>
@@ -51,9 +51,9 @@ export const CommentItem = memo(({ binhLuan }: Props) => {
 });
 
 const Wrapper = styled.div`
-    margin: 30px 0;
+    margin-top: 20px;
     background-color: #fff;
-    padding: 20px;
+    padding: 10px 20px;
     border-radius: 8px;
 `;
 
@@ -62,7 +62,7 @@ const UserComment = styled.div`
     justify-content: space-between;
 
     h5 {
-        margin-bottom: 0;
+        margin-bottom: -5px;
         font-size: 1.1rem;
     }
 `;
@@ -96,4 +96,8 @@ const CommentDetail = styled.div`
     p {
         font-size: 1.1rem;
     }
+`;
+
+const DividerStyle = styled(Divider)`
+    margin: 10px 0;
 `;

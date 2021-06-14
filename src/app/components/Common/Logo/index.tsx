@@ -13,12 +13,12 @@ import { ROUTES } from "utils/constants/settings";
 
 interface Props {}
 
-export function Logo(props: Props) {
+export function Logo({ ...rest }: any) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
 
     return (
-        <Wrapper>
+        <Wrapper {...rest}>
             <Link to={ROUTES.HOME}>
                 <img src={logo} alt="" width={50} />
             </Link>

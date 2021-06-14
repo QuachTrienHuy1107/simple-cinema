@@ -1,3 +1,4 @@
+
 import { PayloadAction } from "@reduxjs/toolkit";
 import { call, delay, put, takeLatest } from "redux-saga/effects";
 import { StatusCode } from "utils/constants/settings";
@@ -8,7 +9,8 @@ import { LoginPayload, RegisterPayload } from "./types";
 function* onLogin({ payload }: PayloadAction<LoginPayload>) {
     try {
         const { response, error } = yield call(api.login, payload);
-        yield delay(1000);
+        yield delay(1300);
+
         if (response?.status === StatusCode.Success) {
             yield put(actions.checkLoginActionSuccess(response.data));
             localStorage.setItem("access_token", response.data.accessToken);
@@ -16,8 +18,8 @@ function* onLogin({ payload }: PayloadAction<LoginPayload>) {
         } else {
             throw new Error(error);
         }
-    } catch (error) {
-        yield put(actions.checkLoginActionFailure(error.message));
+    } catch (err) {
+        yield put(actions.checkLoginActionFailure(err.message));
     }
 }
 
@@ -30,12 +32,13 @@ function* onSignup({ payload }: PayloadAction<RegisterPayload>) {
     try {
         const { response, error } = yield call(api.signup, payload);
         yield delay(1000);
-        if (response.status === StatusCode.Success) {
+        if (response?.status === StatusCode.Success) {
             yield put(actions.registerActionSuccess(response.data));
         } else {
             throw new Error(error);
         }
     } catch (error) {
+
         yield put(actions.registerActionFailure(error.message));
     }
 }

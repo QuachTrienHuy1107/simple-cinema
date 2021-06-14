@@ -6,7 +6,7 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components/macro";
-import logo from "../../../assets/img/logo.png";
+import { Logo } from "../Logo";
 
 import { messages } from "./messages";
 
@@ -20,7 +20,7 @@ export function Footer(props: Props) {
         <Wrapper>
             <Top>
                 <Img>
-                    <img src={logo} alt="" />
+                    <Logo />
                 </Img>
                 <SocialUrl>
                     <ul>
@@ -54,7 +54,7 @@ export function Footer(props: Props) {
             </Top>
             <Bot>
                 <Left>
-                    <p>Copyright © 2020.All Rights Reserved By Boleto</p>
+                    <p>Copyright © 2020.All Rights Reserved By Tix</p>
                 </Left>
                 <Right>
                     <ul>
@@ -120,6 +120,7 @@ const SocialUrl = styled.div`
                 text-align: center;
                 border-radius: 50%;
                 border: 1px solid rgba(255, 255, 255, 0.1);
+                color: #fff;
 
                 font-size: 14px;
                 &:hover {
@@ -151,6 +152,9 @@ const Right = styled.div`
         flex-wrap: wrap;
         li {
             margin: 20px;
+        }
+        a {
+            color: #fff;
         }
     }
 `;
