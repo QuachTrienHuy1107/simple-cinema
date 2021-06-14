@@ -3,34 +3,28 @@
  * Form
  *
  */
-import { Button, Card, Col, DatePicker, Form, Input, InputNumber, message, Row } from "antd";
+import { Button, Card, Col, DatePicker, Form, Input, InputNumber, Row } from "antd";
 import { useAddEdit } from "app/pages/AdminPage/hooks/useAddEdit";
 import { useUpload } from "app/pages/AdminPage/hooks/useUpload";
 import moment from "moment";
-import React, { memo } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import React from "react";
 import styled from "styled-components/macro";
 import { formItemLayout } from "utils/helpers";
-import { selectMovieManagement } from "../../slice/selectors";
 
 interface Props {
     movieDetail?: any;
     isEdit: boolean | undefined;
+    onClose: () => void;
 }
-/*
-interface LocationState {
-    isEdit: boolean;
-} */
 
-export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
+export const MovieFormAdmin = ({ movieDetail, isEdit, onClose }: Props) => {
     const [form] = Form.useForm();
 
     const { onAddEdit, setEdit } = useAddEdit();
-    const { hinhAnh, imgPreview, handleFileChange, setImgUpload } = useUpload();
-    const { isLoading } = useSelector(selectMovieManagement);
-    const { t, i18n } = useTranslation();
+    const { hinhAnh, imgPreview, handleFileChange, setImgPreview, setImgUpload } = useUpload();
+
     const [ngayKhoiChieu, setDate] = React.useState("");
+    const [isSubmit, setSubmit] = React.useState(true);
 
     React.useEffect(() => {
         setEdit(isEdit);
@@ -51,6 +45,7 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
             }
             setDate(moment(movieDetail?.ngayKhoiChieu).format("DD-MM-YYYY"));
         }
+        return () => {};
     }, [form, isEdit, movieDetail]);
 
     const onFinish = (values: any) => {
@@ -58,14 +53,30 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
             const { maPhim } = movieDetail;
             onAddEdit({ ...values, hinhAnh, maPhim, ngayKhoiChieu, maNhom: "GP01" });
         } else {
-            // setEdit(false);
             onAddEdit({ ...values, hinhAnh, ngayKhoiChieu, maNhom: "GP01" });
+        }
+        form.resetFields();
+        setImgPreview("");
+        onClose();
+    };
+
+    const handleValueChange = (changedValues, allValues) => {
+        const isTouched = form.isFieldsTouched();
+        if (isTouched) {
+            setSubmit(false);
+        }
+        if (isEdit) {
+            for (let key in movieDetail) {
+                if (changedValues[`${key}`] !== movieDetail[`${key}`]) {
+                    setSubmit(false);
+                }
+            }
         }
     };
 
     return (
         <Wrapper>
-            <Form form={form} onFinish={onFinish} name="movie">
+            <Form form={form} onFinish={onFinish} name="movie" onValuesChange={handleValueChange}>
                 <Row justify="space-around" gutter={[20, 0]}>
                     <ColStyled md={24}>
                         <LeftPanel>
@@ -117,14 +128,9 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
                                         label="Đánh giá"
                                         name="danhGia"
                                         rules={[{ required: true }]}
+                                        initialValue={movieDetail?.danhGia}
                                     >
-                                        <InputNumber
-                                            style={{ width: "100%" }}
-                                            defaultValue={movieDetail?.danhGia}
-                                            value={movieDetail?.danhGia}
-                                            min={1}
-                                            max={10}
-                                        />
+                                        <InputNumber style={{ width: "100%" }} min={1} max={10} />
                                     </Form.Item>
                                 </Col>
                                 <Col md={24}>
@@ -145,41 +151,38 @@ export const MovieFormAdmin = ({ movieDetail, isEdit }: Props) => {
                     </ColStyled>
                     <ColStyled md={24}>
                         <RightPanel>
-                            {imgPreview ? (
+                            {(imgPreview !== "" && (
                                 <Card
                                     hoverable
                                     style={{ width: 240 }}
                                     cover={<img alt="example" src={imgPreview} />}
+                                ></Card>
+                            )) ||
+                                (isEdit && <img width={250} src={movieDetail?.hinhAnh} alt="" />)}
+                            <Form.Item>
+                                <Input
+                                    name="hinhAnh"
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    // style={{ display: "none" }}
                                 />
-                            ) : (
-                                <>
-                                    <Card
-                                        hoverable
-                                        style={{ width: 240 }}
-                                        cover={<img alt="example" src={imgPreview} />}
-                                    />
-                                    <Form.Item>
-                                        <Input
-                                            name="hinhAnh"
-                                            type="file"
-                                            onChange={handleFileChange}
-                                            // style={{ display: "none" }}
-                                        />
-                                    </Form.Item>
-                                </>
-                            )}
+                            </Form.Item>
 
-                            {isEdit ? <img width={250} src={movieDetail?.hinhAnh} alt="" /> : ""}
-                            <Form.Item {...formItemLayout} label="Trailer" name="trailer">
-                                <Input placeholder="Mời bạn nhập tên phim" />
-                                {/* <a href={movieDetail?.trailer} target="_blank" rel="noreferrer">
-                                    {movieDetail?.trailer}
-                                </a> */}
+                            <Form.Item {...formItemLayout} name="trailer">
+                                {(isEdit && (
+                                    <a href={movieDetail?.trailer} target="_blank" rel="noreferrer">
+                                        {movieDetail?.trailer}
+                                    </a>
+                                )) || <Input placeholder="Trailer" />}
                             </Form.Item>
                         </RightPanel>
                     </ColStyled>
                 </Row>
-                <ButtonStyle type="primary" htmlType="submit" /*  loading={isLoading} */>
+                <ButtonStyle
+                    type="primary"
+                    htmlType="submit"
+                    disabled={isSubmit} /*  loading={isLoading} */
+                >
                     Submit
                 </ButtonStyle>
             </Form>

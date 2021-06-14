@@ -17,11 +17,9 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import GlobalStyle from "styles/global-styles";
 import { ROUTES } from "utils/constants/settings";
-import About from "./pages/About/Loadable";
 import { useAuthSlice } from "./pages/Form/slice";
-import HomePage from "./pages/HomePage/Loadable";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
-import firebase from "../firebase";
+import "./index.scss";
 
 export function App() {
     const { i18n } = useTranslation();

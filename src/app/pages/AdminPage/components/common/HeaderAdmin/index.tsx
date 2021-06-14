@@ -11,9 +11,9 @@ import { LineChartOutlined, MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-de
 import { Nav } from "../Nav";
 import NavItem from "../Nav/NavItem";
 import { Link } from "react-router-dom";
-import { Logo } from "../Logo";
 import { BadgeList } from "../BadgeList";
 import { Breadcrumb } from "antd";
+import { Logo } from "app/components/Common/Logo";
 
 interface IHeaderAdminProps {
     collapsed: boolean;
@@ -22,6 +22,7 @@ interface IHeaderAdminProps {
 
 const HeaderAdmin = memo(({ collapsed, onCollapse }: IHeaderAdminProps) => {
     const { t, i18n } = useTranslation();
+    const currentLocation = window.location.pathname.substr(1).split("/");
 
     return (
         <Wrapper>
@@ -49,7 +50,9 @@ const HeaderAdmin = memo(({ collapsed, onCollapse }: IHeaderAdminProps) => {
             <SubHeader>
                 <Breadcrumb style={{ margin: "16px 0" }}>
                     <Breadcrumb.Item>Dashboard</Breadcrumb.Item>
-                    <Breadcrumb.Item>{window.location.pathname.substr(1)}</Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                        {currentLocation[0] + " / " + currentLocation[1]}
+                    </Breadcrumb.Item>
                 </Breadcrumb>
                 <Nav>
                     <NavItem />

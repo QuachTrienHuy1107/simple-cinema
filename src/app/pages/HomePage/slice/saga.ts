@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { PayloadAction } from "@reduxjs/toolkit";
 import { take, call, put, select, takeLatest, delay, takeEvery } from "redux-saga/effects";
 import { StatusCode } from "utils/constants/settings";
@@ -20,7 +21,7 @@ function* onGetAllMovie() {
             throw new Error("Network Error");
         }
     } catch (error) {
-        yield put(actions.getAllMovieActionFailure());
+        yield put(actions.getAllMovieActionFailure(error.message));
     }
 }
 function* onGetDataPagination({ payload }: PayloadAction<PaginationRequestType>) {
@@ -77,6 +78,7 @@ function* onGetCinemaInfo({ payload }: PayloadAction<any>) {
 function* onSearchMovie({ payload }: PayloadAction<SearchMoviePayload>) {
     try {
         const { response, error } = yield call(api.searchMovie, payload);
+        yield delay(1500)
         if (response?.status === StatusCode.Success) {
             yield put(actions.searchMovieSuccess(response.data));
         } else {
@@ -92,9 +94,9 @@ function* fetchMultiApi({ payload }: PayloadAction<GetMovieWithDate>) {
     try {
         const { response, error } = yield call(api.fetchMultiApi, payload);
         yield delay(1400)
-        yield put(actions.getAllMovieActionSuccess(response[0].data));
-        yield put(actions.getAllCinemaListActionSuccess(response[1].data));
-        yield put(actions.getMovieWithDateSuccess(response[2].data));
+        // yield put(actions.getAllMovieActionSuccess(response[0].data));
+        yield put(actions.getAllCinemaListActionSuccess(response[0].data));
+        yield put(actions.getMovieWithDateSuccess(response[1].data));
     } catch (error) {
         yield put(actions.fetchMultiApiFailure());
     }

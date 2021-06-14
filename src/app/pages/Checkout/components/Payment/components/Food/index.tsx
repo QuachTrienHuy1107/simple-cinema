@@ -17,7 +17,7 @@ import {
     Row,
     Space,
 } from "antd";
-import { useForm } from "antd/lib/form/Form";
+
 import { Buttons } from "app/components/Common/Buttons";
 import { useCheckoutContext } from "app/pages/Checkout/context/createContext";
 import { useCheckout } from "app/pages/Checkout/hooks/useCheckout";
@@ -25,15 +25,13 @@ import { useHandlePickFood } from "app/pages/Checkout/hooks/useHandlePickFood";
 import { useHandleRemoveFood } from "app/pages/Checkout/hooks/useHandleRemoveFood";
 import { selectCheckout } from "app/pages/Checkout/slice/selectors";
 import { FoodType } from "app/pages/Checkout/slice/types";
+import { keyBy } from "lodash";
 import { NamePath } from "rc-field-form/lib/interface";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import styled from "styled-components/macro";
-import pop1 from "./assets/pop1.png";
-import pop2 from "./assets/pop2.png";
-import pop3 from "./assets/pop3.png";
-import pop4 from "./assets/pop4.png";
+import { dummyFood } from "./DummyFood";
 
 interface Props {
     isMobile?: boolean;
@@ -46,34 +44,7 @@ type DummyFood = {
     price: number;
 };
 
-const arrFood = {
-    food: [
-        {
-            id: 1,
-            name: "Crispy Beef Taco, Beef Mucho Nachos",
-            image: pop1,
-            price: 75000,
-        },
-        {
-            id: 2,
-            name: "Muchaco, Crispy Taco, Bean Burrito",
-            image: pop2,
-            price: 90000,
-        },
-        {
-            id: 3,
-            name: "Chicken Quesadilla Crispy Beef Taco",
-            image: pop3,
-            price: 75000,
-        },
-        {
-            id: 4,
-            name: "MexiDips & Chips, Beef Muchaco",
-            image: pop4,
-            price: 90000,
-        },
-    ],
-};
+const random = Math.floor(Math.random() * 100000);
 
 const { Panel } = Collapse;
 
@@ -94,24 +65,23 @@ export const Food = memo(({ isMobile }: Props) => {
         setShowFood(false);
     };
 
-    React.useEffect(() => {
-        for (let key in arrFood.food) {
-            let foodName = arrFood.food[key].name;
-        }
-        // form.setFieldsValue({});
-    }, [arrayFood, form]);
-
     return (
         <Wrapper>
             <SpaceStyled>
-                <a onClick={showDrawer} style={{ marginBottom: 0, display: "inline-block" }}>
-                    Chọn combo
-                </a>
+                <h3>
+                    <a
+                        onClick={showDrawer}
+                        style={{ marginBottom: 0, display: "inline-block", color: "red" }}
+                    >
+                        Chọn combo
+                    </a>
+                </h3>
+
                 <span>{totalPriceFood.toLocaleString()}</span>
             </SpaceStyled>
 
             <Drawer
-                title="Chọn thức ăn"
+                title="Chọn combo"
                 placement="right"
                 width={isMobile ? "100%" : 520}
                 closable={true}
@@ -119,15 +89,14 @@ export const Food = memo(({ isMobile }: Props) => {
                 visible={showFood}
             >
                 <SpaceStyled>
-                    <h1>Giá tiền: {totalPriceFood.toLocaleString()}</h1>
+                    <h1>{totalPriceFood.toLocaleString()}</h1>
                 </SpaceStyled>
 
                 <Collapse defaultActiveKey={["1"]}>
-                    <Panel header="Thức ăn" key="1">
-                        {arrFood.food.map((item: DummyFood) => {
+                    <Panel header="Combo" key="1">
+                        {dummyFood.map((item: DummyFood) => {
                             const index = arrayFood?.find((feed: FoodType) => feed.id === item.id);
 
-                            const itemName = item.name;
                             return (
                                 <Content key={item.id}>
                                     <Form form={form} name="basic">
@@ -148,12 +117,7 @@ export const Food = memo(({ isMobile }: Props) => {
                                                 sm={{ span: 6 }}
                                                 style={{ textAlign: "right" }}
                                             >
-                                                <Form.Item
-                                                    name={item.name}
-                                                    initialValue={
-                                                        index !== undefined ? index.quantity : 0
-                                                    }
-                                                >
+                                                <Form.Item name={`${item.id}`} initialValue={0}>
                                                     <InputNumberStyle
                                                         size="large"
                                                         min={0}
@@ -188,14 +152,17 @@ export const Food = memo(({ isMobile }: Props) => {
                             <span>
                                 {item.quantity}x - {item.name}
                             </span>
-                            {/* <Popconfirm
+                            <Popconfirm
                                 title="Bạn có chắc muốn xóa không?"
                                 okText="Có"
                                 cancelText="Không"
-                                onConfirm={() => handleRemoveFood(item.id)}
+                                onConfirm={() => {
+                                    form.resetFields([`${item.id}`]);
+                                    handleRemoveFood(item.id);
+                                }}
                             >
                                 <Buttons icon={<DeleteOutlined />} />
-                            </Popconfirm> */}
+                            </Popconfirm>
                         </FoodList>
                     );
                 }
@@ -244,6 +211,13 @@ const SpaceStyled = styled.div`
     justify-content: space-between;
     align-items: center;
     padding-right: 20px;
+    height: 30px;
+    h1 {
+        text-align: center;
+        color: green;
+        width: 100%;
+        font-size: 2.3rem;
+    }
 
     span {
         color: #016f33;

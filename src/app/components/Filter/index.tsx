@@ -237,7 +237,7 @@ const FormItem = styled(Form.Item)`
         color: #000;
 
         input {
-            box-shadow: 8px 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 1px 5px 10px rgb(0, 0, 0, 10%);
             border: none;
             &::placeholder {
                 color: #000;

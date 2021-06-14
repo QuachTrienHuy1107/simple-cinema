@@ -4,37 +4,37 @@
  * PaymentMobile
  *
  */
-import React, { memo } from "react";
+import {Col, Divider, Drawer, Image, message, Row, Tag} from "antd";
+import {Buttons} from "app/components/Common/Buttons";
+import {useCheckoutContext} from "app/pages/Checkout/context/createContext";
+import {useBooking} from "app/pages/Checkout/hooks/useBooking";
+import {useCheckout} from "app/pages/Checkout/hooks/useCheckout";
+import {selectCheckout} from "app/pages/Checkout/slice/selectors";
+import {MovieBooking, SeatSelectedType} from "app/pages/Checkout/slice/types";
+import {UserLoginResponse} from "app/pages/Form/slice/types";
+import React, {memo} from "react";
+import {useTranslation} from "react-i18next";
+import {useSelector} from "react-redux";
+import {useHistory} from "react-router";
+import {Prompt} from "react-router-dom";
 import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { useCheckoutContext } from "app/pages/Checkout/context/createContext";
-import { Col, Divider, Drawer, Image, message, Row, Space, Tag } from "antd";
-import { Buttons } from "app/components/Common/Buttons";
-import { Food } from "../Food";
-import { MovieBooking, SeatSelectedType } from "app/pages/Checkout/slice/types";
-import { UserLoginResponse } from "app/pages/Form/slice/types";
-import { useBooking } from "app/pages/Checkout/hooks/useBooking";
-import { LeftOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
-import { useHandlePickFood } from "app/pages/Checkout/hooks/useHandlePickFood";
-import { useSelector } from "react-redux";
-import { selectCheckout } from "app/pages/Checkout/slice/selectors";
-import { useCheckout } from "app/pages/Checkout/hooks/useCheckout";
+import {Food} from "../Food";
 
 interface Props {
     moviedetail: MovieBooking;
-
+    out: boolean;
     credentials: UserLoginResponse;
 }
 
-export const PaymentMobile = memo(({ moviedetail, credentials }: Props) => {
+export const PaymentMobile = memo(({ moviedetail, credentials, out }: Props) => {
     const { t, i18n } = useTranslation();
-    const { arraySeatSelected } = useCheckoutContext();
+    const { arraySeatSelected, setArraySeat } = useCheckoutContext();
     const [visible, setVisible] = React.useState(false);
     const { totalPrice } = useCheckout();
     const { bookingTicket } = useBooking();
-    const { arrayFood } = useSelector(selectCheckout);
+    const history = useHistory();
+    const { messageSuccess, error } = useSelector(selectCheckout);
 
     const showDrawer = () => {
         setVisible(true);
@@ -43,6 +43,19 @@ export const PaymentMobile = memo(({ moviedetail, credentials }: Props) => {
     const onClose = () => {
         setVisible(false);
     };
+
+    React.useEffect(() => {
+        if (error) {
+            alert(error);
+            history.push("/");
+        }
+        if (messageSuccess) {
+            setArraySeat([]);
+            Swal.fire("Đặt vé thành công!", "Chúc bạn xem phim vui vẻ", "success").then(() => {
+                history.push("/");
+            });
+        }
+    }, [messageSuccess, error]);
 
     return (
         <Wrapper>
@@ -146,14 +159,6 @@ export const PaymentMobile = memo(({ moviedetail, credentials }: Props) => {
                         <Divider dashed />
                         <Content>
                             <Food isMobile={true} />
-                            {/* <p>
-                                {arrayFood?.map(item => (
-                                    <Content>
-                                        <span>{item.quantity}</span> X <span>{item.name}</span>
-                                    </Content>
-                                ))}
-                                total: {totalPrice}
-                            </p> */}
                         </Content>
                         <Divider />
                         <Content>
@@ -203,11 +208,20 @@ export const PaymentMobile = memo(({ moviedetail, credentials }: Props) => {
                     </Drawer>
                 </Col>
             </Row>
+            <Prompt
+                when={(out && false) || (arraySeatSelected.length > 0 && true)}
+                message={location => `Bạn có muốn quay về trang chủ không?`}
+            />
         </Wrapper>
     );
 });
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+`;
 
 const ButtonStyle = styled.div`
     width: 100%;
@@ -285,11 +299,14 @@ const Detail = styled(Row)`
 `;
 
 const ButtonCheckout = styled(ButtonStyle)`
-    position: absolute;
-    margin-top: 30px;
-    bottom: 0;
-    width: 100%;
-    left: 0;
+    position: relative;
+    height: 100px;
+    > div {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+    }
 `;
 
 const SeatItem = styled(Tag)`

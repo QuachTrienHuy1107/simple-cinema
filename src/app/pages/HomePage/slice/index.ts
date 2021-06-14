@@ -13,6 +13,7 @@ import {
 } from "./types";
 
 export const initialState: HomeState = {
+    movies: [],
     movieWithDate: [],
     moviePagination: [],
     cinemaList: [],
@@ -28,12 +29,17 @@ const slice = createSlice({
         //Get all movies
         getAllMovieAction(state) {
             state.isLoading = true;
+            state.error = null;
         },
         getAllMovieActionSuccess(state, action: PayloadAction<MovieResponse[]>) {
-            state.movieWithDate = action.payload;
+            state.movies = action.payload;
+            state.isLoading = false;
+            state.error = null;
+        },
+        getAllMovieActionFailure(state, action: PayloadAction<Error>) {
+            state.error = action.payload;
             state.isLoading = false;
         },
-        getAllMovieActionFailure() {},
 
         //Get movies with date
         getMovieWithDate(state, action: PayloadAction<GetMovieWithDate>) {
@@ -44,16 +50,17 @@ const slice = createSlice({
             state.isLoading = false;
         },
         getMovieWithDateFailure(state, action: PayloadAction<Error>) {
-          state.isLoading = false
+            state.isLoading = false;
         },
-
         //Get movies with pagination
         getPaginateMoviesAction: (state, action: PayloadAction<PaginationRequestType>) => {
             state.isLoading = true;
+            state.error = null;
         },
         getPaginateMoviesActionSucess(state, action: PayloadAction<PaginationResponseType>) {
             state.moviePagination = action.payload;
             state.isLoading = false;
+            state.error = null;
         },
         getPaginateMoviesActionFailure() {},
 
@@ -66,9 +73,10 @@ const slice = createSlice({
         getAllCinemaInfotActionFailure: state => {},
 
         //Get cinema list
-        getAllCinemaListAction() {},
+        getAllCinemaListAction(state) {
+            state.isLoading = true;
+        },
         getAllCinemaListActionSuccess: (state, action: PayloadAction<any>) => {
-
             state.cinemaList = action.payload;
             state.isLoading = false;
         },
@@ -82,9 +90,7 @@ const slice = createSlice({
             state.moviePagination = action.payload;
             state.isLoading = false;
         },
-        searchMovieFailure(state, action: PayloadAction<Error>) {
-
-        },
+        searchMovieFailure(state, action: PayloadAction<Error>) {},
 
         /**
          *
@@ -95,8 +101,8 @@ const slice = createSlice({
         fetchMultiApiSuccess: state => {
             state.isLoading = false;
         },
-        fetchMultiApiFailure: (state) => {
-          state.isLoading = false
+        fetchMultiApiFailure: state => {
+            state.isLoading = false;
         },
 
         clearData: state => {

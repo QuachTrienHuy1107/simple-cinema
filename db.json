@@ -1,54 +1,114 @@
 {
-  "reviews": [
-    {
-      "id": 1374,
-      "maPhim": 1374,
-      "danhSachBinhLuan": [
+    "reviews": [
         {
-          "maNguoiDung": "11",
-          "taiKhoan": "Admin Vương Gà",
-          "danhGia": 4,
-          "binhLuan": "222"
+            "id": 1374,
+            "maPhim": 1374,
+            "danhSachBinhLuan": []
         },
         {
-          "maNguoiDung": "11",
-          "taiKhoan": "Admin Vương Gà",
-          "ngayDang": "May 26th 2021, 7:52:57 pm",
-          "danhGia": 4,
-          "binhLuan": "2222"
+            "id": 1389,
+            "maPhim": 1389,
+            "danhSachBinhLuan": []
         },
         {
-          "maNguoiDung": "11",
-          "taiKhoan": "bbbb1",
-          "ngayDang": "May 28th 2021, 1:52:50 am",
-          "danhGia": 4,
-          "binhLuan": "111"
-        }
-      ]
-    },
-    {
-      "id": 1389,
-      "maPhim": 1389,
-      "danhSachBinhLuan": [
+            "id": 1329,
+            "maPhim": 1329,
+            "danhSachBinhLuan": [
+                {
+                    "id": 2053721,
+                    "ngayDang": "June 13th 2021, 1:54:41 am",
+                    "danhGia": 3,
+                    "binhLuan": "231"
+                },
+                {
+                    "id": 7557645,
+                    "maNguoiDung": "Administrator",
+                    "taiKhoan": "Admin",
+                    "ngayDang": "June 13th 2021, 3:06:43 am",
+                    "danhGia": 4,
+                    "binhLuan": "Phim hay lắm\n"
+                },
+                {
+                    "id": 7187944,
+                    "maNguoiDung": "Administrator",
+                    "taiKhoan": "Admin",
+                    "ngayDang": "June 13th 2021, 3:07:51 am",
+                    "danhGia": 3,
+                    "binhLuan": "21212"
+                },
+                {
+                    "id": 9839212,
+                    "maNguoiDung": "Administrator",
+                    "taiKhoan": "Admin",
+                    "ngayDang": "June 13th 2021, 3:07:53 am",
+                    "danhGia": 4,
+                    "binhLuan": "sda"
+                }
+            ]
+        },
         {
-          "maNguoiDung": "1222",
-          "taiKhoan": "hahaha",
-          "binhLuan": "ok ",
-          "danhGia": 10
-        }
-      ]
-    }
-  ],
-  "food": [
-    {
-      "maLichChieu": 1111,
-      "feed": [
+            "id": 1359,
+            "maPhim": 1359,
+            "danhSachBinhLuan": [
+                {
+                    "id": 4950884,
+                    "maNguoiDung": "asuka1997",
+                    "taiKhoan": "Nguyễn Tân",
+                    "ngayDang": "June 12th 2021, 11:27:57 pm",
+                    "danhGia": 3,
+                    "binhLuan": "123"
+                },
+                {
+                    "id": 8663506,
+                    "maNguoiDung": "asuka1997",
+                    "taiKhoan": "Nguyễn Tân",
+                    "ngayDang": "June 12th 2021, 11:28:00 pm",
+                    "danhGia": 4,
+                    "binhLuan": "sd"
+                },
+                {
+                    "id": 5187355,
+                    "maNguoiDung": "asuka1997",
+                    "taiKhoan": "Nguyễn Tân",
+                    "ngayDang": "June 12th 2021, 11:28:02 pm",
+                    "danhGia": 2,
+                    "binhLuan": "123123"
+                },
+                {
+                    "id": 3067238,
+                    "maNguoiDung": "asuka1997",
+                    "taiKhoan": "Nguyễn Tân",
+                    "ngayDang": "June 12th 2021, 11:28:03 pm",
+                    "danhGia": 3,
+                    "binhLuan": "2323"
+                },
+                {
+                    "id": 2586005,
+                    "maNguoiDung": "asuka1997",
+                    "taiKhoan": "Nguyễn Tân",
+                    "ngayDang": "June 12th 2021, 11:28:16 pm",
+                    "danhGia": 4,
+                    "binhLuan": "dsd"
+                }
+            ]
+        },
         {
-          "price": 75000,
-          "image": "11",
-          "name": "thit bo"
+            "id": 1449,
+            "maPhim": 1449,
+            "danhSachBinhLuan": []
+        },
+        {
+            "id": 5101455,
+            "maPhim": 1464,
+            "danhSachBinhLuan": [
+                {
+                    "maNguoiDung": "Administrator",
+                    "taiKhoan": "Admin",
+                    "ngayDang": "June 13th 2021, 3:03:47 am",
+                    "danhGia": 4,
+                    "binhLuan": "ds"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

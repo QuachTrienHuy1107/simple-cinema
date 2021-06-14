@@ -11,7 +11,8 @@ import moment from "moment";
 import { MovieInfo, MovieShowtime } from "../../slice/types";
 import { Alert, Collapse, Divider, Space } from "antd";
 import { useGetRangeTime } from "app/pages/HomePage/components/Schedule/hooks/useGetRangeTime";
-import { TimePlay } from "app/pages/HomePage/components/Schedule/TimePlay";
+import { TimePlay } from "app/pages/HomePage/components/Schedule/components/TimePlay";
+import { useCheckFull } from "../../hooks/useCheckFull";
 
 interface Props {
     date: Date;
@@ -28,15 +29,18 @@ export const TabDetail = memo(({ date, cumRapChieu }: Props) => {
     const formatDate = moment(date).format("DD-MM-YYYY");
     const reFormatDate = formatDate.split("-");
     const filterDateTime = `${reFormatDate[2]}-${reFormatDate[1]}-${reFormatDate[0]}`;
+    let isFull = React.useRef(true);
 
     return (
         <Wrapper>
             {cumRapChieu?.map((movie: MovieInfo) => {
-                const cinemaName = movie?.tenCumRap.split("-");
-
                 const newArr = movie.lichChieuPhim.filter((timePlay: MovieShowtime) =>
                     timePlay.ngayChieuGioChieu.includes(filterDateTime),
                 );
+
+                if (newArr.length !== 0) {
+                    isFull.current = false;
+                }
 
                 return (
                     <>
@@ -69,14 +73,20 @@ export const TabDetail = memo(({ date, cumRapChieu }: Props) => {
                     </>
                 );
             })}
+            {isFull.current && (
+                <Alert message="Hiện không có lịch chiếu vào ngày này!" type="success" />
+            )}
         </Wrapper>
     );
 });
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    position: relative;
+`;
 
 const TabRight = styled.div`
     margin-bottom: 10px;
+
     h5 {
         font-size: 1rem;
     }
