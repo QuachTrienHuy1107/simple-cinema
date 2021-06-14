@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TabDetail  /> should match snapshot 1`] = `
+.c0 {
+  position: relative;
+}
+
+<div
+  class="c0"
+>
+  <div
+    class="ant-alert ant-alert-success ant-alert-no-icon"
+    data-show="true"
+    role="alert"
+  >
+    <div
+      class="ant-alert-content"
+    >
+      <div
+        class="ant-alert-message"
+      >
+        Hiện không có lịch chiếu vào ngày này!
+      </div>
+      <div
+        class="ant-alert-description"
+      />
+    </div>
+  </div>
+</div>
+`;

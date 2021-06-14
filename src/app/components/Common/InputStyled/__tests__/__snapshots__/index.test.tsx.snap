@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InputStyled  /> should match snapshot 1`] = `
+.c0 {
+  border: 1px solid transparent;
+  border-bottom: 1px solid #000;
+  border-radius: 0;
+  height: 44px;
+  position: relative;
+  font-size: 14px;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.c0 .ant-input:focus {
+  border: 1px solid transparent !important;
+  border-bottom: 1px solid #000;
+}
+
+<div
+  class=""
+>
+  <input
+    class="ant-input ant-input-lg c0"
+    type="text"
+    value=""
+  />
+</div>
+`;
