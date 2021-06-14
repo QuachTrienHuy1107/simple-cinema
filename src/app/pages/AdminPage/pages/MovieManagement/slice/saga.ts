@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { take, call, put, select, takeLatest } from "redux-saga/effects";
+import { take, call, put, select, takeLatest, delay } from "redux-saga/effects";
 import { StatusCode } from "utils/constants/settings";
 import { movieManagementActions as actions } from ".";
 import { api } from "./api";
@@ -44,14 +44,14 @@ function* onDeleteMovie({ payload }: PayloadAction<DeleteMoviePayload>) {
         }
     } catch (error) {
         yield put(actions.deleteMovieActionFailure(error.message));
-        console.log("error", error);
+
     }
 }
 
 function* onCreateShowTime({ payload }: PayloadAction<any>) {
     try {
         const { response, error } = yield call(api.createShowTime, payload);
-        console.log("response", response);
+        yield delay(1000)
         if (response?.status === StatusCode.Success) {
             yield put(actions.createShowTimeActionSuccess(response.data));
         } else {
@@ -63,8 +63,8 @@ function* onCreateShowTime({ payload }: PayloadAction<any>) {
 }
 
 export function* movieManagementSaga() {
-    yield takeLatest(actions.addMovieAction.type, onAddMovie);
-    yield takeLatest(actions.editMovieAction.type, onEditMovie);
+    yield takeLatest(actions.addMovieAction.toString(), onAddMovie);
+    yield takeLatest(actions.editMovieAction.toString(), onEditMovie);
     yield takeLatest(actions.deleteMovieAction.type, onDeleteMovie);
     yield takeLatest(actions.createShowTimeAction.type, onCreateShowTime);
 }

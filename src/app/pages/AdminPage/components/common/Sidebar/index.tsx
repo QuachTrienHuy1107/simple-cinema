@@ -3,20 +3,18 @@
  * Sidebar
  *
  */
-import React, { memo } from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { Logo } from "../Logo";
-import { Layout, Menu } from "antd";
 import {
     AppstoreOutlined,
     ContainerOutlined,
-    MailOutlined,
     PieChartOutlined,
     TeamOutlined,
 } from "@ant-design/icons";
+import { Layout, Menu } from "antd";
+import { Logo } from "app/components/Common/Logo";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import styled from "styled-components/macro";
 import { ROUTES } from "utils/constants/settings";
 
 interface ISideBarProps {
@@ -41,7 +39,7 @@ export const Sidebar = memo(({ collapsed, onCollapse }: ISideBarProps) => {
                 collapsedWidth="80"
                 breakpoint="lg"
             >
-                <Logo />
+                <Logo style={{ textAlign: "center" }} />
                 <Menu defaultSelectedKeys={[window.location.pathname]} mode="inline">
                     <Menu.Item key={ROUTES.DASHBOARD} icon={<PieChartOutlined />}>
                         <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
@@ -57,8 +55,7 @@ export const Sidebar = memo(({ collapsed, onCollapse }: ISideBarProps) => {
                             <Link to={ROUTES.SHOWTIME}>Add Showtime</Link>
                         </Menu.Item>
                     </SubMenu>
-
-                    <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Navigation Two">
+                    <SubMenu key="sub2" icon={<AppstoreOutlined />} title="Other options">
                         <Menu.Item key="9">Option 9</Menu.Item>
                         <Menu.Item key="10">Option 10</Menu.Item>
                         <SubMenu key="sub3" title="Submenu">

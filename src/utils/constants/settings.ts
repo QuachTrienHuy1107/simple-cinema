@@ -17,6 +17,14 @@ export enum API {
     GET_ALL_SEAT = "/QuanLyDatVe/LayDanhSachPhongVe",
     BOOKING_TICKET = "/QuanLyDatVe/DatVe",
     CREATE_SHOWTIME = "/QuanLyDatVe/TaoLichChieu",
+    /**
+     * User
+     */
+    GET_USER_PAGINATE = '/QuanLyNguoiDung/LayDanhSachNguoiDungPhanTrang',
+    GET_USER_DETAIL = '/QuanLyNguoiDung/ThongTinTaiKhoan',
+    DELETE_USER = '/QuanLyNguoiDung/XoaNguoiDung',
+    EDIT_USER = '/QuanLyNguoiDung/CapNhatThongTinNguoiDung',
+    SEARCH_USER = '/QuanLyNguoiDung/TimKiemNguoiDung'
 }
 
 export enum ROUTES {
@@ -57,18 +65,18 @@ export enum ActionType {
 }
 
 export enum ANCHOR {
-  MOVIELISTFROM = "/#movielist",
-  MOVIELISTTO = "/#movielist",
-  HOMEFROM = "/#home",
-  HOMETO = "/#home",
-  APPLiCATIONSFROM = "app",
-  APPLiCATIONSTO = "app",
-  CINEMAFROM = "cinema",
-  CINEMATO = "cinema",
-  NEWSFORM = "news",
-  NEWSTO = "news",
+  MOVIELISTFROM = "#movielist",
+  MOVIELISTTO = "#movielist",
+  HOMEFROM = "#home",
+  HOMETO = "#home",
+  APPLiCATIONSFROM = "#app",
+  APPLiCATIONSTO = "#app",
+  CINEMAFROM = "#cinema",
+  CINEMATO = "#cinema",
+  NEWSFORM = "#news",
+  NEWSTO = "#news",
   SCHEDULEFORM = "schedule",
   SCHEDULETO = "schedule"
 }
 
-export const fakeApi = 'http://localhost:8000'
+export const fakeApi = process.env.REACT_APP_SERVER_URL

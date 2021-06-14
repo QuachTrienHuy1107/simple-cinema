@@ -5,7 +5,6 @@ import { DeleteMoviePayload, MovieCreationPayload } from "./types";
 
 export const api = {
     addMovie: (params: any) => {
-
         const url = `/QuanLyPhim/ThemPhimUploadHinh`;
         return axiosClient
             .post(url, params)
@@ -14,8 +13,15 @@ export const api = {
     },
 
     editMovie: (params: any) => {
-
-        const url = `/QuanLyPhim/CapNhatPhimUpload`;
+        const url = `${process.env.REACT_APP_API_URL}/QuanLyPhim/CapNhatPhimUpload`;
+        /* return axios({
+            method: "PUT",
+            url,
+            data: params,
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then(response => (response))
+            .catch(error => (error)); */
         return axiosClient
             .post(url, params)
             .then(response => ({ response }))
@@ -33,7 +39,7 @@ export const api = {
     createShowTime: (params: any) => {
         const url = `${API.CREATE_SHOWTIME}`;
         return axiosClient
-            .post(url, params )
+            .post(url, params)
             .then(response => ({ response }))
             .catch(error => ({ error }));
     },

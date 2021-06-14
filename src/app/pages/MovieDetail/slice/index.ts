@@ -15,7 +15,6 @@ const movieSlice = createSlice({
     initialState,
     reducers: {
         getMovieDetailAction(state, action: PayloadAction<MovieDetailPayload>) {
-          console.log('zz')
             state.isLoading = true;
         },
         getMovieDetailActionSuccess: (state, action: PayloadAction<any>) => {

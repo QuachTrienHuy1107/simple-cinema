@@ -397,6 +397,17 @@ const Wrapper = styled.div`
     width: 60%;
     margin: 0 auto;
 
+    .ant-tabs-tab-btn {
+        font-size: 1.2rem;
+        color: #000;
+    }
+
+    .ant-tabs-tab.ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+            color: #fb4226 !important;
+        }
+    }
+
     @media screen and (max-width: 1200px) {
         width: 85%;
     }

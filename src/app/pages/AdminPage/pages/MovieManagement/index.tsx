@@ -4,7 +4,7 @@
  *
  */
 import { DeleteOutlined } from "@ant-design/icons";
-import { message, Popconfirm, Space, Table, Tooltip } from "antd";
+import { Form, message, Popconfirm, Space, Table, Tooltip } from "antd";
 import { Buttons } from "app/components/Common/Buttons";
 import { useHomeSlice } from "app/pages/HomePage/slice";
 import { selectHome } from "app/pages/HomePage/slice/selectors";
@@ -34,21 +34,34 @@ export function MovieManagement(props: Props) {
     const { resPagination, handlePageChange } = usePagination(1, 10);
     const [visible, setVisible] = React.useState(false);
     const [edit, setEdit] = React.useState(false);
-
+    const [open, setOpen] = React.useState(false);
     const { input } = useDebounce();
+
+    const handleOk = () => {
+        setOpen(!open);
+    };
+
+    const handleCancle = () => {
+        setOpen(!open);
+    };
 
     React.useEffect(() => {
         if (input === "") {
             dispatch(actions.getPaginateMoviesAction(resPagination));
         }
-    }, [resPagination, successMessage, input, dispatch, actions]);
+        return () => {
+            dispatch(movieManagementActions.clearData());
+        };
+    }, [resPagination, input, dispatch, actions]);
 
     React.useEffect(() => {
         if (error) {
             message.error(error);
         }
         if (successMessage !== "") {
-            message.success(successMessage);
+            message.success({ content: successMessage, duration: 1 }).then(() => {
+                dispatch(actions.getPaginateMoviesAction(resPagination));
+            });
         }
     }, [error, successMessage]);
 
@@ -58,7 +71,7 @@ export function MovieManagement(props: Props) {
             title: "Mã phim",
             dataIndex: "maPhim",
             sorter: true,
-            width: "15%",
+            width: "10%",
         },
         {
             key: "hinhAnh",
@@ -72,22 +85,44 @@ export function MovieManagement(props: Props) {
             title: "Tên phim",
             dataIndex: "tenPhim",
             sorter: true,
-            width: "15%",
+            width: "13%",
         },
         {
             key: "biDanh",
             title: "Bí danh",
             dataIndex: "biDanh",
-            width: "15%",
+            width: "13%",
+        },
+        {
+            key: "trailer",
+            title: "Trailer",
+            dataIndex: "trailer",
+            width: "25%",
+            render: (text: string) => (
+                <>
+                    <a onClick={() => setOpen(true)}>{text}</a>
+                    {/* <Modal
+                        title="Basic Modal"
+                        visible={open}
+                        onOk={handleOk}
+                        onCancel={handleCancle}
+                        bodyStyle={{ width: "100%", height: "100%", background: "red" }}
+                    >
+                        <p>Some contents...</p>
+                        <p>Some contents...</p>
+                        <p>Some contents...</p>
+                    </Modal> */}
+                </>
+            ),
         },
         {
             key: "ngayKhoiChieu",
             title: "Ngày chiếu",
             dataIndex: "ngayKhoiChieu",
-            width: "20%",
+            width: "10%",
             render: (date: string) => <span>{moment(date).format("DD-MM-YYYY")}</span>,
         },
-        { key: "danhGia", title: "Đánh giá", dataIndex: "danhGia" },
+        { key: "danhGia", title: "Đánh giá", width: "10%", dataIndex: "danhGia" },
 
         {
             key: "options",
@@ -127,20 +162,22 @@ export function MovieManagement(props: Props) {
 
     return (
         <Wrapper>
-            <Operations />
-            <Table
-                columns={columns}
-                dataSource={moviePagination.items || moviePagination}
-                sticky
-                loading={isLoading}
-                pagination={{
-                    total: moviePagination.totalCount,
-                    onChange: handlePageChange,
-                    defaultPageSize: 10,
-                    onShowSizeChange: (curren, size) => {},
-                    pageSizeOptions: ["10", "20", "50", "100"],
-                }}
-            />
+            <Form>
+                <Operations />
+                <Table
+                    columns={columns}
+                    dataSource={moviePagination.items || moviePagination}
+                    sticky
+                    loading={isLoading}
+                    pagination={{
+                        total: moviePagination.totalCount,
+                        onChange: handlePageChange,
+                        defaultPageSize: 10,
+                        onShowSizeChange: (curren, size) => {},
+                        pageSizeOptions: ["10", "20", "50", "100"],
+                    }}
+                />
+            </Form>
         </Wrapper>
     );
 }

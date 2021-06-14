@@ -42,14 +42,14 @@ const routes: RouterType[] = [
         exact: true,
         component: HomePage,
         layout: "Client",
-        restricted: true,
+        restricted: false,
     },
     {
         path: `${ROUTES.MOVIEDETAIL}/:maPhim`,
         exact: true,
         component: MovieDetail,
         layout: "Client",
-        restricted: true,
+        restricted: false,
     },
     {
         path: `${ROUTES.CHECKOUT}/:maLichChieu`,
@@ -58,13 +58,6 @@ const routes: RouterType[] = [
         layout: "Client",
         restricted: true,
     },
-    /* {
-        path: `${ROUTES.HOME}`,
-        exact: true,
-        component: HomePage,
-        layout: "Client",
-        restricted: true,
-    }, */
 
     /**
      * Form
@@ -128,8 +121,7 @@ const AppLayout = ({
     restricted,
     ...rest
 }: PrivateRouteProps): any => {
-    const { isAuthenticated, credentials } = useSelector(selectAuth);
-    const location = useLocation();
+    const { credentials } = useSelector(selectAuth);
 
     React.useLayoutEffect(() => {
         window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -145,7 +137,9 @@ const AppLayout = ({
                             <Component {...props} />
                         </FormTemplate>
                     )) ||
-                    (!localStorage.getItem("user") && <Redirect to={ROUTES.LOGIN} />) ||
+                    (!localStorage.getItem("user") && restricted === true && (
+                        <Redirect to={ROUTES.LOGIN} />
+                    )) ||
                     (layout === "Client" && (
                         <ClientTemplate {...rest}>
                             <Component {...props} />

@@ -3,11 +3,10 @@
  * Payment
  *
  */
-import { Card, Divider, message, Skeleton, Tag } from "antd";
+import { Card, Divider, message, Radio, Skeleton, Space, Tag } from "antd";
 import Search from "antd/lib/input/Search";
 import { Buttons } from "app/components/Common/Buttons";
 import { UserLoginResponse } from "app/pages/Form/slice/types";
-import { useScreenType } from "hooks/useScreenType";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +19,9 @@ import { useBooking } from "../../hooks/useBooking";
 import { useCheckout } from "../../hooks/useCheckout";
 import { selectCheckout } from "../../slice/selectors";
 import { MovieBooking, SeatSelectedType } from "../../slice/types";
+import atm from "./assets/ATM.png";
+import cash from "./assets/cash.png";
+import visa from "./assets/visa_mastercard.png";
 import { Food } from "./components/Food";
 
 interface IPaymentProps {
@@ -60,7 +62,13 @@ export const Payment = memo(({ moviedetail, isLoading, credentials, out }: IPaym
                         <Skeleton />
                     ) : (
                         <>
-                            <Card title={<h1 style={{ textAlign: "center" }}>{totalPrice}</h1>}>
+                            <Card
+                                title={
+                                    <h1 style={{ textAlign: "center", color: "green" }}>
+                                        {totalPrice}
+                                    </h1>
+                                }
+                            >
                                 <DividerStyle dashed />
                                 <Content>
                                     <h2>{moviedetail?.tenPhim}</h2>
@@ -70,48 +78,14 @@ export const Payment = memo(({ moviedetail, isLoading, credentials, out }: IPaym
                                         {moviedetail?.tenRap}
                                     </p>
                                 </Content>
-                                <DividerStyle dashed />
 
-                                <Content>
-                                    <SpaceStyled>
-                                        <div className="seats">
-                                            <h3
-                                                style={{
-                                                    margin: "0 10px 10px 0",
-                                                    flex: 1,
-                                                    display: "inline-block",
-                                                }}
-                                            >
-                                                Ghế
-                                            </h3>
-                                            {arraySeatSelected?.length === 0 && (
-                                                <span style={{ color: "red" }}>
-                                                    Vui lòng chọn ghế
-                                                </span>
-                                            )}
-                                            <span>
-                                                {arraySeatSelected?.map(
-                                                    (item: SeatSelectedType) => {
-                                                        return (
-                                                            <Tag color="magenta" key={item.maGhe}>
-                                                                {item.tenGhe}
-                                                            </Tag>
-                                                        );
-                                                    },
-                                                )}
-                                            </span>
-                                        </div>
-                                        <div className="price">
-                                            {totalPriceTicket.toLocaleString()}
-                                        </div>
-                                    </SpaceStyled>
-                                </Content>
                                 <DividerStyle dashed />
                                 <Content>
                                     <h3>Email</h3>
                                     <p>{credentials?.email}</p>
                                 </Content>
                                 <DividerStyle dashed />
+
                                 <Content>
                                     <h3>Số điện thoại</h3>
                                     <p>{credentials?.soDT}</p>
@@ -128,10 +102,80 @@ export const Payment = memo(({ moviedetail, isLoading, credentials, out }: IPaym
                                     />
                                 </Content>
 
-                                <DividerStyle dashed />
+                                <Divider dashed />
+
+                                <Content>
+                                    <SpaceStyled>
+                                        <div className="seats">
+                                            {arraySeatSelected?.length === 0 && (
+                                                <h3
+                                                    style={{
+                                                        margin: "0 10px 10px 0",
+                                                        flex: 1,
+                                                        display: "inline-block",
+                                                        color: "red",
+                                                    }}
+                                                >
+                                                    Vui lòng chọn ghế
+                                                </h3>
+                                            )}
+
+                                            <span>
+                                                {arraySeatSelected?.map(
+                                                    (item: SeatSelectedType) => {
+                                                        return (
+                                                            <Tag color="#87d068" key={item.maGhe}>
+                                                                {item.tenGhe}
+                                                            </Tag>
+                                                        );
+                                                    },
+                                                )}
+                                            </span>
+                                        </div>
+                                        <div className="price">
+                                            {totalPriceTicket !== 0 &&
+                                                totalPriceTicket.toLocaleString()}
+                                        </div>
+                                    </SpaceStyled>
+                                </Content>
+
+                                <Divider dashed />
+
                                 <Content>
                                     <Food />
                                 </Content>
+
+                                <Divider dashed />
+
+                                <Content>
+                                    <Radio.Group defaultValue={3} size="large" buttonStyle="solid">
+                                        <HowToPay direction="vertical">
+                                            <Radio value={1}>
+                                                <div>
+                                                    <img src={atm} alt="cash" width={50} />
+                                                    <span className="payment">Thẻ ATM nội địa</span>
+                                                </div>
+                                            </Radio>
+                                            <Radio value={2}>
+                                                <div>
+                                                    <img src={visa} alt="cash" width={50} />
+                                                    <span className="payment">
+                                                        Visa, Master, JCB
+                                                    </span>
+                                                </div>
+                                            </Radio>
+                                            <Radio value={3}>
+                                                <div>
+                                                    <img src={cash} alt="cash" width={50} />
+                                                    <span className="payment">
+                                                        Thanh toán tiền mặt
+                                                    </span>
+                                                </div>
+                                            </Radio>
+                                        </HowToPay>
+                                    </Radio.Group>
+                                </Content>
+
                                 <Divider dashed />
 
                                 <ButtonStyle>
@@ -168,7 +212,7 @@ export const Payment = memo(({ moviedetail, isLoading, credentials, out }: IPaym
                                             fontSize: "1.5rem",
                                         }}
                                     >
-                                        Tính tiền
+                                        Thanh toán
                                     </Buttons>
                                 </ButtonStyle>
                             </Card>
@@ -178,14 +222,13 @@ export const Payment = memo(({ moviedetail, isLoading, credentials, out }: IPaym
             </Wrapper>
             <Prompt
                 when={(out && false) || (arraySeatSelected.length > 0 && true)}
-                message={location => `Bạn có muốn quay về trang chủ hông?`}
+                message={location => `Bạn có muốn quay về trang chủ không?`}
             />
         </>
     );
 });
 
 const Wrapper = styled.aside`
-    position: fixed;
     top: 0;
     right: 0;
     box-shadow: -3px -1px 20px 7px #ededed;
@@ -195,12 +238,11 @@ const Wrapper = styled.aside`
     position: relative;
     padding: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
 `;
 
 const Inner = styled.div`
     height: 100vh;
-
     overflow-y: scroll;
     overflow-x: hidden;
 
@@ -240,13 +282,12 @@ const Content = styled.div`
 
 const ButtonStyle = styled.div`
     position: relative;
-    margin-top: 20px;
+    height: 100px;
     > div {
         position: absolute;
-        left: 0;
         bottom: 0;
         width: 100%;
-        height: 100%;
+        left: 0;
     }
     ${media.small`
          button {
@@ -280,5 +321,12 @@ const SpaceStyled = styled.div`
         color: #016f33;
         font-size: 1rem;
         font-weight: 600;
+    }
+`;
+
+const HowToPay = styled(Space)`
+    .payment {
+        margin-left: 10px;
+        font-size: 1rem;
     }
 `;

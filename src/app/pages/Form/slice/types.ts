@@ -6,6 +6,7 @@ export interface UserLoginResponse {
     soDT?: string;
     readonly taiKhoan?: string;
     accessToken?: string;
+    matKhau?: string;
 }
 
 export interface LoginPayload {
@@ -26,6 +27,6 @@ export interface RegisterPayload {
 export interface AuthState {
     credentials: UserLoginResponse | any;
     isLoading: boolean;
-    error?: Error | null;
+    error?: Error | null | string;
     isAuthenticated?: boolean;
 }

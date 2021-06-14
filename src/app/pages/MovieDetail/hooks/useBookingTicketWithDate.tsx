@@ -3,23 +3,19 @@ import moment from "moment";
 import React from "react";
 
 export const useBookingTicketWithDate = (dateStart: any) => {
-    const { today, calculateDateFuture, getRangeDate } = useGetDate();
+    const { calculateDateFuture, getRangeDate } = useGetDate();
     const [arrayDate, setArrayDate] = React.useState<Date[]>([]);
 
     React.useEffect(() => {
         const getTicketWithDate = () => {
-            const dateStartFormat = moment(dateStart).format("DD-MM-YYYY");
             const dateEndFormat = calculateDateFuture(dateStart);
 
             const dateEnd = dateEndFormat.split("/");
             const reFormatDateEnd = `${dateEnd[2]}-${dateEnd[1]}-${dateEnd[0]}`;
 
-            const dateTimeStart = moment(dateStart).format();
-            const dateTimeEnd = moment(reFormatDateEnd).format();
+            const rangeDate = getRangeDate("2019-01-01T23:15:14", "2019-01-15T23:15:14");
 
-            const arrayDate = getRangeDate("2019-01-01T23:15:14", "2019-01-15T23:15:14");
-
-            setArrayDate(arrayDate);
+            setArrayDate(rangeDate);
         };
 
         getTicketWithDate();
@@ -36,7 +32,7 @@ export const useBookingTicketWithDate = (dateStart: any) => {
                 result = true;
             }
         });
-        return  result ;
+        return result;
     };
 
     return { arrayDate, checkDatePlay };

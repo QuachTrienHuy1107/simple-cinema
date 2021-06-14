@@ -72,7 +72,7 @@ export const Header: React.FC = (props: IHeaderProps) => {
             {(credentials.maLoaiNguoiDung === "QuanTri" && (
                 <>
                     <Menu.Item key="0">
-                        <Link to={ROUTES.DASHBOARD}>Admin</Link>
+                        <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
                     </Menu.Item>
 
                     <Menu.Item

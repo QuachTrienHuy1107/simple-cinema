@@ -6,6 +6,7 @@
 import { Col, Row } from "antd";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router";
 import styled from "styled-components/macro";
 import { CreateMovie } from "./components/CreateMovie";
 import { SearchForm } from "./components/SearchForm";
@@ -14,6 +15,7 @@ interface Props {}
 
 export const Operations: React.FC = memo((props: Props) => {
     const { t, i18n } = useTranslation();
+    const location = useLocation();
 
     return (
         <Wrapper>
@@ -21,9 +23,11 @@ export const Operations: React.FC = memo((props: Props) => {
                 <Col flex="auto">
                     <SearchForm />
                 </Col>
-                <Col style={{ textAlign: "right" }} flex="100px">
-                    <CreateMovie />
-                </Col>
+                {!location.pathname.includes("usermanagement") && (
+                    <Col style={{ textAlign: "right" }} flex="100px">
+                        <CreateMovie />
+                    </Col>
+                )}
             </Row>
         </Wrapper>
     );

@@ -11,9 +11,6 @@ export const useAddEdit = () => {
     const dispatch = useDispatch();
     const { movieManagementActions } = useMovieManagementSlice();
     const [edit, setEdit] = React.useState(true) as any;
-    /* const [edit, setEditss] = React.useState(isEdit);
-
-    console.log("isEdit", isEdit); */
 
     React.useEffect(() => {
       setEdit(edit);
@@ -30,10 +27,8 @@ export const useAddEdit = () => {
             }
 
             if (edit) {
-
                 dispatch(movieManagementActions.editMovieAction(formData));
             } else {
-
                 dispatch(movieManagementActions.addMovieAction(formData));
             }
         },

@@ -10,6 +10,7 @@ import { messages } from "./messages";
 import { MovieDetailProps } from "../../slice/types";
 import { Col, Row, Space } from "antd";
 import moment from "moment";
+import { media } from "styles/media";
 
 interface Props {
     movieDetail: MovieDetailProps;
@@ -21,8 +22,8 @@ export const Detail = memo(({ movieDetail }: Props) => {
 
     return (
         <Wrapper>
-            <Row justify="center">
-                <Col md={{ span: 12 }} sm={24}>
+            <Row justify="center" gutter={[30, 10]}>
+                <Col md={{ span: 12 }} xs={24}>
                     <Content>
                         <h3>Ngày công chiếu</h3>
                         <p>{moment(movieDetail.ngayKhoiChieu).format("DD-MM-YYYY")}</p>
@@ -40,22 +41,41 @@ export const Detail = memo(({ movieDetail }: Props) => {
                         <p>Kinh Dị, Giật Gân, Tâm Lý</p>
                     </Content>
                 </Col>
-                <Col md={{ span: 12 }} sm={24} style={{ textAlign: "center" }}>
-                    <Space direction="vertical" style={{ textAlign: "left" }}>
+                <ColStyle md={{ span: 12 }} xs={24}>
+                    <Space direction="vertical">
                         <h3>Nội dung</h3>
                         <p>{movieDetail?.moTa}</p>
                     </Space>
-                </Col>
+                </ColStyle>
             </Row>
         </Wrapper>
     );
 });
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    h3 {
+        color: #fff;
+    }
+    .ant-tabs-content-holder {
+        background-color: #0a2029;
+        color: #fff;
+    }
+`;
 
 const Content = styled.div`
     display: flex;
     justify-content: space-between;
-    padding: 5px 20px;
+    padding: 5px 0px;
     text-align: left;
+`;
+
+const ColStyle = styled(Col)`
+    text-align: center;
+    > div {
+        text-align: left;
+    }
+    ${media.small`
+    text-align: left;
+    padding: 5px 20px;
+    `}
 `;

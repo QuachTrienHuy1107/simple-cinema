@@ -13,8 +13,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { useLocation } from "react-router";
-import { scroller } from "react-scroll";
 import styled from "styled-components";
+import backNews from "./assets/back-news.png";
 import { Contact } from "./components/Contact";
 import { News } from "./components/News";
 import { Schedule } from "./components/Schedule";
@@ -32,34 +32,34 @@ export const HomePage: React.FC<Record<never, never>> = () => {
     const { today, dateBefore } = useGetDate();
     const { Desktop, Mobile } = useScreenType();
     const isMobile = useMediaQuery({ minWidth: 0, maxWidth: 767 });
-    const [loadData, setLoadData] = React.useState(3);
-    const { resPagination, handlePageChange } = usePagination(1, isMobile ? 10 : 10);
+    const { resPagination, handlePageChange } = usePagination(1, isMobile ? 10 : 20);
 
     const location = useLocation();
-
-    console.log("resPagination", resPagination);
-    console.log("loadData", loadData);
 
     React.useEffect(() => {
         const data = {
             ...resPagination,
-            tuNgay: dateBefore,
-            denNgay: today,
+            tuNgay: "01/01/2019", //  dateBefore,
+            denNgay: "30/04/2021", //today,
         };
         dispatch(actions.fetchMultiApi(data));
         dispatch(actions.getPaginateMoviesAction(resPagination));
 
-        if (location.state) {
-            const { url } = location.state as any;
-            scroller.scrollTo(url, false, 0, -65);
-        }
+        const go = setTimeout(() => {
+            if (location.state) {
+                const { url } = location.state as any;
+                const ele = document.getElementById(url || "") as any;
+                if (ele) {
+                    ele.scrollIntoView({ block: "nearest", behavior: "smooth" });
+                }
+            }
+        }, 2000);
 
         return () => {
             dispatch(actions.clearData());
+            clearTimeout(go);
         };
     }, []);
-
-    console.log("moviePagination", moviePagination);
 
     return (
         <>
@@ -83,14 +83,13 @@ export const HomePage: React.FC<Record<never, never>> = () => {
                             </Desktop>
                             <Mobile>
                                 <MovieListMobile
-                                    handlePageChange={handlePageChange}
                                     moviePagination={moviePagination}
                                     movieWithDate={movieWithDate}
-                                    isLoading={isLoading}
                                 />
                             </Mobile>
                         </Col>
                         <Col span={24}>
+                            <BackNews></BackNews>
                             {isLoading ? <Skeleton /> : <Schedule cinemaList={cinemaList} />}
                         </Col>
                         <Col span={24}>
@@ -109,31 +108,11 @@ export const HomePage: React.FC<Record<never, never>> = () => {
 
 const Wrapper = styled.div``;
 
-const CarouselStyled = styled.div`
-    position: relative;
-    video {
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        object-fit: cover;
-        background-attachment: scroll;
-    }
-    background-color: ${p => p.theme.primaryBg};
-    width: auto;
-    height: 100vh;
-
-    &::before {
-        content: "";
-        position: absolute;
-        z-index: 1;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: linear-gradient(180deg, rgba(19, 23, 32, 0) 0%, #131720 100%);
-        pointer-events: none;
-    }
+const BackNews = styled.div`
+    background-image: url(${backNews});
+    background-size: 100%;
+    background-repeat: no-repeat;
+    padding-top: 120px;
 `;
 
 const Content = styled.div`

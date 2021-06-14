@@ -14,9 +14,9 @@ export interface MovieResponse {
     lichChieu?: Array<any>;
 }
 
-export interface SearchMoviePayload{
-  tenPhim: string
-  maNhom: string
+export interface SearchMoviePayload {
+    tenPhim: string;
+    maNhom: string;
 }
 
 export interface MovieDetailPayload {
@@ -29,18 +29,20 @@ export interface GetMovieWithDate extends PaginationRequestType {
 }
 
 export interface PaginationRequestType {
-    readonly maNhom?: string;
+    maNhom?: string;
     tenPhim?: string;
+    tuKhoa?: string;
     soTrang: number;
     soPhanTuTrenTrang: number;
 }
 
 /* --- STATE --- */
 export interface HomeState {
+    movies?: MovieResponse[];
     movieWithDate?: MovieResponse | Object | PaginationResponseType | any;
-    moviePagination?: Array<PaginationResponseType> | any;
+    moviePagination?: Array<PaginationResponseType> | Array<MovieResponse> | any;
     cinemaList?: CinemaListResponse[] | null;
-    cinemaInfo: any
+    cinemaInfo: any;
     isLoading: boolean;
     error?: Error | null;
 }

@@ -7,18 +7,44 @@ import { Col, Form, Input, Row } from "antd";
 import { Buttons } from "app/components/Common/Buttons";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
+import { ROUTES } from "utils/constants/settings";
 import { formItemLayout } from "utils/helpers";
+import { selectAuth } from "../../slice/selectors";
+import Swal from "sweetalert2";
+import { useAuthSlice } from "../../slice";
 
 interface Props {}
 
 export const Register = memo((props: Props) => {
     const { t, i18n } = useTranslation();
+    const history = useHistory();
+    const { isLoading, credentials } = useSelector(selectAuth);
+    const dispatch = useDispatch();
+    const { actions } = useAuthSlice();
+
+    React.useEffect(() => {
+        if (Object.keys(credentials).length !== 0) {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Đăng kí thành công!!!",
+                showConfirmButton: false,
+                timer: 2000,
+            }).then(() => {
+                history.push({ pathname: `${ROUTES.LOGIN}`, state: { credentials } });
+            });
+        }
+        return () => {
+            dispatch(actions.clearData());
+        };
+    }, [credentials, history]);
 
     return (
-        <Row justify="center">
-            <Col span={24}>
+        <Row justify="center" gutter={[12, 10]}>
+            <Col span={12}>
                 <Form.Item
                     name="taiKhoan"
                     label="Tài khoản"
@@ -32,7 +58,7 @@ export const Register = memo((props: Props) => {
                     <Input size="large" />
                 </Form.Item>
             </Col>
-            <Col span={24}>
+            <Col span={12}>
                 <Form.Item
                     name="matKhau"
                     label="Mật khẩu"
@@ -46,7 +72,7 @@ export const Register = memo((props: Props) => {
                     <Input.Password size="large" />
                 </Form.Item>
             </Col>
-            <Col span={24}>
+            <Col span={12}>
                 <Form.Item
                     name=""
                     label="Nhập lại mật khẩu"
@@ -69,7 +95,7 @@ export const Register = memo((props: Props) => {
                     <Input.Password size="large" />
                 </Form.Item>
             </Col>
-            <Col span={24}>
+            <Col span={12}>
                 <Form.Item
                     name="hoTen"
                     label="Họ tên"
@@ -83,7 +109,7 @@ export const Register = memo((props: Props) => {
                     <Input size="large" />
                 </Form.Item>
             </Col>
-            <Col span={24}>
+            <Col span={12}>
                 <Form.Item
                     name="email"
                     label="Email"
@@ -94,41 +120,29 @@ export const Register = memo((props: Props) => {
                         },
                         {
                             type: "email",
-                            message: "Sai rồi",
+                            message: "Email không đúng định dạng",
                         },
                     ]}
                 >
                     <Input size="large" />
                 </Form.Item>
             </Col>
-            <Col span={24}>
+            <Col span={12}>
                 <Form.Item name="soDt" label="Số điện thoại">
                     <Input size="large" />
                 </Form.Item>
             </Col>
 
-            {/*  <Col span={24}>
-                <Select
-                    placeholder="Select a person"
-                    optionFilterProp="children"
-                    size="large"
-                    style={{ color: "#000" }}
-                >
-                    {new Array(9).fill(null).map((_, index) => (
-                        <Option value={`GP0${index}`}>GP0{index}</Option>
-                    ))}
-                </Select>
-            </Col> */}
             <Col span={24}>
                 <Form.Item {...formItemLayout} style={{ textAlign: "center" }}>
-                    <Buttons type="primary" htmlType="submit" className="login__btn">
-                        Đăng kí
-                    </Buttons>
+                    <ButtonStyle type="primary" htmlType="submit" loading={isLoading}>
+                        <span className="btnLogin">Đăng kí</span>
+                    </ButtonStyle>
                 </Form.Item>
             </Col>
 
             <Col span={24}>
-                <Form.Item style={{ textAlign: "center", margin: "30px 0" }}>
+                <Form.Item style={{ textAlign: "center" }}>
                     <span>Bạn đã có tài khoản? </span>
                     <Link to="/login">Đăng nhập</Link>
                 </Form.Item>
@@ -138,3 +152,18 @@ export const Register = memo((props: Props) => {
 });
 
 const Div = styled.div``;
+
+const ButtonStyle = styled(Buttons)`
+    width: 50%;
+    padding: 25px;
+
+    span.ant-btn-loading-icon {
+        transform: translateY(-10px);
+    }
+
+    span.btnLogin {
+        font-size: 1.2rem;
+        transform: translateY(-3px);
+        margin-left: 2px;
+    }
+`;

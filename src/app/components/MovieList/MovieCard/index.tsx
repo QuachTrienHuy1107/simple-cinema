@@ -3,22 +3,20 @@
  * MovieCard
  *
  */
-import React, { memo } from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { Button, Card, Modal, Progress } from "antd";
-import { Link } from "react-router-dom";
 import { PlayCircleOutlined } from "@ant-design/icons";
+import { Card, Tooltip } from "antd";
+import { Img } from "app/components/Common/Image";
+import { ModalShow } from "app/components/ModalShow";
 import { MovieResponse } from "app/pages/HomePage/slice/types";
-
+import moment from "moment";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
+import ReactPlayer from "react-player";
+import { Link } from "react-router-dom";
+import styled from "styled-components/macro";
 import { ROUTES } from "utils/constants/settings";
 import star from "../../../assets/star1.png";
-import moment from "moment";
-import ModalVideo from "react-modal-video";
-import ReactPlayer from "react-player";
-import "./style.scss";
-import { Img } from "app/components/Common/Image";
+
 interface IMovieCardProps {
     movie: MovieResponse;
     isComming?: boolean;
@@ -28,14 +26,30 @@ export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { t, i18n } = useTranslation();
     const [open, setOpen] = React.useState(false);
+    const play = React.useRef(null) as any;
 
-    console.log("movie", movie);
+    const handleOk = () => {
+        setOpen(!open);
+    };
+
+    const handleCancle = () => {
+        setOpen(false);
+        if (play.current !== null) {
+            play.current.getInternalPlayer().pauseVideo();
+        }
+    };
+
     return (
         <>
             <CardStyle
                 cover={
                     <CardInfo>
-                        <Link to={`${ROUTES.MOVIEDETAIL}/${movie.maPhim}`}>
+                        <Link
+                            to={{
+                                pathname: `${ROUTES.MOVIEDETAIL}/${movie.maPhim}`,
+                                state: { isComming },
+                            }}
+                        >
                             <Img
                                 height="350"
                                 className="card__img"
@@ -68,34 +82,24 @@ export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
                     </CardInfo>
                 }
             >
-                <Link to={`${ROUTES.MOVIEDETAIL}/${movie.maPhim}`}>
-                    <p className="ant-card-body__title">{movie.tenPhim}</p>
+                <Link
+                    to={{ pathname: `${ROUTES.MOVIEDETAIL}/${movie.maPhim}`, state: { isComming } }}
+                >
+                    <Tooltip title={movie.tenPhim} color="#87d068">
+                        <p className="ant-card-body__title">{movie.tenPhim}</p>
+                    </Tooltip>
                 </Link>
                 <span className="ant-card-body__datetime">
-                    {moment(movie.ngayKhoiChieu).format("DD-MM-YYYY")}
+                    {!isComming && moment(movie.ngayKhoiChieu).format("DD-MM-YYYY")}
                 </span>
             </CardStyle>
 
-            <Modal
-                visible={open}
-                onOk={() => setOpen(false)}
-                onCancel={() => setOpen(false)}
-                centered
-                footer={<div style={{ padding: 0 }}></div>}
-                width={520}
-                style={{ padding: 0, border: "none" }}
-                closable={false}
-            >
-                {/* <iframe
-                    title={movie?.tenPhim}
-                    width="800"
-                    height="400"
-                    src={`${movie.trailer}`}
-                    className="video"
-                ></iframe> */}
+            <ModalShow open={open} onOpen={handleOk} onCancle={handleCancle}>
                 <ReactPlayer
                     url={movie.trailer}
                     className="react-player"
+                    controls={true}
+                    ref={play}
                     style={{
                         position: "absolute",
                         left: "50%",
@@ -103,8 +107,7 @@ export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
                         transform: "translate(-50%,-50%)",
                     }}
                 />
-            </Modal>
-
+            </ModalShow>
             {/* <ModalVideo
                 channel="youtube"
                 isOpen={open}
@@ -124,6 +127,11 @@ const CardStyle = styled(Card)`
 
     padding: 10px;
 
+    > a {
+        height: 300px;
+        display: block;
+    }
+
     a {
         color: #000;
         font-weight: 500;
@@ -139,19 +147,22 @@ const CardStyle = styled(Card)`
         &__title {
             font-size: 1.2rem;
             margin-bottom: 0px;
+            text-overflow: ellipsis;
+
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         &__datetime {
-            font-size: 1rem;
+            font-size: 0.8rem;
+            color: #656363;
+            margin-top: -2px;
+            display: block;
         }
     }
 
     .ant-list-item-meta-description {
-        text-overflow: ellipsis;
-
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
     }
 
     &:hover {

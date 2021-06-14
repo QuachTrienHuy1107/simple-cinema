@@ -3,20 +3,19 @@
  * Schedule
  *
  */
-import { Button, Collapse, Divider, Space, Tabs, Tag } from "antd";
-import { Buttons } from "app/components/Common/Buttons";
+import { Collapse, Divider, Space, Tabs, Tag } from "antd";
 import { useScreenType } from "hooks/useScreenType";
-import moment from "moment";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
-import { ANCHOR, ROUTES } from "utils/constants/settings";
-import bgTime from "./assets/movie-seat.png";
+import { ANCHOR } from "utils/constants/settings";
+import backNews from "./assets/back-news.png";
+import { CinemaPosition } from "./components/CinemaPosition";
+import { TimePlay } from "./components/TimePlay";
 import { useGetRangeTime } from "./hooks/useGetRangeTime";
-import { TimePlay } from "./TimePlay";
-import { CinemaListProps, CinemaListResponse, MovieProps, TimerProps } from "./types";
+import { CinemaListProps, CinemaListResponse, MovieProps } from "./types";
 
 interface IScheduleProps {
     cinemaList: CinemaListResponse | any;
@@ -31,8 +30,6 @@ export const Schedule = memo(({ cinemaList }: IScheduleProps) => {
     const history = useHistory();
     const { getRangeTime } = useGetRangeTime();
 
-    console.log("cinemaList", cinemaList);
-
     const renderCinema = (cinemaList: CinemaListResponse[], Mobile: any, Desktop: any) => {
         return cinemaList?.map((item: CinemaListResponse) => (
             <TabContent
@@ -41,7 +38,7 @@ export const Schedule = memo(({ cinemaList }: IScheduleProps) => {
             >
                 <Desktop>
                     <Tabs tabPosition="left">
-                        {item.lstCumRap?.map((cinema: CinemaListProps) => {
+                        {item.lstCumRap?.slice(0, 5).map((cinema: CinemaListProps) => {
                             const cinemaName = cinema?.tenCumRap.split("-");
                             return (
                                 <TabPane
@@ -61,7 +58,7 @@ export const Schedule = memo(({ cinemaList }: IScheduleProps) => {
                                             <span className="schedule__left--address">
                                                 {cinema.diaChi}
                                             </span>
-                                            <Link to="/">Chi tiet</Link>
+                                            <CinemaPosition />
                                         </TabLeft>
                                     }
                                 >
@@ -275,9 +272,7 @@ const Wrapper = styled.div`
 
     ${media.medium`
          width: 80%;
-     `}
-
-    @media screen and (max-width: 576px) {
+     `} @media screen and (max-width: 576px) {
         width: 100%;
     }
 
@@ -317,7 +312,7 @@ const TabLeft = styled.div`
 
     .schedule__left {
         &--title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 500;
             display: inline;
 
@@ -340,14 +335,16 @@ const TabRight = styled.div`
     }
 
     .ant-collapse-content-box {
-        /*  display: flex;
-        flex-wrap: wrap; */
         padding-top: 10px !important;
         padding-bottom: 0;
     }
 
     .ant-collapse-header {
         padding-top: 0 !important;
+
+        @media screen and (max-width: 576px) {
+            padding-left: 30px !important;
+        }
     }
 `;
 

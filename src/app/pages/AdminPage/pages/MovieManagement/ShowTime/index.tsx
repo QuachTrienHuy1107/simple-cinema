@@ -20,7 +20,6 @@ import { useHomeSlice } from "app/pages/HomePage/slice";
 import { selectHome } from "app/pages/HomePage/slice/selectors";
 import { HomeState, MovieResponse } from "app/pages/HomePage/slice/types";
 import { useGetMovieDetail } from "hooks/useGetMovieDetail";
-import usePagination from "hooks/usePagination";
 import moment from "moment";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -43,14 +42,10 @@ import CinemaDetail from "./CinemaDetail";
  */
 
 const { Option } = Select;
-const { TabPane } = Tabs;
 
 interface Props {}
 
-const isLoading = false;
-
 export const ShowTime = React.memo((props: Props) => {
-    const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const { actions } = useHomeSlice();
@@ -60,16 +55,11 @@ export const ShowTime = React.memo((props: Props) => {
     const [price, setPrice] = React.useState<number>(0);
     const { movieDetail, getMovieDetail } = useGetMovieDetail();
     const { movieManagementActions } = useMovieManagementSlice();
-    const { movieWithDate, cinemaList, cinemaInfo } = useSelector(selectHome) as HomeState;
+    const { movies, cinemaList, cinemaInfo } = useSelector(selectHome) as HomeState;
     const { successMessage, error, isLoading } = useSelector(selectMovieManagement);
-    const { resPagination } = usePagination(1, 10);
-    const [arrMovie, setArrMovie] = React.useState([]) as any;
 
     React.useEffect(() => {
         dispatch(actions.getAllMovieAction());
-        return () => {
-            dispatch(actions.clearData());
-        };
     }, []);
 
     const options = cinemaInfo?.map((item: any) => {
@@ -87,21 +77,22 @@ export const ShowTime = React.memo((props: Props) => {
         };
     });
 
-    const onFinish = (value: any) => {
-        dispatch(
-            movieManagementActions.createShowTimeAction({
-                maPhim: movieSelected.value,
-                ngayChieuGioChieu: timer,
-                maRap: cinemaSelected[1].value,
-                giaVe: price,
-            }),
-        );
+    const onFinish = async (value: any) => {
+        const data = {
+            maPhim: movieSelected.value,
+            ngayChieuGioChieu: timer,
+            maRap: cinemaSelected[1].value,
+            giaVe: price,
+        };
+        await dispatch(movieManagementActions.createShowTimeAction(data));
+        form.resetFields();
     };
 
     React.useEffect(() => {
         if (successMessage !== "") {
-            message.success(successMessage).then(() => {
-                dispatch(actions.getAllCinemaListAction());
+            message.success({ content: successMessage, duration: 0.8 }).then(async () => {
+                await getMovieDetail(movieSelected.value);
+                dispatch(movieManagementActions.clearData());
             });
         }
         if (error) {
@@ -112,7 +103,6 @@ export const ShowTime = React.memo((props: Props) => {
     return (
         <Wrapper>
             <Form form={form} name="showtime" onFinish={onFinish}>
-                {isLoading && <Skeleton />}
                 <Row justify="space-around" gutter={[20, 35]}>
                     <ColStyled md={15}>
                         <LeftPanel>
@@ -125,25 +115,20 @@ export const ShowTime = React.memo((props: Props) => {
                                         rules={[{ required: true }]}
                                     >
                                         <Select
-                                            loading={isLoading}
                                             size="large"
                                             onChange={(maPhim: any, value: any) => {
-                                                // setMovieSelected(value);
-                                                getMovieDetail(value);
+                                                setMovieSelected(value);
+                                                getMovieDetail(maPhim);
                                                 dispatch(actions.getAllCinemaListAction());
                                             }}
                                         >
-                                            {movieWithDate &&
-                                                movieWithDate.map((movie: MovieResponse) => {
-                                                    return (
-                                                        <Option
-                                                            key={movie.maPhim}
-                                                            value={movie.maPhim}
-                                                        >
-                                                            {movie.tenPhim}
-                                                        </Option>
-                                                    );
-                                                })}
+                                            {movies?.map((movie: MovieResponse) => {
+                                                return (
+                                                    <Option key={movie.maPhim} value={movie.maPhim}>
+                                                        {movie.tenPhim}
+                                                    </Option>
+                                                );
+                                            })}
                                         </Select>
                                     </Form.Item>
                                 </Col>
@@ -152,6 +137,7 @@ export const ShowTime = React.memo((props: Props) => {
                                         {...formItemLayout}
                                         label="Chọn hệ thống rạp"
                                         rules={[{ required: true }]}
+                                        name="heThongRap"
                                     >
                                         <Select
                                             loading={isLoading}
@@ -224,12 +210,13 @@ export const ShowTime = React.memo((props: Props) => {
                                         label="Nhập giá vé"
                                         name="giaVe"
                                         rules={[{ required: true }]}
+                                        initialValue={75000}
                                     >
                                         <InputNumberStyle
                                             size="large"
-                                            step={1000}
-                                            min={50000}
-                                            max={150000}
+                                            step={10000}
+                                            min={75000}
+                                            max={200000}
                                             formatter={value =>
                                                 `VND ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                             }
@@ -272,7 +259,7 @@ export const ShowTime = React.memo((props: Props) => {
                                     </tr>
                                     <tr>
                                         <th>Giá vé</th>
-                                        <th>{price}</th>
+                                        <th>{price.toLocaleString()}</th>
                                     </tr>
                                 </thead>
                             </TableStyle>
