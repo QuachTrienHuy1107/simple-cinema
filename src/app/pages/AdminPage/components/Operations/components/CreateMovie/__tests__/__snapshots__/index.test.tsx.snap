@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateMovie  /> should match snapshot 1`] = `
+.c1 {
+  line-height: 0;
+  font-weight: 600;
+  border-radius: 300px;
+  display: inline-block;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+.c1:hover {
+  box-shadow: 0px 10px 15px 0px rgba(59,55,188,0.5);
+}
+
+.c0 .ant-tabs-content-holder,
+.c0 .ant-tabs-nav {
+  background-color: #151f30;
+  padding: 20px 40px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  border-bottom: none;
+}
+
+.c0 .ant-tabs-content-holder::before,
+.c0 .ant-tabs-nav::before {
+  border: none;
+}
+
+<div
+  class=""
+>
+  <div
+    class="c0"
+  >
+    <div
+      class=""
+    >
+      <button
+        class="ant-btn ant-btn-round ant-btn-lg c1 icon-button"
+        type="button"
+      >
+        <span>
+          Create
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
