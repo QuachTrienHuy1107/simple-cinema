@@ -131,4 +131,15 @@ export const MovieListMobile = memo(({ movieWithDate, moviePagination }: Props) 
     );
 });
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+    .ant-tabs-tab-btn {
+        font-size: 1.2rem;
+        color: #000;
+    }
+
+    .ant-tabs-tab.ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+            color: #fb4226 !important;
+        }
+    }
+`;

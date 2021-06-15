@@ -5,7 +5,7 @@ export enum StatusCode {
 }
 
 export enum API {
-    GET_ALL_MOVIE = '/QuanLyPhim/LayDanhSachPhim',
+    GET_ALL_MOVIE = "/QuanLyPhim/LayDanhSachPhim",
     GET_MOVIE_DETAIL = "/QuanLyRap/LayThongTinLichChieuPhim",
     GET_MOVIE_WITH_DATE = "/QuanLyPhim/LayDanhSachPhimTheoNgay",
     GET_ALL_PAGINATION = "QuanLyPhim/LayDanhSachPhimPhanTrang",
@@ -20,11 +20,11 @@ export enum API {
     /**
      * User
      */
-    GET_USER_PAGINATE = '/QuanLyNguoiDung/LayDanhSachNguoiDungPhanTrang',
-    GET_USER_DETAIL = '/QuanLyNguoiDung/ThongTinTaiKhoan',
-    DELETE_USER = '/QuanLyNguoiDung/XoaNguoiDung',
-    EDIT_USER = '/QuanLyNguoiDung/CapNhatThongTinNguoiDung',
-    SEARCH_USER = '/QuanLyNguoiDung/TimKiemNguoiDung'
+    GET_USER_PAGINATE = "/QuanLyNguoiDung/LayDanhSachNguoiDungPhanTrang",
+    GET_USER_DETAIL = "/QuanLyNguoiDung/ThongTinTaiKhoan",
+    DELETE_USER = "/QuanLyNguoiDung/XoaNguoiDung",
+    EDIT_USER = "/QuanLyNguoiDung/CapNhatThongTinNguoiDung",
+    SEARCH_USER = "/QuanLyNguoiDung/TimKiemNguoiDung",
 }
 
 export enum ROUTES {
@@ -65,18 +65,21 @@ export enum ActionType {
 }
 
 export enum ANCHOR {
-  MOVIELISTFROM = "#movielist",
-  MOVIELISTTO = "#movielist",
-  HOMEFROM = "#home",
-  HOMETO = "#home",
-  APPLiCATIONSFROM = "#app",
-  APPLiCATIONSTO = "#app",
-  CINEMAFROM = "#cinema",
-  CINEMATO = "#cinema",
-  NEWSFORM = "#news",
-  NEWSTO = "#news",
-  SCHEDULEFORM = "schedule",
-  SCHEDULETO = "schedule"
+    MOVIELISTFROM = "#movielist",
+    MOVIELISTTO = "#movielist",
+    HOMEFROM = "#home",
+    HOMETO = "#home",
+    APPLiCATIONSFROM = "#app",
+    APPLiCATIONSTO = "#app",
+    CINEMAFROM = "#cinema",
+    CINEMATO = "#cinema",
+    NEWSFORM = "#news",
+    NEWSTO = "#news",
+    SCHEDULEFORM = "schedule",
+    SCHEDULETO = "schedule",
 }
 
-export const fakeApi = process.env.REACT_APP_SERVER_URL
+export const fakeApi =
+    process.env.NODE_ENV === "production"
+        ? process.env.REACT_APP_SERVER_URL
+        : "http://localhost:8000";

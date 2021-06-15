@@ -32,7 +32,7 @@ export const HomePage: React.FC<Record<never, never>> = () => {
     const { today, dateBefore } = useGetDate();
     const { Desktop, Mobile } = useScreenType();
     const isMobile = useMediaQuery({ minWidth: 0, maxWidth: 767 });
-    const { resPagination, handlePageChange } = usePagination(1, isMobile ? 10 : 20);
+    const { resPagination } = usePagination(1, isMobile ? 10 : 20);
 
     const location = useLocation();
 

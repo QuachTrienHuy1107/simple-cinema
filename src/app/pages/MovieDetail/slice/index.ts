@@ -7,7 +7,7 @@ import { MovieDetailProps, MovieDetailState } from "./types";
 
 export const initialState: MovieDetailState = {
     movieDetail: [],
-    isLoading: false,
+    isLoading: true,
 };
 
 const movieSlice = createSlice({

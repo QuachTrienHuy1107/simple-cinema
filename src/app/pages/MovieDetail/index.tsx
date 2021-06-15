@@ -11,7 +11,7 @@ import moment from "moment";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import styled from "styled-components/macro";
 import { media } from "styles/media";
 import { ANCHOR } from "utils/constants/settings";
@@ -29,8 +29,6 @@ interface MovieDetailProps {}
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
-
-let arr = [];
 
 export const MovieDetail: React.FC = (props: MovieDetailProps) => {
     const { Mobile, Desktop } = useScreenType();

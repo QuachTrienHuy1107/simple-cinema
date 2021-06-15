@@ -5,19 +5,16 @@ import { Login } from "app/pages/Form/pages/Login";
 import { Register } from "app/pages/Form/pages/Register";
 import { selectAuth } from "app/pages/Form/slice/selectors";
 import HomePage from "app/pages/HomePage/Loadable";
-import { NotFoundPage } from "app/pages/NotFoundPage/Loadable";
 import ClientTemplate from "app/templates/ClientTemplate";
-import { useIdentity } from "hooks/useIdentity";
 import React from "react";
 import { useSelector } from "react-redux";
-import { Redirect, Route, RouteProps, useLocation } from "react-router-dom";
+import { Redirect, Route, RouteProps } from "react-router-dom";
 import { ROUTES } from "utils/constants/settings";
 import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
 import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
-import { MovieForm } from "../app/pages/AdminPage/pages/MovieManagement/MovieForm";
 import { ShowTime } from "../app/pages/AdminPage/pages/MovieManagement/ShowTime";
 import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
-import MovieDetail from "../app/pages/MovieDetail/Loadable";
+import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
 
 type PrivateRouteProps = {
     component: React.ComponentType;
@@ -112,9 +109,6 @@ const routes: RouterType[] = [
     },
 ];
 
-// const isAuthenticated = true;
-const isAdmin = true;
-
 const AppLayout = ({
     component: Component,
     layout,
@@ -149,7 +143,7 @@ const AppLayout = ({
                         <AdminPage {...rest}>
                             <Component {...props} />
                         </AdminPage>
-                    )) || <Redirect to="/" />
+                    )) || <Redirect to={ROUTES.HOME} />
                 }
             />
         </>
