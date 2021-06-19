@@ -85,7 +85,7 @@ export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
                 <Link
                     to={{ pathname: `${ROUTES.MOVIEDETAIL}/${movie.maPhim}`, state: { isComming } }}
                 >
-                    <Tooltip title={movie.tenPhim} color="#87d068">
+                    <Tooltip title={movie.tenPhim} color="#f50">
                         <p className="ant-card-body__title">{movie.tenPhim}</p>
                     </Tooltip>
                 </Link>

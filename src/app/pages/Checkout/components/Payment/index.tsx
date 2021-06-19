@@ -64,7 +64,7 @@ export const Payment = memo(({ moviedetail, isLoading, credentials, out }: IPaym
                         <>
                             <Card
                                 title={
-                                    <h1 style={{ textAlign: "center", color: "green" }}>
+                                    <h1 style={{ textAlign: "center", color: "#87d068" }}>
                                         {totalPrice}
                                     </h1>
                                 }

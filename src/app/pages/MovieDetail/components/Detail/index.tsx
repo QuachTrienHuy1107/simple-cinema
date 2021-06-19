@@ -3,14 +3,13 @@
  * Detail
  *
  */
-import React, { memo } from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { MovieDetailProps } from "../../slice/types";
 import { Col, Row, Space } from "antd";
 import moment from "moment";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components/macro";
 import { media } from "styles/media";
+import { MovieDetailProps } from "../../slice/types";
 
 interface Props {
     movieDetail: MovieDetailProps;

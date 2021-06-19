@@ -214,7 +214,7 @@ const SpaceStyled = styled.div`
     height: 30px;
     h1 {
         text-align: center;
-        color: green;
+        color: #87d068;
         width: 100%;
         font-size: 2.3rem;
     }

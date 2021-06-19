@@ -144,8 +144,8 @@ const ColStyled = styled(Col)`
 
     padding: 60px 45px;
 
-    background-image: linear-gradient(to bottom, rgba(20, 50, 93, 0.9), rgba(8, 22, 48, 0.9));
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 45%);
+    background-image: linear-gradient(to bottom, rgba(9, 27, 90, 90%), rgba(9, 24, 53, 90%));
+    box-shadow: -1px 3px 20px 1px rgba(0, 0, 0, 45%);
 
     @media screen and (max-width: 576px) {
         padding: 60px 10px;

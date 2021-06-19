@@ -36,7 +36,7 @@ export const CinemaStatistic = memo((props: Props) => {
             <Row gutter={[0, 40]}>
                 <Col span={24}>
                     <CinemaChart>
-                        <h1>Doanh thu rạp</h1>
+                        <h1>Cinema Revenue</h1>
                         <ResponsiveContainer minHeight={360}>
                             <LineChart data={cinemaData}>
                                 <Legend

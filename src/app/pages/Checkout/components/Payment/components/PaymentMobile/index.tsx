@@ -4,22 +4,22 @@
  * PaymentMobile
  *
  */
-import {Col, Divider, Drawer, Image, message, Row, Tag} from "antd";
-import {Buttons} from "app/components/Common/Buttons";
-import {useCheckoutContext} from "app/pages/Checkout/context/createContext";
-import {useBooking} from "app/pages/Checkout/hooks/useBooking";
-import {useCheckout} from "app/pages/Checkout/hooks/useCheckout";
-import {selectCheckout} from "app/pages/Checkout/slice/selectors";
-import {MovieBooking, SeatSelectedType} from "app/pages/Checkout/slice/types";
-import {UserLoginResponse} from "app/pages/Form/slice/types";
-import React, {memo} from "react";
-import {useTranslation} from "react-i18next";
-import {useSelector} from "react-redux";
-import {useHistory} from "react-router";
-import {Prompt} from "react-router-dom";
+import { Col, Divider, Drawer, Image, message, Row, Tag } from "antd";
+import { Buttons } from "app/components/Common/Buttons";
+import { useCheckoutContext } from "app/pages/Checkout/context/createContext";
+import { useBooking } from "app/pages/Checkout/hooks/useBooking";
+import { useCheckout } from "app/pages/Checkout/hooks/useCheckout";
+import { selectCheckout } from "app/pages/Checkout/slice/selectors";
+import { MovieBooking, SeatSelectedType } from "app/pages/Checkout/slice/types";
+import { UserLoginResponse } from "app/pages/Form/slice/types";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { Prompt } from "react-router-dom";
 import styled from "styled-components/macro";
 import Swal from "sweetalert2";
-import {Food} from "../Food";
+import { Food } from "../Food";
 
 interface Props {
     moviedetail: MovieBooking;
@@ -233,14 +233,14 @@ const ButtonStyle = styled.div`
 
 const TotalPrice = styled.h2`
     font-size: 1.5rem;
-    color: green;
+    color: #87d068;
     transform: translateY(5px);
 `;
 
 const PaymentDetail = styled.div`
     text-align: center;
     height: 100%;
-    background-color: #f9f9f9;
+    background-color: #87d068;
 
     > span {
         text-overflow: ellipsis;

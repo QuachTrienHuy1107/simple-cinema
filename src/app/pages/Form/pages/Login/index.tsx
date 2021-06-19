@@ -3,19 +3,16 @@
  * Login
  *
  */
-import { Checkbox, Col, Form, Input, message, Row } from "antd";
+import { Checkbox, Col, Form, Input, Row } from "antd";
 import { Buttons } from "app/components/Common/Buttons";
 import { Loading } from "app/components/Common/Loading";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components/macro";
 import { formItemLayout } from "utils/helpers";
-
 import { selectAuth } from "../../slice/selectors";
-import { UserLoginResponse } from "../../slice/types";
 import { messages } from "./messages";
 
 interface Props {}
@@ -80,7 +77,7 @@ export const Login = memo((props: Props) => {
                         <Checkbox>Remember me</Checkbox>
                     </Form.Item>
 
-                    <Link to="/register">Quên mật khẩu?</Link>
+                    <a>Quên mật khẩu?</a>
                 </RememberMe>
             </Col>
 

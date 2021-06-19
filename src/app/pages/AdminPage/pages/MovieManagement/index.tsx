@@ -68,65 +68,58 @@ export function MovieManagement(props: Props) {
     const columns = [
         {
             key: "maPhim",
-            title: "Mã phim",
+            title: "ID",
             dataIndex: "maPhim",
-            sorter: true,
-            width: "10%",
+
+            width: "8%",
         },
         {
             key: "hinhAnh",
-            title: "Hình ảnh",
+            title: "Image",
             dataIndex: "hinhAnh",
             render: (src: string) => <img src={src} alt="" width={50} height={50} />,
-            width: "10%",
+            width: "12%",
         },
         {
             key: "tenPhim",
-            title: "Tên phim",
+            title: "Movie",
             dataIndex: "tenPhim",
-            sorter: true,
-            width: "13%",
+
+            width: "15%",
         },
         {
-            key: "biDanh",
-            title: "Bí danh",
-            dataIndex: "biDanh",
-            width: "13%",
+            key: "moTa",
+            title: "Description",
+            dataIndex: "moTa",
+            render: (text: string) => (
+                <Tooltip title={text}>
+                    <Desc>{text}</Desc>
+                </Tooltip>
+            ),
+            width: "25%",
         },
-        {
+        /* {
             key: "trailer",
             title: "Trailer",
             dataIndex: "trailer",
-            width: "25%",
             render: (text: string) => (
                 <>
                     <a onClick={() => setOpen(true)}>{text}</a>
-                    {/* <Modal
-                        title="Basic Modal"
-                        visible={open}
-                        onOk={handleOk}
-                        onCancel={handleCancle}
-                        bodyStyle={{ width: "100%", height: "100%", background: "red" }}
-                    >
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
-                    </Modal> */}
                 </>
             ),
-        },
+            width: "10%",
+        }, */
         {
             key: "ngayKhoiChieu",
-            title: "Ngày chiếu",
+            title: "Showtime",
             dataIndex: "ngayKhoiChieu",
-            width: "10%",
             render: (date: string) => <span>{moment(date).format("DD-MM-YYYY")}</span>,
+            width: "15%",
         },
-        { key: "danhGia", title: "Đánh giá", width: "10%", dataIndex: "danhGia" },
-
+        { key: "danhGia", title: "Rating", width: "7%", dataIndex: "danhGia" },
         {
             key: "options",
-            title: "Chuc nang",
+            title: "Operations",
             dataIndex: "options",
             render: (text: string, record: any, index: number) => (
                 <Space size="middle">
@@ -183,3 +176,12 @@ export function MovieManagement(props: Props) {
 }
 
 const Wrapper = styled.div``;
+
+const Desc = styled.span`
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+`;

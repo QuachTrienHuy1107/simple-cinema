@@ -3,12 +3,11 @@
  * Seat
  *
  */
-import { Button, Col, message, Row, Skeleton, Space, Spin } from "antd";
+import { Button, Col, Row, Skeleton, Space } from "antd";
 import { useScreenType } from "hooks/useScreenType";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components/macro";
-import { media } from "styles/media";
 import { useCheckoutContext } from "../../context/createContext";
 import { useHandlePickSeat } from "../../hooks/useHandlePickSeat";
 import { SeatType } from "../../slice/types";
@@ -150,7 +149,7 @@ const Wrapper = styled.div`
             background-color: #f5f5f5;
         }
         &--now {
-            background-color: #18ef18;
+            background-color: #87d068;
         }
         @media screen and (max-width: 1283px) {
             margin: 0 10px 15px 0;
@@ -230,7 +229,7 @@ const SeatDetail = styled.div`
             background: #f5f5f5;
         }
         &--booking {
-            background: #18ef18;
+            background: #87d068;
         }
     }
 `;

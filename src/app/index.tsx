@@ -17,9 +17,9 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import GlobalStyle from "styles/global-styles";
 import { ROUTES } from "utils/constants/settings";
+import "./index.scss";
 import { useAuthSlice } from "./pages/Form/slice";
 import { NotFoundPage } from "./pages/NotFoundPage/Loadable";
-import "./index.scss";
 
 export function App() {
     const { i18n } = useTranslation();
@@ -33,8 +33,6 @@ export function App() {
             disptach(actions.checkLoginActionSuccess(credential));
         }
     }, []);
-
-    //=================
 
     return (
         <BrowserRouter>

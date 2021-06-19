@@ -4,35 +4,20 @@
  * Header
  *
  */
-import * as React from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-
-import { NavList } from "../NavList";
-import { Buttons } from "../Buttons";
-import { Link, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Button, Col, Drawer, Dropdown, Menu, Row, Space, Steps } from "antd";
-import {
-    AlignRightOutlined,
-    DownOutlined,
-    LaptopOutlined,
-    LoginOutlined,
-    NotificationOutlined,
-    UserOutlined,
-} from "@ant-design/icons";
-
-import { InputStyled } from "../InputStyled";
-import { useScreenType } from "hooks/useScreenType";
-import { selectAuth } from "app/pages/Form/slice/selectors";
-import { ROUTES } from "utils/constants/settings";
-import useLocalStorage from "hooks/useLocalStorage";
-import { useIdentity } from "hooks/useIdentity";
+import { AlignRightOutlined, DownOutlined } from "@ant-design/icons";
+import { Button, Col, Drawer, Dropdown, Menu, Row, Steps } from "antd";
 import { useAuthSlice } from "app/pages/Form/slice";
-import { navListMessages } from "../NavList/navListMessages";
+import { selectAuth } from "app/pages/Form/slice/selectors";
+import { useScreenType } from "hooks/useScreenType";
+import * as React from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components/macro";
+import { ROUTES } from "utils/constants/settings";
+import { Buttons } from "../Buttons";
 import { Logo } from "../Logo";
+import { NavList } from "../NavList";
 
 interface IHeaderProps {}
 
@@ -72,7 +57,7 @@ export const Header: React.FC = (props: IHeaderProps) => {
             {(credentials.maLoaiNguoiDung === "QuanTri" && (
                 <>
                     <Menu.Item key="0">
-                        <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
+                        <Link to={ROUTES.DASHBOARD}>Quản trị</Link>
                     </Menu.Item>
 
                     <Menu.Item
@@ -82,7 +67,7 @@ export const Header: React.FC = (props: IHeaderProps) => {
                             localStorage.clear();
                         }}
                     >
-                        Logout
+                        Đăng xuất
                     </Menu.Item>
                 </>
             )) || (
@@ -94,7 +79,7 @@ export const Header: React.FC = (props: IHeaderProps) => {
                             dispatch(actions.checkLogoutAction());
                         }}
                     >
-                        Logout
+                        Đăng xuất
                     </Menu.Item>
                 </>
             )}
@@ -228,11 +213,6 @@ const Wrapper = styled.header`
         color: ${props => props.theme.primaryColor};
         font-weight: 500;
     }
-`;
-
-const ColStyled = styled(Col)`
-    display: flex;
-    justify-content: center;
 `;
 
 const DrawerStyle = styled(Drawer)`

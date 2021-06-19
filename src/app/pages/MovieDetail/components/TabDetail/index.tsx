@@ -3,16 +3,13 @@
  * TabDetail
  *
  */
-import React, { memo } from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import moment from "moment";
-import { MovieInfo, MovieShowtime } from "../../slice/types";
 import { Alert, Collapse, Divider, Space } from "antd";
-import { useGetRangeTime } from "app/pages/HomePage/components/Schedule/hooks/useGetRangeTime";
 import { TimePlay } from "app/pages/HomePage/components/Schedule/components/TimePlay";
-import { useCheckFull } from "../../hooks/useCheckFull";
+import moment from "moment";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components/macro";
+import { MovieInfo, MovieShowtime } from "../../slice/types";
 
 interface Props {
     date: Date;

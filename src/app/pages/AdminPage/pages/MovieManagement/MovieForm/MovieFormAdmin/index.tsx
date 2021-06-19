@@ -84,7 +84,7 @@ export const MovieFormAdmin = ({ movieDetail, isEdit, onClose }: Props) => {
                                 <Col md={12}>
                                     <Form.Item
                                         {...formItemLayout}
-                                        label="Tên phim"
+                                        label="Movie"
                                         name="tenPhim"
                                         rules={[{ required: true }]}
                                     >
@@ -95,7 +95,7 @@ export const MovieFormAdmin = ({ movieDetail, isEdit, onClose }: Props) => {
                                 <Col md={12}>
                                     <Form.Item
                                         {...formItemLayout}
-                                        label="Ngày chiếu"
+                                        label="Showtime"
                                         name="ngayKhoiChieu"
                                         rules={[{ required: true }]}
                                     >
@@ -114,18 +114,18 @@ export const MovieFormAdmin = ({ movieDetail, isEdit, onClose }: Props) => {
                                 <Col md={12}>
                                     <Form.Item
                                         {...formItemLayout}
-                                        label="Bí danh"
-                                        name="biDanh"
+                                        label="Trailer"
+                                        name="trailer"
                                         rules={[{ required: true }]}
                                     >
-                                        <Input placeholder="Mời bạn nhập email" />
+                                        <Input placeholder="Trailer" />
                                     </Form.Item>
                                 </Col>
 
                                 <Col md={12}>
                                     <Form.Item
                                         {...formItemLayout}
-                                        label="Đánh giá"
+                                        label="Rating"
                                         name="danhGia"
                                         rules={[{ required: true }]}
                                         initialValue={movieDetail?.danhGia}
@@ -136,7 +136,7 @@ export const MovieFormAdmin = ({ movieDetail, isEdit, onClose }: Props) => {
                                 <Col md={24}>
                                     <Form.Item
                                         {...formItemLayout}
-                                        label="Mô tả"
+                                        label="Description"
                                         name="moTa"
                                         rules={[{ required: true }]}
                                     >
@@ -166,14 +166,6 @@ export const MovieFormAdmin = ({ movieDetail, isEdit, onClose }: Props) => {
                                     onChange={handleFileChange}
                                     // style={{ display: "none" }}
                                 />
-                            </Form.Item>
-
-                            <Form.Item {...formItemLayout} name="trailer">
-                                {(isEdit && (
-                                    <a href={movieDetail?.trailer} target="_blank" rel="noreferrer">
-                                        {movieDetail?.trailer}
-                                    </a>
-                                )) || <Input placeholder="Trailer" />}
                             </Form.Item>
                         </RightPanel>
                     </ColStyled>

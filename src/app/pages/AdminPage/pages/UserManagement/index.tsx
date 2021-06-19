@@ -4,42 +4,36 @@
  * UserManagement
  *
  */
-import * as React from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import {
-    Space,
-    Table,
-    Tooltip,
-    Popconfirm,
-    Button,
-    Avatar,
-    message,
-    Form,
-    InputNumber,
-    Input,
-    Select,
-} from "antd";
 import {
     CheckOutlined,
-    CloseCircleFilled,
     CloseCircleOutlined,
     DeleteOutlined,
-    DownOutlined,
     EditOutlined,
     UserOutlined,
 } from "@ant-design/icons";
+import {
+    Avatar,
+    Button,
+    Form,
+    Input,
+    message,
+    Popconfirm,
+    Select,
+    Space,
+    Table,
+    Tooltip,
+} from "antd";
 import { Buttons } from "app/components/Common/Buttons";
 import usePagination from "hooks/usePagination";
+import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components/macro";
+import { Operations } from "../../components/Operations";
+import { useDebounce } from "../../hooks/useDebounce";
 import { useUserSlice } from "./slice";
 import { selectUser } from "./slice/selectors";
-import { useHistory } from "react-router";
-import { Operations } from "../../components/Operations";
 import { UserState } from "./slice/types";
-import { useDebounce } from "../../hooks/useDebounce";
-import UserPlayground from "./UserPlayground";
 
 interface Props {}
 
@@ -88,7 +82,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
                     rules={[
                         {
                             required: true,
-                            message: `Không được bỏ trống`,
+                            message: `Please fill this input!`,
                         },
                     ]}
                 >
@@ -169,7 +163,7 @@ export function UserManagement(props: Props) {
         },
         {
             key: "taiKhoan",
-            title: "Tài khoản",
+            title: "Username",
             dataIndex: "taiKhoan",
             sorter: true,
             editable: false,
@@ -177,7 +171,7 @@ export function UserManagement(props: Props) {
         },
         {
             key: "hoTen",
-            title: "Họ tên",
+            title: "Name",
             dataIndex: "hoTen",
             sorter: true,
             width: "15%",
@@ -190,17 +184,17 @@ export function UserManagement(props: Props) {
             width: "22%",
             editable: true,
         },
-        { key: "soDt", title: "Số điện thoại", dataIndex: "soDt", editable: true },
+        { key: "soDt", title: "Phone number", dataIndex: "soDt", editable: true },
         {
             key: "maLoaiNguoiDung",
-            title: "Loại người dùng",
+            title: "User type",
             dataIndex: "maLoaiNguoiDung",
             editable: true,
         },
 
         {
             key: "options",
-            title: "Chuc nang",
+            title: "Operations",
             dataIndex: "options",
             render: (text: string, record: DataType) => {
                 const isEdit = isEditing(record);
@@ -248,7 +242,7 @@ export function UserManagement(props: Props) {
                                         </Tooltip>
                                         <Tooltip title="delete">
                                             <Popconfirm
-                                                title="Bạn có muốn xóa người dùng này không?"
+                                                title="Do you want to remove this user?"
                                                 onConfirm={async () => {
                                                     const userName = record.taiKhoan;
                                                     await dispatch(
@@ -260,8 +254,8 @@ export function UserManagement(props: Props) {
                                                         ),
                                                     );
                                                 }}
-                                                okText="Có"
-                                                cancelText="Không"
+                                                okText="Yes"
+                                                cancelText="No"
                                             >
                                                 <Button
                                                     disabled={editingKey !== ""}
