@@ -113,7 +113,10 @@ export function MovieManagement(props: Props) {
             key: "ngayKhoiChieu",
             title: "Showtime",
             dataIndex: "ngayKhoiChieu",
-            render: (date: string) => <span>{moment(date).format("DD-MM-YYYY")}</span>,
+            render: (date: string, record: any) => {
+                console.log("record", record);
+                return <span>{moment(date).format("DD-MM-YYYY")}</span>;
+            },
             width: "15%",
         },
         { key: "danhGia", title: "Rating", width: "7%", dataIndex: "danhGia" },

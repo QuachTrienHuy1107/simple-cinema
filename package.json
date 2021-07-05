@@ -104,6 +104,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
+        "heroku-postbuild": "npm install --only=dev && npm install && npm run build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
         "test:generators": "ts-node --project=./internals/ts-node.tsconfig.json ./internals/testing/generators/test-generators.ts",

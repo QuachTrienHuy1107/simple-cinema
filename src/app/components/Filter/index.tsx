@@ -88,8 +88,10 @@ export const Filter = memo(({ movieList }: Props) => {
                                 placeholder="Chọn rạp"
                                 options={options}
                                 onChange={(value, selectedOptions) => {
+                                    console.log("value", value);
                                     const newValue = [...value];
                                     const key = newValue.pop();
+                                    console.log("key", key);
                                     setCinemaKey(key);
                                     setSelected(null);
                                     setSelectedTime(null);
