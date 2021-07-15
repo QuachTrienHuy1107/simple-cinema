@@ -12,7 +12,7 @@ import moment from "moment";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import ReactPlayer from "react-player";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components/macro";
 import { ROUTES } from "utils/constants/settings";
 import star from "../../../assets/star1.png";
@@ -38,6 +38,7 @@ export const MovieCard = memo(({ movie, isComming }: IMovieCardProps) => {
             play.current.getInternalPlayer().pauseVideo();
         }
     };
+    const history = useHistory();
 
     return (
         <>

@@ -7,7 +7,6 @@ import { LoadingOutlined } from "@ant-design/icons";
 import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components/macro";
-import { media } from "styles/media";
 import { CommentItem } from "./CommentItem";
 
 interface Props {
@@ -19,7 +18,6 @@ let arrayForHoldingPosts = [] as any;
 
 export const CommentList = memo(({ commentList }: Props) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { t, i18n } = useTranslation();
     const [next, setNext] = React.useState(3);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(null);
@@ -33,26 +31,6 @@ export const CommentList = memo(({ commentList }: Props) => {
             setAllComments(newArr.reverse());
         }
     }, [commentList]);
-
-    /*  React.useEffect(() => {
-        loadMore(0, 3);
-    }, []); */
-
-    /* React.useEffect(() => {
-        const fetchCommentList = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch(`${fakeApi}/reviews?_page=${page}&_limit=2`);
-                const data = await response.json();
-                // setComments(prev => [...prev, ...data]);
-            } catch (error) {
-                setError(error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCommentList();
-    }, [page]); */
 
     const handleScroll = async (e: React.UIEvent<HTMLElement>) => {
         const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;

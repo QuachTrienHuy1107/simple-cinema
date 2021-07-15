@@ -29,7 +29,6 @@ const { Step } = Steps;
 // Date.now() + 1000 * 60 * 20;
 
 export function Checkout(props: Props) {
-    const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const { actions } = useCheckoutSlice();
     const history = useHistory();

@@ -14,8 +14,6 @@ import { Animated } from "react-animated-css";
 interface Props {}
 
 export function Loading(props: Props) {
-    const { t, i18n } = useTranslation();
-
     return (
         <div
             style={{

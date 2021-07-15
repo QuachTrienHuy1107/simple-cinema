@@ -14,7 +14,7 @@ import { Dashboard } from "../app/pages/AdminPage/pages/Dashboard/Loadable";
 import { MovieManagement } from "../app/pages/AdminPage/pages/MovieManagement/Loadable";
 import { ShowTime } from "../app/pages/AdminPage/pages/MovieManagement/ShowTime";
 import { UserManagement } from "../app/pages/AdminPage/pages/UserManagement/Loadable";
-import { MovieDetail } from "../app/pages/MovieDetail/Loadable";
+import { MovieDetail } from "../app/pages/MovieDetail";
 
 type PrivateRouteProps = {
     component: React.ComponentType;

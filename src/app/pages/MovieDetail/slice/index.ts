@@ -7,7 +7,7 @@ import { MovieDetailProps, MovieDetailState } from "./types";
 
 export const initialState: MovieDetailState = {
     movieDetail: [],
-    isLoading: true,
+    isLoading: false,
 };
 
 const movieSlice = createSlice({
@@ -25,9 +25,9 @@ const movieSlice = createSlice({
             state.error = action.payload;
             state.isLoading = false;
         },
-        clearData(state){
-          return initialState
-        }
+        clearData(state) {
+            return initialState;
+        },
     },
 });
 

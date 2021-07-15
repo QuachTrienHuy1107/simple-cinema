@@ -3,16 +3,14 @@
  * TimePlay
  *
  */
-import React, { memo, useRef } from "react";
-import styled from "styled-components/macro";
+import { MovieShowtime } from "app/pages/MovieDetail/slice/types";
+import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { MovieProps, TimerProps } from "../../types";
-import moment from "moment";
 import { useHistory } from "react-router";
+import styled from "styled-components/macro";
 import { ROUTES } from "utils/constants/settings";
 import { useGetRangeTime } from "../../hooks/useGetRangeTime";
-import { MovieShowtime } from "app/pages/MovieDetail/slice/types";
+import { TimerProps } from "../../types";
 
 interface Props {
     movie: TimerProps[] | MovieShowtime[];
@@ -27,7 +25,6 @@ interface RangeTimeProps {
 export const TimePlay = memo(({ movie }: Props) => {
     const { t, i18n } = useTranslation();
     const history = useHistory();
-    const arrTime = [] as String[];
     const { getRangeTime } = useGetRangeTime();
 
     const rangeTime = getRangeTime(movie);

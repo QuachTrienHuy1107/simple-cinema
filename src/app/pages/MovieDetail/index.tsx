@@ -32,7 +32,6 @@ const { TabPane } = Tabs;
 
 export const MovieDetail: React.FC = (props: MovieDetailProps) => {
     const { Mobile, Desktop } = useScreenType();
-    const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const { movieDetail, isLoading } = useSelector(selectMovieDetail) as MovieDetailState;
     const { arrayDate } = useBookingTicketWithDate(movieDetail?.ngayKhoiChieu);

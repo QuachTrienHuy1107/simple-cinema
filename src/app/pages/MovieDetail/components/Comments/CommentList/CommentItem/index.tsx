@@ -3,12 +3,11 @@
  * CommentItem
  *
  */
-import React, { memo } from "react";
-import styled from "styled-components/macro";
-import { useTranslation } from "react-i18next";
-import { messages } from "./messages";
-import { Avatar, Button, Col, Divider, Rate, Row, Space } from "antd";
 import { LikeFilled, UserOutlined } from "@ant-design/icons";
+import { Avatar, Button, Divider, Rate, Space } from "antd";
+import React, { memo } from "react";
+import { useTranslation } from "react-i18next";
+import styled from "styled-components/macro";
 
 interface Props {
     binhLuan: any;

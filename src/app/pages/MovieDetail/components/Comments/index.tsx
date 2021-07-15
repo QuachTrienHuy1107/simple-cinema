@@ -38,9 +38,6 @@ export const Comments = memo(({ maPhim }: ICommentProps) => {
 
     React.useEffect(() => {
         const fetchAll = async () => {
-            /*   const waitTimer = setTimeout(() => {
-                setLoading(false);
-            }, 10000); */
             try {
                 setLoading(true);
                 const res = await fetch(`${fakeApi}/reviews/`);
