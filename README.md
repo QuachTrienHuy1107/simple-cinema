@@ -33,10 +33,6 @@ You will also see any lint errors in the console.
 
 Start JSON Server at port 8000.
 
-# Link demo
-
-[https://simple-cinema.herokuapp.com/](https://simple-cinema.herokuapp.com/)
-
 ---
 
 The official [Create React App](https://github.com/facebook/create-react-app) template of the `discontinued` [React Boilerplate](https://github.com/react-boilerplate/react-boilerplate)
